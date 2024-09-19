@@ -1,4 +1,3 @@
-import './App.css';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import MapComponent from './MapComponent';
