@@ -1,0 +1,137 @@
+/* index.css or global styles */
+html, body, #root {
+  height: 98%;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+    position: relative; /* For layering above the overlay */
+    z-index: 1; /* Above the overlay */
+    background-color: #333; /* Dark background for the navbar */
+    padding: 0.75%; /* Add some padding */
+    height: 3%;
+  }
+  
+  ul {
+    list-style-type: none; /* Remove default bullet points */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+    display: flex; /* Horizontally align items */
+    justify-content: flex-start; /* Align items to the left */
+  }
+  
+  li {
+    margin-right: 1%; /* Add space between items */
+  }
+  
+  .navigation_links {
+    color: white; /* White text color */
+    text-decoration: none; /* Remove underline */
+    font-size: 1rem; /* Adjust font size */
+    padding: 8px 16px; /* Add padding inside links */
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+  }
+  
+  .navigation_links:hover {
+    background-color: #575757; /* Change background on hover */
+    border-radius: 5.5%; /* Rounded corners on hover */
+  }
+  
+  .navigation_links:active {
+    background-color: #222; /* Darker background when clicked */
+  }
+  
+  /* Styling for the state heading */
+.state_heading {
+  position: relative; /* For layering above the overlay */
+  z-index: 1; /* Above the overlay */
+  font-family: 'Arial', sans-serif;
+  font-size: 36px;
+  color: #000000;
+  width: 400px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 15px 30px;
+}
+
+/* Styling for the state selection buttons */
+.state_selection {
+  position: relative; /* For layering above the overlay */
+  z-index: 1; /* Above the overlay */
+  display: block; /* Make the Link behave like a block element */
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f0f0; /* Default background */
+  color: #000000; /* Default text color */
+  padding: 15px 30px; /* Padding around text */
+  margin: 10px auto; /* Center the button */
+  text-align: center; /* Center text */
+  border-radius: 10px; /* Rounded corners */
+  width: 200px; /* Fixed width */
+  font-size: 20px; /* Font size */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  cursor: pointer; /* Pointer on hover */
+  transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
+  text-decoration: none; /* Remove underline from links */
+}
+
+/* Hover effect */
+.state_selection:hover {
+  background-color: #ffffff; /* Light gray background */
+  color: #d71516; /* Text color on hover */
+  box-shadow: 0 6px 12px rgba(3,170,241,255); /* Enhanced shadow */
+  border-radius: 10px; /* Rounded corners */
+
+}
+
+/* Active state */
+.state_selection:active {
+  background-color: #b0b0b0; /* Darker gray when active/clicked */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+  transform: translateY(2px); /* Slightly move down on click */
+}
+
+.background {
+  margin-top: 20px;
+  background-image: url('../public/eagle.webp'); /* Adjust the path as necessary */
+  background-size: cover; /* Cover the entire viewport */
+  background-position: center; /* Center the image */
+  position: absolute; /* Positioning for overlay */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1; /* Behind other content */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for dimming effect */
+  z-index: 0; /* Below the content */
+}
+
+.content {
+  position: relative; /* For layering above the overlay */
+  z-index: 1; /* Above the overlay */
+  color: black; /* Black text color */
+  background-color: white; /* White background for content */
+  padding: 20px; /* Add padding */
+  max-width: 800px; /* Maximum width for content */
+  margin: auto; /* Center the content */
+  border-radius: 8px; /* Optional: Rounded corners for the content box */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Shadow for depth */
+  margin-top: 20px;
+}
+
+.no_style_link {
+  inherits: none;
+}
