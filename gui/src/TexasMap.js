@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from "react"
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet"
+import { MapContainer, TileLayer, GeoJSON, LayersControl } from "react-leaflet"
 import 'leaflet/dist/leaflet.css'
-import texasData from "./texas.geojson"
+import texasCongressionalData from "./texas_data/texas_congressional_plan.geojson"
+
+const { Overlay } = LayersControl
 
 export const TexasMap = () => {
-    const [geoData, setGeoData] = useState(null);
+    const [congressionalDistricts, setCongressionalDistricts] = useState(null)
 
     useEffect(() => {
-        // Fetch the GeoJSON data from the file
-        fetch(texasData)
-            .then((response) => response.json())
-            .then((data) => {
-                setGeoData(data)
-            })
-        .catch((error) => console.error('Error loading the GeoJSON data: ', error))
+        fetch(texasCongressionalData)
+        .then((response) => response.json())
+        .then((data) => {
+            setCongressionalDistricts(data)
+        })
+    .catch((error) => console.error("Error loading the Congressional Districts GeoJSON data: ", error))
     }, [])
 
-    const onEachFeature = (feature, layer) => {
-        layer.bindPopup(feature.properties.name) // Optinally bind a popup to each feature
+    const showPopulationData = (feature, layer) => {
+        console.log(feature.properties)
+        const popupContent = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.5;">
+            <h3 style="margin: 0;">District No: ${feature.properties.DIST_NBR}</h3>
+            <p><strong>Representative Name:</strong> ${feature.properties.REP_NM}</p>
+        </div>
+        `;
+        layer.bindPopup(popupContent);
     }
 
     return (
@@ -30,19 +38,23 @@ export const TexasMap = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            {
-                geoData && (
-                    <GeoJSON
-                    data={geoData}
-                    style={() => ({
-                        color: 'black',
-                        fillColor: 'white',
-                        weight: 2
-                    })}
-                    onEachFeature={onEachFeature}
-                    />
-                )
-            }
+            <LayersControl>
+                <Overlay name="Congressional Districts" checked>
+                    {
+                        congressionalDistricts && (
+                            <GeoJSON
+                            data={congressionalDistricts}
+                            style={() => ({
+                                color: 'black',
+                                fillColor: 'white',
+                                weight: 2
+                            })}
+                            onEachFeature={showPopulationData}
+                            />
+                        )
+                    }
+                </Overlay>
+            </LayersControl>
         </MapContainer>
     )
 }
