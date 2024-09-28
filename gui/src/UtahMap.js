@@ -28,6 +28,14 @@ export const UtahMap = () => {
             <h3 style="margin: 0;">${feature.properties.COUNTY}</h3>
             <p><strong>Population:</strong> ${feature.properties.TOT_POP22}</p>
             <p><strong>White:</strong> ${feature.properties.WHT_NHSP22}</p>
+            <p><strong>Black:</strong> ${feature.properties.BLK_NHSP22}</p>
+            <p><strong>Hispanic:</strong> ${feature.properties.HSP_POP22}</p>
+            <p><strong>Asian:</strong> ${feature.properties.ASN_NHSP22}</p>
+            <p><strong>Native:</strong> ${feature.properties.AIA_NHSP22}</p>
+            <p><strong>Pacific:</strong> ${feature.properties.HPI_NHSP22}</p>
+            <p><strong>Other:</strong> ${feature.properties.OTH_NHSP22}</p>
+           
+
         </div>
         `;
     layer.bindPopup(popupContent);
