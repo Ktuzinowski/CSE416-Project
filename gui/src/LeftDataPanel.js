@@ -1,28 +1,69 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons'; // Import icons
-import "./App.css"
+import { faExpandAlt, faCompressAlt, faThumbtack as faThumbtackSolid  } from '@fortawesome/free-solid-svg-icons';
+import Icon from "./Icon";
+import "./App.css";
 
 export const LeftDataPanel = ({ data }) => {
-    const [isExpanded, setIsExpanded] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
+    const [panelWidth, setPanelWidth] = useState(500); // Default panel width in pixels
+    const [isResizing, setIsResizing] = useState(false);
+    const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
 
-    // useEffect to log data when it's available
     useEffect(() => {
         if (data !== null) {
-            console.log("Data received:", data);
-            console.log(data.features[0].properties)
-            setColumnNames(data.features[0].properties)
+            const keys = ["index", ...Object.keys(data.features[0].properties)];
+            setColumnNames(keys);
+            setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
         }
-    }, [data])
+    }, [data]);
 
     const togglePanel = () => {
         setIsExpanded(!isExpanded);
     };
 
+    // Handle pin icon click
+    const togglePin = (column) => {
+        setPinnedColumns((prev) => ({
+            ...prev,
+            [column]: !prev[column] // Toggle pin state
+        }))
+    }
+
+    const handleMouseDown = () => {
+        setIsResizing(true);
+    };
+
+    const handleMouseMove = (e) => {
+        if (isResizing) {
+            const newWidth = e.clientX; // Use mouse position to adjust width
+            setPanelWidth(newWidth);
+        }
+    };
+
+    const handleMouseUp = () => {
+        setIsResizing(false);
+    };
+
+    useEffect(() => {
+        if (isResizing) {
+            window.addEventListener("mousemove", handleMouseMove);
+            window.addEventListener("mouseup", handleMouseUp);
+        } else {
+            window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("mouseup", handleMouseUp);
+        }
+
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("mouseup", handleMouseUp);
+        };
+    }, [isResizing]);
+
     return (
         <div className="container_left_data_panel" style={{
-            width: isExpanded ? "100%" : "30%",
+            width: isExpanded ? "100%" : `${panelWidth}px`,
         }}>
             <div className="left_data_panel_current_selection">
                 <h2 className="left_data_panel_title">Congressional Districts</h2>
@@ -33,37 +74,124 @@ export const LeftDataPanel = ({ data }) => {
 
             <hr style={{ width: "100%", border: "1px solid #ccc", marginTop: "-5px" }} />
 
-            {isExpanded && columnNames && (
+            {columnNames && (
                 <div className="left_data_table">
                     <table className="left_data_column_names">
                         <thead>
                             <tr>
-                                {
-                                    Object.entries(columnNames).map(([key, value]) => (
-                                        <th key={key}>
-                                            {key}
-                                        </th>
-                                    ))
+                                {(() => {
+                                    if (isExpanded) {
+                                        return columnNames.map((key) => {
+                                            if (key == "index") {
+                                                return (
+                                                    <th key={key} className="left_data_column_header">
+                                                        {key}
+                                                    </th>
+                                                )
+                                            }
+                                            return (
+                                                <th key={key} className="left_data_column_header">
+                                                    {key}
+                                                    <span className="pin-icon" onClick={() => togglePin(key)}>
+                                                        <Icon name={pinnedColumns[key] ? "thumbtack-solid" : "thumbtack"}/>
+                                                    </span>
+                                                </th>
+                                            )
+                                        })
+                                    }
+                                    const pinnedColumnNames = []
+                                    const unpinnedColumnNames = []
+                                    columnNames.map((key) => {
+                                        if (key == "index") {
+                                            pinnedColumnNames.push(key)
+                                        }
+                                        else {
+                                            if (pinnedColumns[key]) {
+                                                pinnedColumnNames.push(key)
+                                            }
+                                            else {
+                                                unpinnedColumnNames.push(key)
+                                            }
+                                        }
+                                    })
+                                    const sortedColumns = [...pinnedColumnNames, ...unpinnedColumnNames]
+                                    return sortedColumns.map((key) => {
+                                        if (key == "index") {
+                                            return (
+                                                <th key={key} className="left_data_column_header">
+                                                    {key}
+                                                </th>
+                                            )
+                                        }
+                                        return (
+                                            <th key={key} className="left_data_column_header">
+                                                {key}
+                                                <span className="pin-icon" onClick={() => togglePin(key)}>
+                                                    <Icon name={pinnedColumns[key] ? "thumbtack-solid" : "thumbtack"}/>
+                                                </span>
+                                            </th>
+                                        )
+                                    }
+                                )
+                                })()
                                 }
-                                <th>
-                                    Property Name
-                                </th>
-                                <th>
-                                    Value
-                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {Object.entries(columnNames).map(([key, value]) => (
-                                <tr key={key}>
-                                    <td>{key}</td>
-                                    <td>{value.toString()}</td>
-                                </tr>
-                            ))}
+                            {data.features.map((feature, index) => {
+                                if (isExpanded) {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{index}</td>
+                                            {Object.values(feature.properties).map((value, idx) => (
+                                                <td key={idx}>{value.toString()}</td>
+                                            ))}
+                                        </tr>
+                                    )
+                                }
+                                const rowData = [index] // start with index
+                                const pinnedValues = []
+                                const nonPinnedValues = []
+
+                                Object.entries(feature.properties).forEach(([key, value]) => {
+                                    if (key === "index") {
+                                        return
+                                    }
+                                    if (pinnedColumns[key]) {
+                                        pinnedValues.push(value)
+                                    }
+                                    else {
+                                        nonPinnedValues.push(value)
+                                    }
+                                })
+
+                                // Combine pinned and non-pinned values
+                                const orderedValues = [...pinnedValues, ...nonPinnedValues]
+                                console.log(orderedValues)
+
+                                // Add the ordered values to the row data
+                                rowData.push(...orderedValues)
+
+                                console.log(pinnedValues)
+                                console.log(nonPinnedValues)
+
+                                console.log(rowData)
+
+                                return (
+                                    <tr key={index}>
+                                        {rowData.map((value, idx) => (
+                                            <td key={idx}>{value.toString()}</td>
+                                        ))}
+                                    </tr>
+                                )
+                            })}
                         </tbody>
                     </table>
                 </div>
             )}
+
+            {/* Resizable Handle */}
+            <div className="resize-handle" onMouseDown={handleMouseDown} />
         </div>
-    )
-}
+    );
+};

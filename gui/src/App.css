@@ -195,15 +195,58 @@ nav {
   width: 100%;
   border-collapse: collapse;
   margin: 0;
-  margin-top: -15px;
+  padding: 0;
+  /* margin-top: -5px; */
+  cursor: default;
+  color: black;
+  margin-left: -12px;
 }
 
-.left_data_column_names th, .left_data_column_names td {
+.left_data_column_names th, .left_data_column_names td, .left_data_column_names tr {
   text-align: left;
-  font-size: 1;
-  padding: 3px;
+  font-size: 1rem;
+  padding: 8px 12px; /* Use padding for spacing */
+  border-bottom: 1px solid #ccc; /* Add borders between rows */
+}
+
+.left_data_column_names td {
+  text-align: right;
+  font-weight: 600;
+  user-select: none;
 }
 
 .left_data_column_names th {
   font-weight: bold;
+  user-select: none;
+}
+
+.left_data_panel_data_rows:hover {
+  background-color: #9e9c9c; /* Optional: Add hover effect for rows */
+}
+
+/* CSS for the Resize Handle */
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 7px;
+  height: 100%;
+  cursor: ew-resize; /* Horizontal resize cursor */
+  background-color: rgba(0, 0, 0, 0.1); /* Make the handle visible */
+}
+
+.resize-handle:hover {
+  background-color: rgba(0, 0, 0, 0.2); /* Change color on hover */
+}
+
+.left_data_column_header {
+  position: relative;
+}
+
+.pin-icon {
+  margin-left: 3px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
