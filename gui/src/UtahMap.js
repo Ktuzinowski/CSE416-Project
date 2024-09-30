@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { MapContainer, TileLayer, GeoJSON, LayersControl } from "react-leaflet"
 import 'leaflet/dist/leaflet.css'
 import utahCongressionalData from "./utah_data/utah_congressional_plan.geojson"
+import { LeftDataPanel } from "./LeftDataPanel"
 
 const { Overlay } = LayersControl
 
