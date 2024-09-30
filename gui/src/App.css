@@ -250,3 +250,12 @@ nav {
   top: 50%;
   transform: translateY(-50%);
 }
+
+.zoom-icon {
+  cursor: pointer;
+  position: relative;
+}
+
+.zoom-icon:hover {
+  transform: scale(1.1);
+}

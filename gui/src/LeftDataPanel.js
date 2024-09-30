@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExpandAlt, faCompressAlt, faThumbtack as faThumbtackSolid  } from '@fortawesome/free-solid-svg-icons';
+import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import Icon from "./Icon";
 import "./App.css";
 
-export const LeftDataPanel = ({ data }) => {
+export const LeftDataPanel = ({ data, zoomInOnDistrict }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [panelWidth, setPanelWidth] = useState(500); // Default panel width in pixels
@@ -35,12 +35,12 @@ export const LeftDataPanel = ({ data }) => {
         setIsResizing(true);
     };
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = useCallback((e) => {
         if (isResizing) {
             const newWidth = e.clientX; // Use mouse position to adjust width
             setPanelWidth(newWidth);
         }
-    };
+    }, [isResizing]);
 
     const handleMouseUp = () => {
         setIsResizing(false);
@@ -59,7 +59,7 @@ export const LeftDataPanel = ({ data }) => {
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mouseup", handleMouseUp);
         };
-    }, [isResizing]);
+    }, [isResizing, handleMouseMove]);
 
     return (
         <div className="container_left_data_panel" style={{
@@ -82,7 +82,7 @@ export const LeftDataPanel = ({ data }) => {
                                 {(() => {
                                     if (isExpanded) {
                                         return columnNames.map((key) => {
-                                            if (key == "index") {
+                                            if (key === "index") {
                                                 return (
                                                     <th key={key} className="left_data_column_header">
                                                         {key}
@@ -101,8 +101,8 @@ export const LeftDataPanel = ({ data }) => {
                                     }
                                     const pinnedColumnNames = []
                                     const unpinnedColumnNames = []
-                                    columnNames.map((key) => {
-                                        if (key == "index") {
+                                    columnNames.forEach((key) => {
+                                        if (key === "index") {
                                             pinnedColumnNames.push(key)
                                         }
                                         else {
@@ -116,7 +116,7 @@ export const LeftDataPanel = ({ data }) => {
                                     })
                                     const sortedColumns = [...pinnedColumnNames, ...unpinnedColumnNames]
                                     return sortedColumns.map((key) => {
-                                        if (key == "index") {
+                                        if (key === "index") {
                                             return (
                                                 <th key={key} className="left_data_column_header">
                                                     {key}
@@ -141,15 +141,15 @@ export const LeftDataPanel = ({ data }) => {
                             {data.features.map((feature, index) => {
                                 if (isExpanded) {
                                     return (
-                                        <tr key={index}>
-                                            <td>{index}</td>
+                                        <tr key={index} >
+                                            <td style={{textAlign: 'left'}}>{index}</td>
                                             {Object.values(feature.properties).map((value, idx) => (
                                                 <td key={idx}>{value.toString()}</td>
                                             ))}
                                         </tr>
                                     )
                                 }
-                                const rowData = [index] // start with index
+                                const rowData = [] // start with index
                                 const pinnedValues = []
                                 const nonPinnedValues = []
 
@@ -179,6 +179,14 @@ export const LeftDataPanel = ({ data }) => {
 
                                 return (
                                     <tr key={index}>
+                                        <td style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
+                                            <span className="zoom-icon" onClick={() => togglePin("nothing")}>
+                                                            <Icon name="search" />
+                                            </span>
+                                            <span className="zoom-icon" onClick={() => togglePin("nothing")}>
+                                                            <Icon name="paint-brush" />
+                                            </span>
+                                        </td>
                                         {rowData.map((value, idx) => (
                                             <td key={idx}>{value.toString()}</td>
                                         ))}
