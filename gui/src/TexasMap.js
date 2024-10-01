@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { MapContainer, TileLayer, GeoJSON, LayersControl } from "react-leaflet"
+import { MapContainer, TileLayer, GeoJSON, LayersControl, ZoomControl } from "react-leaflet"
 import 'leaflet/dist/leaflet.css'
 import texasCongressionalData from "./texas_data/texas_congressional_plan.geojson"
 import { LeftDataPanel } from "./LeftDataPanel"
+import { MAPBOX_ACCESS_TOKEN } from "./constants"
 
 const { Overlay } = LayersControl
 
@@ -30,14 +31,19 @@ export const TexasMap = () => {
     }
 
     return (
+        <>
+        <LeftDataPanel data={congressionalDistricts}/>
         <MapContainer
         center={[31.9686, -99.9018]} // Center the map on Utah's coordinates
         zoom={6}
-        style={{ height: '100%', width: '100%' }}  // Full screen height (vh = viewport height)
+        minZoom={3}
+        maxZoom={10}
+        style={{ height: '94%', top: '6%' }}  // Full screen height (vh = viewport height)
+        zoomControl={false} // Disable default zoom control
         >
             <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url={`https://api.mapbox.com/styles/v1/ktuzinowski/cm1msivj900k601p69fqk5tlt/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_ACCESS_TOKEN}&fresh=True`}
+                    attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
             />
             <LayersControl>
                 <Overlay name="Congressional Districts" checked>
@@ -56,6 +62,9 @@ export const TexasMap = () => {
                     }
                 </Overlay>
             </LayersControl>
+
+            <ZoomControl position="bottomright" />
         </MapContainer>
+        </>
     )
 }

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { MapContainer, TileLayer, GeoJSON, LayersControl, ZoomControl, Pane } from "react-leaflet"
+import { MapContainer, TileLayer, GeoJSON, LayersControl, ZoomControl } from "react-leaflet"
 import 'leaflet/dist/leaflet.css'
 import arizonaCongressionalData from "./arizona_data/arizona_congressional_plan.geojson"
 import { LeftDataPanel } from "./LeftDataPanel"
 import { MAPBOX_ACCESS_TOKEN } from "./constants"
-
 
 const { Overlay } = LayersControl
 
