@@ -7,7 +7,6 @@ import "./App.css";
 export const LeftDataPanel = ({ data, onSelectFeature }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
-    const [panelWidth, setPanelWidth] = useState(500); // Default panel width in pixels
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
 
     useEffect(() => {
@@ -92,10 +91,10 @@ export const LeftDataPanel = ({ data, onSelectFeature }) => {
                                             return (
                                                 <td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
                                                     <span className="zoom-icon" onClick={() => handleFeatureSelect(feature)}>
-                                                            <Icon name="search" />
+                                                            <Icon name="search" size={1.1}/>
                                                    </span>
                                                     <span className="zoom-icon" onClick={() => togglePin("nothing")}>
-                                                            <Icon name="paint-brush" />
+                                                            <Icon name="paint-brush" size={1.1}/>
                                                     </span>
                                                 </td>
                                                 
