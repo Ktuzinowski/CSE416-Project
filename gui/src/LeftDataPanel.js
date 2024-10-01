@@ -4,7 +4,7 @@ import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import Icon from "./Icon";
 import "./App.css";
 
-export const LeftDataPanel = ({ data, zoomInOnDistrict }) => {
+export const LeftDataPanel = ({ data, onSelectFeature }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [panelWidth, setPanelWidth] = useState(500); // Default panel width in pixels
@@ -60,6 +60,12 @@ export const LeftDataPanel = ({ data, zoomInOnDistrict }) => {
             window.removeEventListener("mouseup", handleMouseUp);
         };
     }, [isResizing, handleMouseMove]);
+
+     // Pass the selected feature back to the parent when clicked
+    const handleFeatureSelect = (feature) => {
+        console.log("CLICKING HERE!")
+        onSelectFeature(feature); // This calls the parent's setSelectedFeature
+    };
 
     return (
         <div className="container_left_data_panel" style={{
@@ -167,20 +173,20 @@ export const LeftDataPanel = ({ data, zoomInOnDistrict }) => {
 
                                 // Combine pinned and non-pinned values
                                 const orderedValues = [...pinnedValues, ...nonPinnedValues]
-                                console.log(orderedValues)
+                                // console.log(orderedValues)
 
                                 // Add the ordered values to the row data
                                 rowData.push(...orderedValues)
 
-                                console.log(pinnedValues)
-                                console.log(nonPinnedValues)
+                                // console.log(pinnedValues)
+                                // console.log(nonPinnedValues)
 
-                                console.log(rowData)
+                                // console.log(rowData)
 
                                 return (
                                     <tr key={index}>
                                         <td style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
-                                            <span className="zoom-icon" onClick={() => togglePin("nothing")}>
+                                            <span className="zoom-icon" onClick={() => handleFeatureSelect(feature)}>
                                                             <Icon name="search" />
                                             </span>
                                             <span className="zoom-icon" onClick={() => togglePin("nothing")}>
