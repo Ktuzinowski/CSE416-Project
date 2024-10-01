@@ -24,16 +24,6 @@ export const ArizonaMap = () => {
 
     // Zoom to selected feature whenever it changes
     useEffect(() => {
-        console.log("Updating the selected feature!")
-        if (selectedFeature) {
-            console.log("Selected a feature!")
-        }
-        if (geoJsonRef.current) {
-            console.log("GeoJSONRef selected!")
-        }
-        if (mapRef.current) {
-            console.log("MapRef selected!")
-        }
         if (selectedFeature && geoJsonRef.current && mapRef.current) {
             const layer = geoJsonRef.current.getLayers().find(l => 
                 l.feature.properties.DISTRICT === selectedFeature.properties.DISTRICT
