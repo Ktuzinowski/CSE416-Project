@@ -14,7 +14,7 @@ nav {
     background-color: #333; /* Dark background for the navbar */
     padding: 0.75%; /* Add some padding */
     height: 3%;
-    z-index: 2001;
+    z-index: 2003;
   }
   
   ul {
@@ -142,21 +142,18 @@ nav {
 
 /* Styles for left data plane */
 .container_left_data_panel {
-  width: 100%;
   height: 100%;
   background-color: white;
-  position: fixed;
+  position: relative;
   margin: 0;
   padding: 0;
   top: 5.5%; /* Push it down to start just below the navbar */
   left: 0;
   transition: width 0.3s ease;
-  overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  z-index: 2000;
-  flex-grow: 1; /* Allows content to expand */
-  overflow-y: auto; /* Scroll only vertically if needed */
+  z-index: 2002;
+  overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 .left_data_panel_current_selection {
@@ -258,4 +255,15 @@ nav {
 
 .zoom-icon:hover {
   transform: scale(1.1);
+}
+
+.map-wrapper {
+  display: flex;
+  height: 100%; /* Subtract the navbar height */
+}
+
+.map-container {
+  flex-grow: 1; /* Take remaining space */
+  height: 100%;
+  position: relative;
 }

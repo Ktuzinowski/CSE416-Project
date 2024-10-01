@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import Icon from "./Icon";
@@ -8,7 +8,6 @@ export const LeftDataPanel = ({ data, onSelectFeature }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [panelWidth, setPanelWidth] = useState(500); // Default panel width in pixels
-    const [isResizing, setIsResizing] = useState(false);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
 
     useEffect(() => {
@@ -31,45 +30,32 @@ export const LeftDataPanel = ({ data, onSelectFeature }) => {
         }))
     }
 
-    const handleMouseDown = () => {
-        setIsResizing(true);
-    };
-
-    const handleMouseMove = useCallback((e) => {
-        if (isResizing) {
-            const newWidth = e.clientX; // Use mouse position to adjust width
-            setPanelWidth(newWidth);
-        }
-    }, [isResizing]);
-
-    const handleMouseUp = () => {
-        setIsResizing(false);
-    };
-
-    useEffect(() => {
-        if (isResizing) {
-            window.addEventListener("mousemove", handleMouseMove);
-            window.addEventListener("mouseup", handleMouseUp);
-        } else {
-            window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("mouseup", handleMouseUp);
-        }
-
-        return () => {
-            window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("mouseup", handleMouseUp);
-        };
-    }, [isResizing, handleMouseMove]);
-
      // Pass the selected feature back to the parent when clicked
     const handleFeatureSelect = (feature) => {
         console.log("CLICKING HERE!")
         onSelectFeature(feature); // This calls the parent's setSelectedFeature
     };
 
+    const getVisibleColumns = () => {
+        console.log("Checking visible column names!")
+        if (isExpanded) {
+            return columnNames;
+        }
+        else {
+            const filtered_column_names = columnNames.filter((key) => key === "index" || pinnedColumns[key]);
+            if (filtered_column_names.length === 1) {
+                console.log("The length is zero!")
+                return [columnNames[0], columnNames[1], columnNames[2], columnNames[3]] // just get two columns at least to display
+            }
+            return filtered_column_names
+        }
+    }
+
     return (
         <div className="container_left_data_panel" style={{
-            width: isExpanded ? "100%" : `${panelWidth}px`,
+            width: isExpanded ? "100%" : "auto", // Auto-width when collapsed
+            maxWidth: isExpanded ? "100%" : "fit-content", // Fit the content naturally
+            minWidth: "200px", // Set a minimum width for the panel
         }}>
             <div className="left_data_panel_current_selection">
                 <h2 className="left_data_panel_title">Congressional Districts</h2>
@@ -85,127 +71,57 @@ export const LeftDataPanel = ({ data, onSelectFeature }) => {
                     <table className="left_data_column_names">
                         <thead>
                             <tr>
-                                {(() => {
-                                    if (isExpanded) {
-                                        return columnNames.map((key) => {
-                                            if (key === "index") {
-                                                return (
-                                                    <th key={key} className="left_data_column_header">
-                                                        {key}
-                                                    </th>
-                                                )
-                                            }
-                                            return (
-                                                <th key={key} className="left_data_column_header">
-                                                    {key}
-                                                    <span className="pin-icon" onClick={() => togglePin(key)}>
-                                                        <Icon name={pinnedColumns[key] ? "thumbtack-solid" : "thumbtack"}/>
-                                                    </span>
-                                                </th>
-                                            )
-                                        })
-                                    }
-                                    const pinnedColumnNames = []
-                                    const unpinnedColumnNames = []
-                                    columnNames.forEach((key) => {
-                                        if (key === "index") {
-                                            pinnedColumnNames.push(key)
-                                        }
-                                        else {
-                                            if (pinnedColumns[key]) {
-                                                pinnedColumnNames.push(key)
-                                            }
-                                            else {
-                                                unpinnedColumnNames.push(key)
-                                            }
-                                        }
-                                    })
-                                    const sortedColumns = [...pinnedColumnNames, ...unpinnedColumnNames]
-                                    return sortedColumns.map((key) => {
-                                        if (key === "index") {
-                                            return (
-                                                <th key={key} className="left_data_column_header">
-                                                    {key}
-                                                </th>
-                                            )
-                                        }
-                                        return (
-                                            <th key={key} className="left_data_column_header">
-                                                {key}
-                                                <span className="pin-icon" onClick={() => togglePin(key)}>
-                                                    <Icon name={pinnedColumns[key] ? "thumbtack-solid" : "thumbtack"}/>
-                                                </span>
-                                            </th>
-                                        )
-                                    }
-                                )
-                                })()
-                                }
+                                {getVisibleColumns().map((key) => (
+                                    <th key={key} className="left_data_column_header">
+                                        {key}
+                                        {key !== "index" && isExpanded && (
+                                            <span className="pin-icon" onClick={() => togglePin(key)} size={1.1}>
+                                                <Icon name={pinnedColumns[key] ? "thumbtack-solid" : "thumbtack"} />
+                                            </span>
+                                        )}
+                                    </th>
+                                ))}
                             </tr>
                         </thead>
                         <tbody>
                             {data.features.map((feature, index) => {
-                                if (isExpanded) {
-                                    return (
-                                        <tr key={index} >
-                                            <td style={{textAlign: 'left'}}>{index}</td>
-                                            {Object.values(feature.properties).map((value, idx) => (
-                                                <td key={idx}>{value.toString()}</td>
-                                            ))}
-                                        </tr>
-                                    )
-                                }
-                                const rowData = [] // start with index
-                                const pinnedValues = []
-                                const nonPinnedValues = []
-
-                                Object.entries(feature.properties).forEach(([key, value]) => {
-                                    if (key === "index") {
-                                        return
-                                    }
-                                    if (pinnedColumns[key]) {
-                                        pinnedValues.push(value)
-                                    }
-                                    else {
-                                        nonPinnedValues.push(value)
-                                    }
-                                })
-
-                                // Combine pinned and non-pinned values
-                                const orderedValues = [...pinnedValues, ...nonPinnedValues]
-                                // console.log(orderedValues)
-
-                                // Add the ordered values to the row data
-                                rowData.push(...orderedValues)
-
-                                // console.log(pinnedValues)
-                                // console.log(nonPinnedValues)
-
-                                // console.log(rowData)
-
-                                return (
-                                    <tr key={index}>
-                                        <td style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
-                                            <span className="zoom-icon" onClick={() => handleFeatureSelect(feature)}>
+                               return (
+                                <tr key={index}>
+                                    {getVisibleColumns().map((key, idx) => {
+                                        if (!isExpanded && key === "index") {
+                                            return (
+                                                <td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
+                                                    <span className="zoom-icon" onClick={() => handleFeatureSelect(feature)}>
                                                             <Icon name="search" />
-                                            </span>
-                                            <span className="zoom-icon" onClick={() => togglePin("nothing")}>
+                                                   </span>
+                                                    <span className="zoom-icon" onClick={() => togglePin("nothing")}>
                                                             <Icon name="paint-brush" />
-                                            </span>
-                                        </td>
-                                        {rowData.map((value, idx) => (
-                                            <td key={idx}>{value.toString()}</td>
-                                        ))}
-                                    </tr>
-                                )
+                                                    </span>
+                                                </td>
+                                                
+                                            )
+                                        }
+                                        else if (key === "index") {
+                                            return (
+                                                <td key={idx} style={{textAlign: "right"}}>
+                                                    {index}
+                                                </td>
+                                            )
+                                        }
+                                        return (
+                                            <td key={idx} style={{textAlign: "right"}}>
+                                                {feature.properties[key].toString()}
+                                            </td>
+                                        )
+                                    })}
+                                </tr>
+                               )
                             })}
                         </tbody>
                     </table>
                 </div>
             )}
 
-            {/* Resizable Handle */}
-            <div className="resize-handle" onMouseDown={handleMouseDown} />
         </div>
     );
 };

@@ -58,42 +58,45 @@ export const ArizonaMap = () => {
 
     return (
         <>
-        <LeftDataPanel data={congressionalDistricts} onSelectFeature={setSelectedFeature} />
-            <MapContainer
-            center={[34.0489, -113.0937]} // Center the map on Utah's coordinates
-            zoom={6}
-            minZoom={3}
-            maxZoom={10}
-            style={{ height: '94%', top: "6%" /* Push it down to start just below the navbar */
-            }}  // Full screen height (vh = viewport height)
-            zoomControl={false} // Disable default zoom control
-            ref={mapRef} // Attach the ref to the MapContainer
-            >
-                <TileLayer
-                    url={`https://api.mapbox.com/styles/v1/ktuzinowski/cm1msivj900k601p69fqk5tlt/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_ACCESS_TOKEN}&fresh=True`}
-                    attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
-                />
-                <LayersControl>
-                    <Overlay name="Congressional Districts" checked>
-                            {
-                                congressionalDistricts && (
-                                    <GeoJSON
-                                    ref={geoJsonRef} // Set reference to GeoJSON layer
-                                    data={congressionalDistricts}
-                                    style={() => ({
-                                        color: 'black',
-                                        fillColor: 'white',
-                                        weight: 2
-                                    })}
-                                    onEachFeature={showPopulationData}
-                                    />
-                                )
-                            }
-                    </Overlay>
-                </LayersControl>
+        <div className="map-wrapper">  {/* New wrapper for Flexbox layout */}
+            <LeftDataPanel data={congressionalDistricts} onSelectFeature={setSelectedFeature} />
+            <div className="map-container">
+                <MapContainer
+                    center={[34.0489, -113.0937]} // Center the map on Utah's coordinates
+                    zoom={6}
+                    minZoom={3}
+                    maxZoom={10}
+                    className="map-container"  // Attach the new class
+                    zoomControl={false} // Disable default zoom control
+                    ref={mapRef} // Attach the ref to the MapContainer
+                >
+                    <TileLayer
+                        url={`https://api.mapbox.com/styles/v1/ktuzinowski/cm1msivj900k601p69fqk5tlt/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_ACCESS_TOKEN}&fresh=True`}
+                        attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
+                    />
+                    <LayersControl>
+                        <Overlay name="Congressional Districts" checked>
+                                {
+                                    congressionalDistricts && (
+                                        <GeoJSON
+                                        ref={geoJsonRef} // Set reference to GeoJSON layer
+                                        data={congressionalDistricts}
+                                        style={() => ({
+                                            color: 'black',
+                                            fillColor: 'white',
+                                            weight: 2
+                                        })}
+                                        onEachFeature={showPopulationData}
+                                        />
+                                    )
+                                }
+                        </Overlay>
+                    </LayersControl>
 
-                <ZoomControl position="bottomright" />
-            </MapContainer>
+                    <ZoomControl position="bottomright" />
+                </MapContainer>
+            </div>
+            </div>
         </>
     )
 }
