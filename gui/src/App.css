@@ -1,16 +1,20 @@
 /* index.css or global styles */
 html, body, #root {
-  height: 98%;
+  height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 nav {
-    position: relative; /* For layering above the overlay */
-    z-index: 1; /* Above the overlay */
+    position: fixed; /* For layering above the overlay */
+    top: 0;
+    left: 0;
+    width: 100%;
     background-color: #333; /* Dark background for the navbar */
     padding: 0.75%; /* Add some padding */
-    height: 3%;
+    height: 20px;
+    z-index: 2003;
   }
   
   ul {
@@ -134,4 +138,134 @@ nav {
 
 .no_style_link {
   inherits: none;
+}
+
+/* Styles for left data plane */
+.container_left_data_panel {
+  height: 100%;
+  background-color: white;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  top: 5.5%; /* Push it down to start just below the navbar */
+  left: 0;
+  transition: width 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  z-index: 2002;
+  overflow-x: hidden; /* Prevent horizontal overflow */
+}
+
+.left_data_panel_current_selection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.left_data_panel_title {
+  text-align: center;
+}
+
+.left_data_table {
+  padding-left: 10px;
+  flex-grow: 1; /* Allows content to expand */
+  overflow-y: auto; /* Scroll only vertically if needed */
+}
+
+.left_data_expand_button {
+  margin-left: 10px;
+  border-radius: 50%;
+  padding: 4px;
+  cursor: pointer;
+  background-color: #ffffff;
+  border: 1px solid #cccccc; /* Thin border for contrast */
+  transition: transform 0.3s ease; /* Apply transition to the transform */
+}
+
+.left_data_expand_button:hover {
+  transform: scale(1.1);
+  background-color: #c5c5d3; /* Darker blue on hover */
+}
+
+.left_data_column_names {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  /* margin-top: -5px; */
+  cursor: default;
+  color: black;
+  margin-left: -12px;
+}
+
+.left_data_column_names th, .left_data_column_names td, .left_data_column_names tr {
+  text-align: left;
+  font-size: 1rem;
+  padding: 8px 12px; /* Use padding for spacing */
+  border-bottom: 1px solid #ccc; /* Add borders between rows */
+}
+
+.left_data_column_names td {
+  text-align: right;
+  font-weight: 600;
+  user-select: none;
+}
+
+.left_data_column_names th {
+  font-weight: bold;
+  user-select: none;
+}
+
+.left_data_panel_data_rows:hover {
+  background-color: #9e9c9c; /* Optional: Add hover effect for rows */
+}
+
+/* CSS for the Resize Handle */
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 7px;
+  height: 100%;
+  cursor: ew-resize; /* Horizontal resize cursor */
+  background-color: rgba(0, 0, 0, 0.1); /* Make the handle visible */
+}
+
+.resize-handle:hover {
+  background-color: rgba(0, 0, 0, 0.2); /* Change color on hover */
+}
+
+.left_data_column_header {
+  position: relative;
+}
+
+.pin-icon {
+  margin-left: 3px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.zoom-icon {
+  cursor: pointer;
+  position: relative;
+}
+
+.zoom-icon:hover {
+  transform: scale(1.1);
+}
+
+.map-wrapper {
+  display: flex;
+  height: 100%; /* Subtract the navbar height */
+}
+
+.map-container {
+  flex-grow: 1; /* Take remaining space */
+  height: calc(100% - 20px);
+  position: relative;
+  margin-top: 20px;
 }
