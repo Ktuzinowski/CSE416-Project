@@ -4,20 +4,35 @@ import 'leaflet/dist/leaflet.css'
 import arizonaCongressionalData from "./arizona_data/arizona_congressional_plan.geojson"
 import { LeftDataPanel } from "./LeftDataPanel"
 import { MAPBOX_ACCESS_TOKEN } from "./constants"
+import { COLORS } from "./Colors"
 
 const { Overlay } = LayersControl
 
 export const ArizonaMap = () => {
     const [congressionalDistricts,setCongressionalDistricts] = useState(null)
     const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
+    const [districtColors, setDistrictColors] = useState({})
     const geoJsonRef = useRef(); // Ref to access GeoJSON layer
     const mapRef = useRef(); // Ref to access the map instance
+    
     useEffect(() => {
         fetch(arizonaCongressionalData)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)
                 setCongressionalDistricts(data)
+                const colors = {};
+                data.features.forEach((feature, index) => {
+                const district = feature.properties.DISTRICT;
+                    if (!colors[district]) {
+                        colors[district] = {
+                            color: "black",
+                            fillColor: COLORS[index],
+                            fillOpacity: 0.6
+                        }
+                    }
+                });
+                setDistrictColors(colors); // Set district colors after processing all features
             })
         .catch((error => console.error("Error loading the Congressional Districts GeoJSON data: ", error)))
     }, [])
@@ -30,10 +45,22 @@ export const ArizonaMap = () => {
             );
             if (layer) {
                 const bounds = layer.getBounds();
+                
                 mapRef.current.fitBounds(bounds);
             }
         }
     }, [selectedFeature]);
+
+    const styleFeature = (feature) => {
+        const district = feature.properties.DISTRICT
+
+        return {
+            color: districtColors[district].color, // border color for each district
+            fillColor: districtColors[district].fillColor, // unique color for the district
+            weight: 2,
+            fillOpacity: districtColors[district].fillOpacity
+        }
+    }
 
     const showPopulationData = (feature, layer) => {
         const popupContent = `
@@ -46,10 +73,47 @@ export const ArizonaMap = () => {
         layer.bindPopup(popupContent);
     }
 
+    // Pass the selected feature back to the parent when clicked
+    const onSelectFeature = (feature) => {
+        setSelectedFeature(feature)
+    }
+
+    const onChangeBorderForHoverOverDistrict = (district_number) => {
+        console.log("Changing colors here!")
+        setDistrictColors((prevColors) => {
+            return (
+                {
+                    ...prevColors,
+                    [district_number]: {
+                        color: prevColors[district_number].fillColor,
+                        fillColor: prevColors[district_number].fillColor,
+                        fillOpacity: 0.8
+                    }
+                }
+            )
+        })
+    }
+
+    const onChangeLeftHoverOverDistrict = (district_number) => {
+        console.log("Changing colors here!")
+        setDistrictColors((prevColors) => {
+            return (
+                {
+                    ...prevColors,
+                    [district_number]: {
+                        color: "black",
+                        fillColor: prevColors[district_number].fillColor,
+                        fillOpacity: 0.6
+                    }
+                }
+            )
+        })
+    }
+
     return (
         <>
         <div className="map-wrapper">  {/* New wrapper for Flexbox layout */}
-            <LeftDataPanel data={congressionalDistricts} onSelectFeature={setSelectedFeature} />
+            <LeftDataPanel data={congressionalDistricts} onSelectFeature={onSelectFeature} districtColors={districtColors} onChangeBorderForHoverOverDistrict={onChangeBorderForHoverOverDistrict} onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict} />
             <div className="map-container">
                 <MapContainer
                     center={[34.0489, -113.0937]} // Center the map on Utah's coordinates
@@ -71,11 +135,7 @@ export const ArizonaMap = () => {
                                         <GeoJSON
                                         ref={geoJsonRef} // Set reference to GeoJSON layer
                                         data={congressionalDistricts}
-                                        style={() => ({
-                                            color: 'black',
-                                            fillColor: 'white',
-                                            weight: 2
-                                        })}
+                                        style={styleFeature} // Use dynamic styling for each feature
                                         onEachFeature={showPopulationData}
                                         />
                                     )

@@ -161,6 +161,7 @@ nav {
   flex-direction: row;
   align-items: center;
   padding-left: 10px;
+  padding-right: 10px;
 }
 
 .left_data_panel_title {
