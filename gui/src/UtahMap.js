@@ -12,6 +12,8 @@ import { LeftDataPanel } from "./LeftDataPanel";
 import { MAPBOX_ACCESS_TOKEN } from "./constants";
 import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
 import { COLORS } from "./Colors";
+import utahAggDistrictData from "./utah_data/aggregated_districts.geojson";
+
 
 const { Overlay } = LayersControl
 
