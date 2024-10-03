@@ -21,22 +21,21 @@ export const TexasMap = () => {
             .then((data) => {
                 console.log(data)
                 setCongressionalDistricts(data)
+                const colors = {};
+                data.features.forEach((feature, index) => {
+                const district = feature.properties.DISTRICT;
+                    if (!colors[district]) {
+                        colors[district] = {
+                            color: "black",
+                            fillColor: COLORS[index],
+                            fillOpacity: 0.6
+                        }
+                    }
+                });
+                setDistrictColors(colors); // Set district colors after processing all features
             })
         .catch((error => console.error("Error loading the Congressional Districts GeoJSON data: ", error)))
     }, [])
-
-    useEffect(() => {
-        if (congressionalDistricts) {
-            const colors = {};
-            congressionalDistricts.features.forEach((feature, index) => {
-                const district = feature.properties.DISTRICT;
-                if (!colors[district]) {
-                    colors[district] = COLORS[index]
-                }
-            });
-            setDistrictColors(colors); // Set district colors after processing all features
-        }
-    }, [congressionalDistricts])
 
     // Zoom to selected feature whenever it changes
     useEffect(() => {
@@ -56,10 +55,10 @@ export const TexasMap = () => {
         const district = feature.properties.DISTRICT
 
         return {
-            color: "black", // border color for each district
-            fillColor: districtColors[district], // unique color for the district
+            color: districtColors[district].color, // border color for each district
+            fillColor: districtColors[district].fillColor, // unique color for the district
             weight: 2,
-            fillOpacity: 0.6
+            fillOpacity: districtColors[district].fillOpacity
         }
     }
 
@@ -79,10 +78,42 @@ export const TexasMap = () => {
         setSelectedFeature(feature)
     }
 
+    const onChangeBorderForHoverOverDistrict = (district_number) => {
+        console.log("Changing colors here!")
+        setDistrictColors((prevColors) => {
+            return (
+                {
+                    ...prevColors,
+                    [district_number]: {
+                        color: prevColors[district_number].fillColor,
+                        fillColor: prevColors[district_number].fillColor,
+                        fillOpacity: 0.8
+                    }
+                }
+            )
+        })
+    }
+
+    const onChangeLeftHoverOverDistrict = (district_number) => {
+        console.log("Changing colors here!")
+        setDistrictColors((prevColors) => {
+            return (
+                {
+                    ...prevColors,
+                    [district_number]: {
+                        color: "black",
+                        fillColor: prevColors[district_number].fillColor,
+                        fillOpacity: 0.6
+                    }
+                }
+            )
+        })
+    }
+
     return (
         <>
         <div className="map-wrapper">  {/* New wrapper for Flexbox layout */}
-            <LeftDataPanel data={congressionalDistricts} onSelectFeature={onSelectFeature} districtColors={districtColors} />
+            <LeftDataPanel data={congressionalDistricts} onSelectFeature={onSelectFeature} districtColors={districtColors} onChangeBorderForHoverOverDistrict={onChangeBorderForHoverOverDistrict} onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict} />
             <div className="map-container">
                 <MapContainer
                     center={[34.0489, -113.0937]} // Center the map on Utah's coordinates
