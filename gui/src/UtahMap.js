@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON, LayersControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import utahCountyData from "./utah_data/utah_counties_cpy.geojson";
+import utahPrecinctData from "./utah_data/aggregated_precincts.geojson";
 
 const { Overlay } = LayersControl;
 
 export const UtahMap = () => {
   const [counties, setCounties] = useState(null);
+  const [precincts, setPrecincts] = useState(null);
 
   useEffect(() => {
     fetch(utahCountyData)
@@ -19,6 +21,14 @@ export const UtahMap = () => {
           "Error loading the Congressional Districts GeoJSON data: ",
           error
         )
+      );
+    fetch(utahPrecinctData)
+      .then((response) => response.json())
+      .then((data) => {
+        setPrecincts(data);
+      })
+      .catch((error) =>
+        console.error("Error loading the Precincts GeoJSON data: ", error)
       );
   }, []);
 
@@ -55,6 +65,21 @@ export const UtahMap = () => {
           {counties && (
             <GeoJSON
               data={counties}
+              style={() => ({
+                color: "black",
+                fillColor: "white",
+                weight: 2,
+              })}
+              onEachFeature={showPopulationData}
+            />
+          )}
+        </Overlay>
+      </LayersControl>
+      <LayersControl>
+        <Overlay name="Precincts" checked>
+          {precincts && (
+            <GeoJSON
+              data={precincts}
               style={() => ({
                 color: "black",
                 fillColor: "white",
