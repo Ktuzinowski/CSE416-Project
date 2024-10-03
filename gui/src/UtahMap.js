@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
 import { MapContainer, TileLayer, GeoJSON, LayersControl, ZoomControl } from "react-leaflet"
 import 'leaflet/dist/leaflet.css'
-import arizonaCongressionalData from "./arizona_data/arizona_congressional_plan.geojson"
+import utahCongressionalData from "./utah_data/utah_congressional_plan.geojson"
 import { LeftDataPanel } from "./LeftDataPanel"
 import { MAPBOX_ACCESS_TOKEN } from "./constants"
 import { COLORS } from "./Colors"
@@ -16,7 +16,7 @@ export const UtahMap = () => {
     const mapRef = useRef(); // Ref to access the map instance
     
     useEffect(() => {
-        fetch(arizonaCongressionalData)
+        fetch(utahCongressionalData)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)
