@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON, LayersControl } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, LayersControl, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import utahCountyData from "./utah_data/utah_counties_cpy.geojson";
+import { LeftDataPanel } from "./LeftDataPanel"
+import { MAPBOX_ACCESS_TOKEN } from "./constants"
 
 const { Overlay } = LayersControl;
 
@@ -49,14 +51,19 @@ export const UtahMap = () => {
   };
 
   return (
+    <>
+    <LeftDataPanel data={counties} />
     <MapContainer
       center={[39.32098, -111.093731]} // Center the map on Utah's coordinates
       zoom={6}
-      style={{ height: "100%", width: "100%" }} // Full screen height (vh = viewport height)
+      minZoom={3}
+      maxZoom={10}
+      style={{ height: "94%", top: "6%" }} // Full screen height (vh = viewport height)
+      zoomControl={false} // Disable default zoom control
     >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url={`https://api.mapbox.com/styles/v1/ktuzinowski/cm1msivj900k601p69fqk5tlt/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_ACCESS_TOKEN}&fresh=True`}
+                    attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
       />
       <LayersControl>
         <Overlay name="Counties" checked>
@@ -73,6 +80,8 @@ export const UtahMap = () => {
           )}
         </Overlay>
       </LayersControl>
+      <ZoomControl position="bottomright" />
     </MapContainer>
+    </>
   );
 };
