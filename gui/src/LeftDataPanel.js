@@ -4,10 +4,11 @@ import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import Icon from "./Icon";
 import "./App.css";
 
-export const LeftDataPanel = ({ data, onSelectFeature }) => {
+export const LeftDataPanel = ({ data, onSelectFeature, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
+    const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
 
     useEffect(() => {
         if (data !== null) {
@@ -31,19 +32,34 @@ export const LeftDataPanel = ({ data, onSelectFeature }) => {
 
      // Pass the selected feature back to the parent when clicked
     const handleFeatureSelect = (feature) => {
-        console.log("CLICKING HERE!")
-        onSelectFeature(feature); // This calls the parent's setSelectedFeature
+        setSelectedFeature(feature); // This calls the parent's setSelectedFeature
     };
 
+    // Handle when you are hovering over a district
+    const handleHoverOverRowOfData = (feature) => {
+        console.log(`Enter this district = ${feature.properties.DISTRICT}`)
+        onChangeBorderForHoverOverDistrict(feature.properties.DISTRICT)
+    }
+
+    const handleLeaveHoverOverData = (feature) => {
+        console.log(`Left this district = ${feature.properties.DISTRICT}`)
+        onChangeLeftHoverOverDistrict(feature.properties.DISTRICT)
+    }
+
+    // Update parent's selected feature only after rendering completes
+    useEffect(() => {
+        if (selectedFeature) {
+            onSelectFeature(selectedFeature);
+        }
+    }, [selectedFeature, onSelectFeature]);
+
     const getVisibleColumns = () => {
-        console.log("Checking visible column names!")
         if (isExpanded) {
             return columnNames;
         }
         else {
             const filtered_column_names = columnNames.filter((key) => key === "index" || pinnedColumns[key]);
             if (filtered_column_names.length === 1) {
-                console.log("The length is zero!")
                 return [columnNames[0], columnNames[1], columnNames[2], columnNames[3]] // just get two columns at least to display
             }
             return filtered_column_names
@@ -85,17 +101,17 @@ export const LeftDataPanel = ({ data, onSelectFeature }) => {
                         <tbody>
                             {data.features.map((feature, index) => {
                                return (
-                                <tr key={index}>
+                                <tr key={index} onMouseEnter={() => handleHoverOverRowOfData(feature)} onMouseLeave={() => handleLeaveHoverOverData(feature)}>
                                     {getVisibleColumns().map((key, idx) => {
                                         if (!isExpanded && key === "index") {
                                             return (
                                                 <td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
+                                                    <span>
+                                                            <Icon name="roundedSquare" size={1.2} color={districtColors[feature.properties.DISTRICT].fillColor} borderWidth={"1px"} borderColor={"black"} />
+                                                    </span>
                                                     <span className="zoom-icon" onClick={() => handleFeatureSelect(feature)}>
                                                             <Icon name="search" size={1.1}/>
                                                    </span>
-                                                    <span className="zoom-icon" onClick={() => togglePin("nothing")}>
-                                                            <Icon name="paint-brush" size={1.1}/>
-                                                    </span>
                                                 </td>
                                                 
                                             )
