@@ -13,7 +13,7 @@ import { MAPBOX_ACCESS_TOKEN } from "./constants";
 import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
 import { COLORS } from "./Colors";
 
-const { Overlay } = LayersControl;
+const { Overlay } = LayersControl
 
 // Component to create and set the panes
 const CreatePanes = () => {
@@ -123,9 +123,18 @@ export const UtahMap = () => {
   const showPopulationData = (feature, layer) => {
     const popupContent = `
         <div style="font-family: Arial, sans-serif; line-height: 1.5;">
-            <h3 style="margin: 0;">District No: ${feature.properties.DISTRICT}</h3>
-            <p><strong>Population:</strong> ${feature.properties.POPULATION}</p>
-            <p><strong>Voting Age Population:</strong> ${feature.properties.TOTAL18}</p>
+            <h3 style="margin: 0;">Precinct: ${feature.properties.resultspre}</h3>
+            <p><strong>Donald Trump:</strong> ${feature.properties.G20PRERTRU}</p>
+            <p><strong>Joe Biden:</strong> ${feature.properties.G20PREDBID}</p>
+            <p><strong>Population:</strong> ${feature.properties.PP_TOTAL}</p>
+            <p><strong>White:</strong> ${feature.properties.PP_WHTALN}</p>
+            <p><strong>Black:</strong> ${feature.properties.PP_BAAALN}</p>
+            <p><strong>Hispanic:</strong> ${feature.properties.PP_HISPLAT}</p>
+            <p><strong>Asian:</strong> ${feature.properties.PP_ASNALN}</p>
+            <p><strong>Native:</strong> ${feature.properties.PP_NAMALN}</p>
+            <p><strong>Pacific:</strong> ${feature.properties.PP_HPIALN}</p>
+            <p><strong>Other:</strong> ${feature.properties.PP_OTHALN}</p>
+
         </div>
         `;
     layer.bindPopup(popupContent);
