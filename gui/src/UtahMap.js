@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMap } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -10,14 +10,33 @@ import "leaflet/dist/leaflet.css";
 import arizonaCongressionalData from "./arizona_data/arizona_congressional_plan.geojson";
 import { LeftDataPanel } from "./LeftDataPanel";
 import { MAPBOX_ACCESS_TOKEN } from "./constants";
+import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
 import { COLORS } from "./Colors";
 
 const { Overlay } = LayersControl;
+
+// Component to create and set the panes
+const CreatePanes = () => {
+  const map = useMap();
+
+  //hello
+
+  // Create a pane for precincts (lower zIndex)
+  map.createPane("precinctsPane");
+  map.getPane("precinctsPane").style.zIndex = 400;
+
+  // Create a pane for counties (higher zIndex)
+  map.createPane("countiesPane");
+  map.getPane("countiesPane").style.zIndex = 500;
+
+  return null; // No visible rendering
+};
 
 export const UtahMap = () => {
   const [congressionalDistricts, setCongressionalDistricts] = useState(null);
   const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
   const [districtColors, setDistrictColors] = useState({});
+  const [precincts, setPrecincts] = useState(null);
   const geoJsonRef = useRef(); // Ref to access GeoJSON layer
   const mapRef = useRef(); // Ref to access the map instance
 
@@ -45,6 +64,30 @@ export const UtahMap = () => {
           "Error loading the Congressional Districts GeoJSON data: ",
           error
         )
+      );
+  }, []);
+
+  useEffect(() => {
+    fetch(utahPrecinctData)
+      .then((response) => response.json())
+      .then((data) => {
+        // Iterate over each feature and add the DISTRICT property
+        const updatedData = {
+          ...data,
+          features: data.features.map((feature, index) => ({
+            ...feature,
+            properties: {
+              ...feature.properties,
+              DISTRICT: 1, // Assign a value to the DISTRICT property
+            },
+          })),
+        };
+
+        setPrecincts(updatedData); // Set the updated GeoJSON data
+        console.log("Updated precinct data with DISTRICT:", updatedData);
+      })
+      .catch((error) =>
+        console.error("Error loading the Precinct GeoJSON data: ", error)
       );
   }, []);
 
@@ -155,6 +198,16 @@ export const UtahMap = () => {
                   <GeoJSON
                     ref={geoJsonRef} // Set reference to GeoJSON layer
                     data={congressionalDistricts}
+                    style={styleFeature} // Use dynamic styling for each feature
+                    onEachFeature={showPopulationData}
+                  />
+                )}
+              </Overlay>
+              <Overlay name="Precincts" checked>
+                {precincts && (
+                  <GeoJSON
+                    // ref={geoJsonRef} // Set reference to GeoJSON layer
+                    data={precincts}
                     style={styleFeature} // Use dynamic styling for each feature
                     onEachFeature={showPopulationData}
                   />
