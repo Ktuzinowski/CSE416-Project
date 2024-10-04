@@ -17,7 +17,7 @@ function argbToRgb(argbColor) {
     return `rgb(${red}, ${green}, ${blue})`
 }
 
-export const LeftDataPanel = ({ data, onSelectFeature, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict }) => {
+export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelectedRace, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
@@ -78,6 +78,8 @@ export const LeftDataPanel = ({ data, onSelectFeature, districtColors, onChangeB
     }
 
     return (
+        
+        
         <div className="container_left_data_panel" style={{
             width: isExpanded ? "100%" : "auto", // Auto-width when collapsed
             maxWidth: isExpanded ? "100%" : "fit-content", // Fit the content naturally
@@ -89,6 +91,25 @@ export const LeftDataPanel = ({ data, onSelectFeature, districtColors, onChangeB
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
             </div>
+
+            <div style={{ border: "1px solid #ccc", marginBottom: "20px" }}>
+            <label style={{ fontSize:"17px", fontWeight:"Bold", marginLeft: "30px" }} htmlFor="race-select"> Choropleth Map: Select Race</label>
+            <select
+                id="race-select"
+                value={selectedRace}
+                onChange={(e) => setSelectedRace(e.target.value)}
+                style={{marginLeft: "10px", fontSize:"15px"}}
+            >
+                <option value="PP_WHTALN">White</option>
+                <option value="PP_BAAALN">Black</option>
+                <option value="PP_HISPLAT">Hispanic</option>
+                <option value="PP_ASNALN">Asian</option>
+                <option value="PP_HPIALN">Pacific </option>
+                <option value="PP_NAMALN">Native </option>
+                <option value="PP_OTHALN">Other</option>
+            </select>
+        </div>
+
 
             <hr style={{ width: "100%", border: "1px solid #ccc", marginTop: "-5px" }} />
 

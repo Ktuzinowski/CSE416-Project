@@ -13,6 +13,7 @@ import { MAPBOX_ACCESS_TOKEN } from "./constants";
 import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
 import { COLORS } from "./Colors";
 import utahAggDistrictData from "./utah_data/aggregatedUtahDistricts.geojson";
+import chroma from "chroma-js"; //this for the chloropeth map
 
 
 const { Overlay } = LayersControl
@@ -22,9 +23,9 @@ export const UtahMap = () => {
     const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
     const [districtColors, setDistrictColors] = useState({})
     const [precincts, setPrecincts] = useState(null);
+    const [selectedRace, setSelectedRace] = useState("PP_BAAALN"); // State for selecting CHOROPLETH race, defaulted on black
     const geoJsonRef = useRef(); // Ref to access GeoJSON layer
     const mapRef = useRef(); // Ref to access the map instance
-    
 
   useEffect(() => {
     fetch(utahAggDistrictData)
@@ -119,14 +120,33 @@ export const UtahMap = () => {
     };
   };
 
+  // const stylePrecincts = (feature) => {
+  //   return {
+  //     color: "black",
+  //     fillColor: "none",
+  //     weight: 2,
+  //     fillOpacity: 0
+  //   }
+  // }
+
+  //choropleth color scale
+  const colorScale = chroma.scale(["#ffe6cc", "#ff6600", "#ff3300"]).domain([0, 100]);
+
   const stylePrecincts = (feature) => {
+    const totalPop = feature.properties.PP_TOTAL;
+    const racePop = feature.properties[selectedRace];
+    const percent = totalPop > 0 ? (racePop / totalPop) * 100 : 0;
+  
+    //fill teh colors based on the racial demogprahic percentage
+    const fillColor = colorScale(percent).hex();
+  
     return {
-      color: "black",
-      fillColor: "none",
-      weight: 0.75,
-      fillOpacity: 0
-    }
-  }
+      color: "#000", 
+      fillColor: fillColor, 
+      weight: 1,
+      fillOpacity: 0.7,
+    };
+  };
 
   const showPopulationData = (feature, layer) => {
     const popupContent = `
@@ -206,6 +226,7 @@ export const UtahMap = () => {
   return (
     <>
       <div className="map-wrapper">
+
         {" "}
         {/* New wrapper for Flexbox layout */}
         <LeftDataPanel
@@ -216,7 +237,11 @@ export const UtahMap = () => {
             onChangeBorderForHoverOverDistrict
           }
           onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict}
+          selectedRace={selectedRace} 
+          setSelectedRace={setSelectedRace} 
+
         />
+
         <div className="map-container">
           <MapContainer
             center={[39.320980, -111.093731]} // Center the map on Utah's coordinates
@@ -232,15 +257,7 @@ export const UtahMap = () => {
               attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
             />
             <LayersControl>
-              <Overlay name="Precincts" checked>
-                {precincts && (
-                  <GeoJSON
-                    data={precincts}
-                    style={stylePrecincts} // Use dynamic styling for each feature
-                    onEachFeature={showPopulationData}
-                  />
-                )}
-              </Overlay>
+
               <Overlay name="Congressional Districts" checked>
                 {congressionalDistricts && (
                   <GeoJSON
@@ -251,6 +268,18 @@ export const UtahMap = () => {
                   />
                 )}
               </Overlay>
+
+              <Overlay name="Precincts" checked>
+                {precincts && (
+                  <GeoJSON
+                    data={precincts}
+                    style={stylePrecincts} // Use dynamic styling for each feature
+                    onEachFeature={showPopulationData}
+                  />
+                )}
+              </Overlay>
+
+
             </LayersControl>
 
             <ZoomControl position="bottomright" />
