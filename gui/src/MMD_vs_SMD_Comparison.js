@@ -45,9 +45,9 @@ export const MMD_vs_SMD_Comparison = ({ data }) => {
     return (
         <div>
             <div>
-                <button onClick={() => setSelectedGraph('SMD')}>SMD</button>
-                <button onClick={() => setSelectedGraph('MMD')}>MMD</button>
-                <button onClick={() => setSelectedGraph('Compare')}>Compare</button>
+                <button className={selectedGraph === "SMD" ? "mmd_smd_selection_button_selected" : "mmd_smd_selection_button"} style={{marginLeft: "10px"}} onClick={() => setSelectedGraph('SMD')}>SMD</button>
+                <button className={selectedGraph === "MMD" ? "mmd_smd_selection_button_selected" : "mmd_smd_selection_button"} style={{borderRight: "0px", borderLeft: "0px"}}onClick={() => setSelectedGraph('MMD')}>MMD</button>
+                <button className={selectedGraph === "Compare" ? "mmd_smd_selection_button_selected" : "mmd_smd_selection_button"} onClick={() => setSelectedGraph('Compare')}>Compare</button>
             </div>
             <div>
                 {renderGraph()}

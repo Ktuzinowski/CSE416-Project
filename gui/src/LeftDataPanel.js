@@ -116,7 +116,7 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
             </div>
 
             {displayMMD_vs_SMD_Comparison && (
-                <MMD_vs_SMD_Comparison />
+                <MMD_vs_SMD_Comparison data={data}/>
             )}
 
             {!displayMMD_vs_SMD_Comparison && (

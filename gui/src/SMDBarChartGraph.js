@@ -13,9 +13,9 @@ export const SMDBarChartGraph = ({ data }) => {
             { district: 4, Democrat: 0, Republican: 1 }
         ];
 
-        const margin = { top: 50, right: 130, bottom: 50, left: 60 }; // Increase right margin
+        const margin = { top: 70, right: 130, bottom: 50, left: 60 }; // Increase right margin
         const width = 500 - margin.left - margin.right;
-        const height = 300 - margin.top - margin.bottom;
+        const height = 320 - margin.top - margin.bottom;
         
         // Create an SVG container
         const svg = d3.select(svgRef.current)
