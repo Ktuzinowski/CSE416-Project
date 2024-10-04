@@ -168,7 +168,6 @@ nav {
 
 .left_data_panel_title {
   text-align: center;
-  
 }
 
 .left_data_table {
@@ -358,4 +357,10 @@ nav {
   border-radius: 5px; /* Optional: rounded corners */
   padding: 10px; /* Optional: padding around the buttons */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
+}
+
+.dropdown_for_choropleth {
+  font-size: 17px;
+  font-weight: bold;
+  padding-left: 10px;
 }

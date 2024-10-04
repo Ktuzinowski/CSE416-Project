@@ -3,7 +3,6 @@ import {
   MapContainer,
   TileLayer,
   GeoJSON,
-  LayersControl,
   ZoomControl,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -15,8 +14,6 @@ import { COLORS } from "./Colors";
 import utahAggDistrictData from "./utah_data/aggregatedUtahDistricts.geojson";
 import utahGeo from "./utah_data/utah.geojson";
 import chroma from "chroma-js"; //this for the chloropeth map
-
-const { Overlay } = LayersControl;
 
 export const UtahMap = () => {
     const [congressionalDistricts,setCongressionalDistricts] = useState(null)
@@ -162,17 +159,6 @@ export const UtahMap = () => {
     }
   }, [selectedFeature]);
 
-  const styleFeature = (feature) => {
-    const district = feature.properties.DISTRICT;
-
-    return {
-      color: districtColors[district].color, // border color for each district
-      fillColor: districtColors[district].fillColor, // unique color for the district
-      weight: 2,
-      fillOpacity: districtColors[district].fillOpacity,
-    };
-  };
-
   // const stylePrecincts = (feature) => {
   //   return {
   //     color: "black",
@@ -184,16 +170,39 @@ export const UtahMap = () => {
 
   //choropleth color scale
   const colorScale = chroma
-    .scale(["#ffe6cc", "#ff6600", "#ff3300"])
-    .domain([0, 100]);
+  .scale(["#e6ffe6", "#00cc00", "#004d00"]) // Light green to dark green
+  .domain([0, 100]);
+
+  // Choropleth color scale with shades of red
+  const colorScaleRed = chroma
+  .scale(["#ffe6e6", "#ff4d4d", "#990000"]) // Light red to dark red
+  .domain([0, 100]);
+
+  // Choropleth color scale with shades of blue
+  const colorScaleBlue = chroma
+  .scale(["#e6f0ff", "#4d79ff", "#003399"]) // Light blue to dark blue
+  .domain([0, 100]);
 
   const stylePrecincts = (feature) => {
-    const totalPop = feature.properties.PP_TOTAL;
+    let totalPop = feature.properties.PP_TOTAL;
     const racePop = feature.properties[selectedRace];
+    if (selectedRace === "G20PRERTRU" || selectedRace === "G20PREDBID") {
+      totalPop = feature.properties["G20PRERTRU"] + feature.properties["G20PREDBID"]
+    }
     const percent = totalPop > 0 ? (racePop / totalPop) * 100 : 0;
 
     //fill teh colors based on the racial demogprahic percentage
-    const fillColor = colorScale(percent).hex();
+    let fillColor = colorScale(percent).hex();
+
+    if (selectedRace === "") {
+      fillColor = "#ffff"
+    }
+    else if (selectedRace === "G20PRERTRU") {
+      fillColor = colorScaleRed(percent).hex()
+    }
+    else if (selectedRace === "G20PREDBID") {
+      fillColor = colorScaleBlue(percent).hex()
+    }
 
     return {
       color: "#000",
@@ -235,7 +244,7 @@ export const UtahMap = () => {
   
   const styleDistricts = (feature) => {
 
-    if(selectedRace == ""){ //if NOT choropleth
+    if(selectedRace === ""){ //if NOT choropleth
       const district = feature.properties.DISTRICT;
 
       return {
@@ -378,6 +387,9 @@ export const UtahMap = () => {
 
   const onChangeBorderForHoverOverDistrict = (district_number) => {
     console.log("Changing colors here!");
+    if (activeLayer !== "districts") {
+      return;
+    }
     setDistrictColors((prevColors) => {
       return {
         ...prevColors,
@@ -391,6 +403,9 @@ export const UtahMap = () => {
   };
 
   const onChangeLeftHoverOverDistrict = (district_number) => {
+    if (activeLayer !== "districts") {
+      return;
+    }
     console.log("Changing colors here!");
     setDistrictColors((prevColors) => {
       return {

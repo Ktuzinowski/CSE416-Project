@@ -53,11 +53,6 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
         }))
     }
 
-    // Pass the selected feature back to the parent when clicked
-    const handleFeatureSelect = (feature) => {
-        setSelectedFeature(feature); // This calls the parent's setSelectedFeature
-    };
-
     // Handle when you are hovering over a district
     const handleHoverOverRowOfData = (feature) => {
         onChangeBorderForHoverOverDistrict(feature.properties.CountyID)
@@ -100,8 +95,8 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                 </button>
             </div>
 
-            <div style={{ border: "1px solid #ccc", marginBottom: "20px" }}>
-                <label style={{ fontSize: "17px", fontWeight: "Bold", marginLeft: "30px" }} htmlFor="race-select"> Choropleth Map</label>
+            <div style={{ marginBottom: "20px" }}>
+                <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
                 <select
                     id="race-select"
                     value={selectedRace}
@@ -109,6 +104,8 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                     style={{ marginLeft: "10px", fontSize: "15px" }}
                 >
                     <option value="">Default</option>
+                    <option value="G20PRERTRU">Republican</option>
+                    <option value="G20PREDBID">Democrat</option>
                     <option value="PP_WHTALN">White</option>
                     <option value="PP_BAAALN">Black</option>
                     <option value="PP_HISPLAT">Hispanic</option>
