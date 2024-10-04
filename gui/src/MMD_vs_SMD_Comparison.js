@@ -7,7 +7,6 @@ import utahAggDistrictData from "./utah_data/aggregatedUtahDistricts.geojson";
 export const MMD_vs_SMD_Comparison = ({ data }) => {
   const [selectedGraph, setSelectedGraph] = useState("SMD"); // Default to 'SMD'
   const [dataForSMD, setDataForSMD] = useState(null);
-
   const [geojsonData, setGeojsonData] = useState(null); // State to hold GeoJSON data
 
   useEffect(() => {
@@ -21,49 +20,25 @@ export const MMD_vs_SMD_Comparison = ({ data }) => {
   const renderGraph = () => {
     switch (selectedGraph) {
       case "SMD":
-        return <SMDGraph />;
+        return (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <SMDBarChartGraph data={dataForSMD} />
+          </div>
+        );
       case "MMD":
-        return <MMDGraph />;
+        return (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <MMDBarChartGraph />
+          </div>
+        );
       case "Compare":
         return (
           <div style={{ display: "flex", justifyContent: "space-around" }}>
             <div>
-              <button
-                className={
-                  selectedGraph === "SMD"
-                    ? "mmd_smd_selection_button_selected"
-                    : "mmd_smd_selection_button"
-                }
-                style={{ marginLeft: "10px" }}
-                onClick={() => setSelectedGraph("SMD")}
-              >
-                SMD
-              </button>
-              <button
-                className={
-                  selectedGraph === "MMD"
-                    ? "mmd_smd_selection_button_selected"
-                    : "mmd_smd_selection_button"
-                }
-                style={{ borderRight: "0px", borderLeft: "0px" }}
-                onClick={() => setSelectedGraph("MMD")}
-              >
-                MMD
-              </button>
-              <button
-                className={
-                  selectedGraph === "Compare"
-                    ? "mmd_smd_selection_button_selected"
-                    : "mmd_smd_selection_button"
-                }
-                onClick={() => setSelectedGraph("Compare")}
-              >
-                Compare
-              </button>
+              <SMDBarChartGraph data={dataForSMD} />
             </div>
             <div>
-              <h2>MMD Graph</h2>
-              <MMDGraph />
+              <MMDBarChartGraph data={dataForSMD} />
             </div>
           </div>
         );
@@ -78,12 +53,42 @@ export const MMD_vs_SMD_Comparison = ({ data }) => {
       <p>Loading BWP...</p>
     );
   };
+
   return (
     <div>
       <div>
-        <button onClick={() => setSelectedGraph("SMD")}>SMD</button>
-        <button onClick={() => setSelectedGraph("MMD")}>MMD</button>
-        <button onClick={() => setSelectedGraph("Compare")}>Compare</button>
+        <button
+          className={
+            selectedGraph === "SMD"
+              ? "mmd_smd_selection_button_selected"
+              : "mmd_smd_selection_button"
+          }
+          style={{ marginLeft: "10px" }}
+          onClick={() => setSelectedGraph("SMD")}
+        >
+          SMD
+        </button>
+        <button
+          className={
+            selectedGraph === "MMD"
+              ? "mmd_smd_selection_button_selected"
+              : "mmd_smd_selection_button"
+          }
+          style={{ borderRight: "0px", borderLeft: "0px" }}
+          onClick={() => setSelectedGraph("MMD")}
+        >
+          MMD
+        </button>
+        <button
+          className={
+            selectedGraph === "Compare"
+              ? "mmd_smd_selection_button_selected"
+              : "mmd_smd_selection_button"
+          }
+          onClick={() => setSelectedGraph("Compare")}
+        >
+          Compare
+        </button>
       </div>
       <div>{renderGraph()}</div>
       <div>{renderBWP()}</div>
