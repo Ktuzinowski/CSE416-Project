@@ -24,7 +24,7 @@ export const UtahMap = () => {
     const [districtColors, setDistrictColors] = useState({})
     const [precincts, setPrecincts] = useState(null);
     const [utGeo, setGeo] = useState(null)
-    const [selectedRace, setSelectedRace] = useState("PP_BAAALN"); // State for selecting CHOROPLETH race, defaulted on black
+    const [selectedRace, setSelectedRace] = useState(""); // State for selecting CHOROPLETH race, defaulted on black
     const geoJsonRef = useRef(); // Ref to access GeoJSON layer
     const mapRef = useRef(); // Ref to access the map instance
     const [activeLayer, setActiveLayer] = useState("districts"); // State to track the active layer
