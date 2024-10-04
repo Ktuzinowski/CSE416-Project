@@ -391,3 +391,33 @@ nav {
   box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow when clicked */
   transform: translateY(1px); /* Slight "click" effect */
 }
+
+.mmd_smd_selection_button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  padding: 7 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.mmd_smd_selection_button:hover {
+  background-color: black;
+  color: white;
+}
+
+.mmd_smd_selection_button_selected {
+  background-color: black;
+  color: white;
+  border: 2px solid black;
+  padding: 7 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.mmd_smd_selection_button:focus {
+  outline: none;
+  box-shadow: 0 0 5px black;
+}

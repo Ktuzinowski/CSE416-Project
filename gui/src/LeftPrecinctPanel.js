@@ -115,7 +115,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
             </div>
 
             {displayMMD_vs_SMD_Comparison && (
-                <MMD_vs_SMD_Comparison />
+                <MMD_vs_SMD_Comparison data={data} />
             )}
 
             {!displayMMD_vs_SMD_Comparison && (
