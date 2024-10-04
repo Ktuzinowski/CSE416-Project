@@ -1,26 +1,39 @@
-import React, { useState } from 'react';
-import SMDGraph from './SMDGraph.js'; // Import the SMD graph component
-import MMDGraph from './MMDGraph'; // Import the MMD graph component
+import React, { useState, useEffect } from 'react';
+import { SMDBarChartGraph } from './SMDBarChartGraph';
+import { MMDBarChartGraph } from './MMDBarChartGraph';
 
-export const MMD_vs_SMD_Comparison = () => {
+export const MMD_vs_SMD_Comparison = ({ data }) => {
     const [selectedGraph, setSelectedGraph] = useState('SMD'); // Default to 'SMD'
+    const [dataForSMD, setDataForSMD] = useState(null);
+
+    useEffect(() => {
+        if (data !== null) {
+            setDataForSMD(data)
+        }
+    }, [data])
 
     const renderGraph = () => {
         switch (selectedGraph) {
             case 'SMD':
-                return <SMDGraph />;
+                return (
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <SMDBarChartGraph data={dataForSMD}/>
+                    </div>
+                );
             case 'MMD':
-                return <MMDGraph />;
+                return (
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <MMDBarChartGraph />
+                    </div>
+                );
             case 'Compare':
                 return (
                     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                         <div>
-                            <h2>SMD Graph</h2>
-                            <SMDGraph />
+                            <SMDBarChartGraph data={dataForSMD} />
                         </div>
                         <div>
-                            <h2>MMD Graph</h2>
-                            <MMDGraph />
+                            <MMDBarChartGraph data={dataForSMD} />
                         </div>
                     </div>
                 );
