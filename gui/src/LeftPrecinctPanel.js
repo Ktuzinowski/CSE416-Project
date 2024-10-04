@@ -11,6 +11,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
     const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
     const [displayMMD_vs_SMD_Comparison, setDisplayMMD_vs_SMD_Comparison] = useState(false)
+    const [searchQuery, setSearchQuery] = useState('');
 
     const unwantedColumns = [
         "vistapre", "G20PRELJOR", "G20PREGHAW", "G20PRECBLA", "G20PREIPIE", 
@@ -120,7 +121,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
 
             {!displayMMD_vs_SMD_Comparison && (
                 <>
-                <div style={{ marginBottom: "20px" }}>
+                <div style={{ marginBottom: "5px" }}>
                 <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
                 <select
                     id="race-select"
@@ -140,6 +141,15 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                     <option value="PP_OTHALN">Other</option>
                 </select>
                 <button className="evaluate_mmd_vs_smd" onClick={switchToAnalysisOfSMD_vs_MDD}>Evaluate MMD vs. SMD</button>
+            </div>
+            <div className="search_for_precinct_name">
+                <input
+                    type="text"
+                    placeholder="Search Precincts..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{ width: "200px", padding: "5px", margin: "5px" }}
+                />
             </div>
 
             <hr style={{ width: "100%", border: "1px solid #ccc", marginTop: "-5px" }} />
@@ -168,12 +178,26 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                             </tr>
                         </thead>
                         <tbody>
-                            {data.features.map((feature, featureIndex) => {
+                            {data.features.filter(feature => {
+            // Get the precinct name and check if it includes the search query
+            if (feature.properties.resultspre) {
+                const precinctName = feature.properties.resultspre.toLowerCase();
+                return precinctName.includes(searchQuery.toLowerCase());
+            }
+            else {
+                if (searchQuery === "") {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            
+                            }).map((feature, featureIndex) => {
                                 return (
                                     <tr key={featureIndex} onMouseEnter={() => handleHoverOverRowOfData(feature)} onMouseLeave={() => handleLeaveHoverOverData(feature)}>
                                         {getVisibleColumns().map((key, idx) => {
                                             if (!isExpanded && key === "DISTRICT") {
-                                                console.log("SHOULD BE WORKING!");
                                                 return (<td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between", marginLeft: "10px"}}>
                                                 <span className="zoom-icon" onClick={() => handleFeatureSelect(feature)}>
                                                             <Icon name="search" size={1.1}/>
