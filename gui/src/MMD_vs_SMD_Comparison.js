@@ -1,26 +1,39 @@
-import React, { useState } from 'react';
-import SMDGraph from './SMDGraph.js'; // Import the SMD graph component
-import MMDGraph from './MMDGraph'; // Import the MMD graph component
+import React, { useState, useEffect } from 'react';
+import { SMDBarChartGraph } from './SMDBarChartGraph';
+import { MMDBarChartGraph } from './MMDBarChartGraph';
 
-export const MMD_vs_SMD_Comparison = () => {
+export const MMD_vs_SMD_Comparison = ({ data }) => {
     const [selectedGraph, setSelectedGraph] = useState('SMD'); // Default to 'SMD'
+    const [dataForSMD, setDataForSMD] = useState(null);
+
+    useEffect(() => {
+        if (data !== null) {
+            setDataForSMD(data)
+        }
+    }, [data])
 
     const renderGraph = () => {
         switch (selectedGraph) {
             case 'SMD':
-                return <SMDGraph />;
+                return (
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <SMDBarChartGraph data={dataForSMD}/>
+                    </div>
+                );
             case 'MMD':
-                return <MMDGraph />;
+                return (
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <MMDBarChartGraph />
+                    </div>
+                );
             case 'Compare':
                 return (
                     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                         <div>
-                            <h2>SMD Graph</h2>
-                            <SMDGraph />
+                            <SMDBarChartGraph data={dataForSMD} />
                         </div>
                         <div>
-                            <h2>MMD Graph</h2>
-                            <MMDGraph />
+                            <MMDBarChartGraph data={dataForSMD} />
                         </div>
                     </div>
                 );
@@ -32,9 +45,9 @@ export const MMD_vs_SMD_Comparison = () => {
     return (
         <div>
             <div>
-                <button onClick={() => setSelectedGraph('SMD')}>SMD</button>
-                <button onClick={() => setSelectedGraph('MMD')}>MMD</button>
-                <button onClick={() => setSelectedGraph('Compare')}>Compare</button>
+                <button className={selectedGraph === "SMD" ? "mmd_smd_selection_button_selected" : "mmd_smd_selection_button"} style={{marginLeft: "10px"}} onClick={() => setSelectedGraph('SMD')}>SMD</button>
+                <button className={selectedGraph === "MMD" ? "mmd_smd_selection_button_selected" : "mmd_smd_selection_button"} style={{borderRight: "0px", borderLeft: "0px"}}onClick={() => setSelectedGraph('MMD')}>MMD</button>
+                <button className={selectedGraph === "Compare" ? "mmd_smd_selection_button_selected" : "mmd_smd_selection_button"} onClick={() => setSelectedGraph('Compare')}>Compare</button>
             </div>
             <div>
                 {renderGraph()}

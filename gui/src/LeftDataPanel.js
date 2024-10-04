@@ -109,14 +109,14 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
             minWidth: "200px", // Set a minimum width for the panel
         }}>
             <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">Congressional Districts</h2>
+                <h2 className="left_data_panel_title">{displayMMD_vs_SMD_Comparison ? "MMD vs. SMD" : "Congressional Districts"}</h2>
                 <button className="left_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
             </div>
 
             {displayMMD_vs_SMD_Comparison && (
-                <MMD_vs_SMD_Comparison />
+                <MMD_vs_SMD_Comparison data={data}/>
             )}
 
             {!displayMMD_vs_SMD_Comparison && (
