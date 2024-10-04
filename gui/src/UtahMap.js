@@ -126,8 +126,8 @@ export const UtahMap = () => {
     const popupContent = `
         <div style="font-family: Arial, sans-serif; line-height: 1.5;">
             <h3 style="margin: 0;">Precinct: ${feature.properties.resultspre}</h3>
-            <p><strong>Donald Trump:</strong> ${feature.properties.G20PRERTRU}</p>
-            <p><strong>Joe Biden:</strong> ${feature.properties.G20PREDBID}</p>
+            <p><strong>Republican:</strong> ${feature.properties.G20PRERTRU}</p>
+            <p><strong>Democrat:</strong> ${feature.properties.G20PREDBID}</p>
             <p><strong>Population:</strong> ${feature.properties.PP_TOTAL}</p>
             <p><strong>White:</strong> ${feature.properties.PP_WHTALN}</p>
             <p><strong>Black:</strong> ${feature.properties.PP_BAAALN}</p>
