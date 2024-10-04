@@ -8,6 +8,19 @@ import { COLORS } from "./Colors"
 
 const { Overlay } = LayersControl
 
+function argbToRgb(argbColor) {
+    // Convert to unsigned 32-bit if the number is negative
+    if (argbColor < 0) {
+        argbColor = argbColor + 0xFFFFFFFF + 1;
+    }
+
+    // Extract RGB components
+    const red = (argbColor >> 16) & 0xFF;
+    const green = (argbColor >> 8) & 0xFF;
+    const blue = argbColor & 0xFF;
+    return `rgb(${red}, ${green}, ${blue})`
+}
+
 export const ArizonaMap = () => {
     const [congressionalDistricts,setCongressionalDistricts] = useState(null)
     const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
@@ -27,7 +40,7 @@ export const ArizonaMap = () => {
                     if (!colors[district]) {
                         colors[district] = {
                             color: "black",
-                            fillColor: COLORS[index],
+                            fillColor: feature.properties.COLOR ? argbToRgb(feature.properties.COLOR) : COLORS[index],
                             fillOpacity: 0.6
                         }
                     }

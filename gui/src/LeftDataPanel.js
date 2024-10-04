@@ -4,6 +4,19 @@ import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import Icon from "./Icon";
 import "./App.css";
 
+function argbToRgb(argbColor) {
+    // Convert to unsigned 32-bit if the number is negative
+    if (argbColor < 0) {
+        argbColor = argbColor + 0xFFFFFFFF + 1;
+    }
+
+    // Extract RGB components
+    const red = (argbColor >> 16) & 0xFF;
+    const green = (argbColor >> 8) & 0xFF;
+    const blue = argbColor & 0xFF;
+    return `rgb(${red}, ${green}, ${blue})`
+}
+
 export const LeftDataPanel = ({ data, onSelectFeature, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
@@ -37,12 +50,10 @@ export const LeftDataPanel = ({ data, onSelectFeature, districtColors, onChangeB
 
     // Handle when you are hovering over a district
     const handleHoverOverRowOfData = (feature) => {
-        console.log(`Enter this district = ${feature.properties.DISTRICT}`)
         onChangeBorderForHoverOverDistrict(feature.properties.DISTRICT)
     }
 
     const handleLeaveHoverOverData = (feature) => {
-        console.log(`Left this district = ${feature.properties.DISTRICT}`)
         onChangeLeftHoverOverDistrict(feature.properties.DISTRICT)
     }
 
@@ -107,7 +118,7 @@ export const LeftDataPanel = ({ data, onSelectFeature, districtColors, onChangeB
                                             return (
                                                 <td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
                                                     <span>
-                                                            <Icon name="roundedSquare" size={1.2} color={districtColors[feature.properties.DISTRICT].fillColor} borderWidth={"1px"} borderColor={"black"} />
+                                                            <Icon name="roundedSquare" size={1.2} color={feature.properties.COLOR ? argbToRgb(feature.properties.COLOR) : districtColors[feature.properties.DISTRICT].fillColor} borderWidth={"1px"} borderColor={"black"} />
                                                     </span>
                                                     <span className="zoom-icon" onClick={() => handleFeatureSelect(feature)}>
                                                             <Icon name="search" size={1.1}/>
