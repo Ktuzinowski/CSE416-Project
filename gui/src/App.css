@@ -168,7 +168,6 @@ nav {
 
 .left_data_panel_title {
   text-align: center;
-  
 }
 
 .left_data_table {
@@ -358,4 +357,97 @@ nav {
   border-radius: 5px; /* Optional: rounded corners */
   padding: 10px; /* Optional: padding around the buttons */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
+}
+
+.dropdown_for_choropleth {
+  font-size: 17px;
+  font-weight: bold;
+  padding-left: 10px;
+}
+.evaluate_mmd_vs_smd {
+  padding: 8px 15px; /* Adjusted padding for a balanced look */
+  font-size: 17px;
+  margin-right: 10px;
+  margin-left: 10px;
+  font-weight: bold;
+  color: #000000; /* Black text */
+  background-color: white;
+  border: 2px solid #cccccc; /* Light gray border */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.evaluate_mmd_vs_smd:hover {
+  background-color: #e0e0e0; /* Slightly darker gray on hover */
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow */
+}
+
+.evaluate_mmd_vs_smd:focus {
+  outline: none; /* Remove focus outline */
+}
+
+.evaluate_mmd_vs_smd:active {
+  background-color: #d6d6d6; /* Even darker gray when clicked */
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow when clicked */
+  transform: translateY(1px); /* Slight "click" effect */
+}
+
+.mmd_smd_selection_button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  padding: 7 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.mmd_smd_selection_button:hover {
+  background-color: black;
+  color: white;
+}
+
+.mmd_smd_selection_button_selected {
+  background-color: black;
+  color: white;
+  border: 2px solid black;
+  padding: 7 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.mmd_smd_selection_button:focus {
+  outline: none;
+  box-shadow: 0 0 5px black;
+}
+
+.search_for_precinct_name {
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.search_for_precinct_name input {
+  width: 300px; /* Full width for input */
+  border: none; /* Remove default border */
+  outline: none; /* Remove outline on focus */
+  font-size: 14px; /* Adjust font size */
+  padding: 5px; /* Padding for the input field */
+  border-radius: 5px; /* Rounded corners for the input */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+}
+
+.search_for_precinct_name:hover {
+  border-color: #888; /* Darker border on hover */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow effect on hover */
+}
+
+.search_for_precinct_name input::placeholder {
+  color: #aaa; /* Placeholder text color */
+  opacity: 1; /* Make sure the opacity is fully visible */
+}
+
+.search_for_precinct_name input:focus {
+  border-color: #007BFF; /* Change border color on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow on focus */
 }

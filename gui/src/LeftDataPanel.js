@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
+import { MMD_vs_SMD_Comparison } from "./MMD_vs_SMD_Comparison";
 import Icon from "./Icon";
 import "./App.css";
 
@@ -22,6 +23,7 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
     const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
+    const [displayMMD_vs_SMD_Comparison, setDisplayMMD_vs_SMD_Comparison] = useState(false)
 
     const unwantedColumns = ["TAPERSONS", "VAPERSONS"]; //these are useless columns that we will not need to show in LEFT hand panel
 
@@ -36,7 +38,6 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
         "PP_HPIALN": "Pacific",
         "PP_NAMALN": "Native",
         "PP_OTHALN": "Other",
-       
     };
 
     useEffect(() => {
@@ -49,6 +50,7 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
     }, [data]);
 
     const togglePanel = () => {
+        setDisplayMMD_vs_SMD_Comparison(false);
         setIsExpanded(!isExpanded);
     };
 
@@ -94,6 +96,11 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
         }
     }
 
+    const switchToAnalysisOfSMD_vs_MDD = () => {
+        setDisplayMMD_vs_SMD_Comparison(true)
+        setIsExpanded(true)
+    }
+
     return (
         
         <div className="container_left_data_panel" style={{
@@ -102,21 +109,29 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
             minWidth: "200px", // Set a minimum width for the panel
         }}>
             <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">Congressional Districts</h2>
+                <h2 className="left_data_panel_title">{displayMMD_vs_SMD_Comparison ? "MMD vs. SMD" : "Congressional Districts"}</h2>
                 <button className="left_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
             </div>
 
-            <div style={{ border: "1px solid #ccc", marginBottom: "20px" }}>
-            <label style={{ fontSize:"17px", fontWeight:"Bold", marginLeft: "30px" }} htmlFor="race-select"> Choropleth Map</label>
+            {displayMMD_vs_SMD_Comparison && (
+                <MMD_vs_SMD_Comparison data={data}/>
+            )}
+
+            {!displayMMD_vs_SMD_Comparison && (
+                <>
+                            <div style={{ marginBottom: "20px" }}>
+            <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
             <select
                 id="race-select"
                 value={selectedRace}
                 onChange={(e) => setSelectedRace(e.target.value)}
-                style={{marginLeft: "10px", fontSize:"15px"}}
+                style={{marginLeft: "10px", fontSize:"15px", padding: "1px"}}
             >   
                 <option value="">Default</option>
+                <option value="G20PRERTRU">Republican</option>
+                <option value="G20PREDBID">Democrat</option>
                 <option value="PP_WHTALN">White</option>
                 <option value="PP_BAAALN">Black</option>
                 <option value="PP_HISPLAT">Hispanic</option>
@@ -125,7 +140,8 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
                 <option value="PP_NAMALN">Native </option>
                 <option value="PP_OTHALN">Other</option>
             </select>
-        </div>
+            <button className="evaluate_mmd_vs_smd" onClick={switchToAnalysisOfSMD_vs_MDD}>Evaluate MMD vs. SMD</button>
+            </div>
 
 
             <hr style={{ width: "100%", border: "1px solid #ccc", marginTop: "-5px" }} />
@@ -185,7 +201,8 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
                     </table>
                 </div>
             )}
-
+                </>
+            )}
         </div>
     );
 };
