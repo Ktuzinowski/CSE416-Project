@@ -125,7 +125,8 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
                 <option value="PP_NAMALN">Native </option>
                 <option value="PP_OTHALN">Other</option>
             </select>
-        </div>
+            <button className="evaluate_mmd_vs_smd">Evaluate MMD vs. SMD</button>
+            </div>
 
 
             <hr style={{ width: "100%", border: "1px solid #ccc", marginTop: "-5px" }} />

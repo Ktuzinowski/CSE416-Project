@@ -74,8 +74,13 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
             return columnNames;
         }
         else {
-            const filtered_column_names = columnNames.filter((key) => pinnedColumns[key]);
-            if (filtered_column_names.length === 0) {
+            const filtered_column_names = columnNames.filter((key) => {
+                if (key === "CountyID") {
+                    return true
+                }
+                return pinnedColumns[key]
+        });
+            if (filtered_column_names.length === 1) {
                 return columnNames.slice(0, 4); // Show at least 4 columns if nothing is pinned
             }
             return filtered_column_names;
@@ -114,6 +119,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                     <option value="PP_NAMALN">Native </option>
                     <option value="PP_OTHALN">Other</option>
                 </select>
+                <button className="evaluate_mmd_vs_smd">Evaluate MMD vs. SMD</button>
             </div>
 
             <hr style={{ width: "100%", border: "1px solid #ccc", marginTop: "-5px" }} />
@@ -124,9 +130,9 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                         <thead>
                             <tr>
                                 {getVisibleColumns().map((key) => (
-                                    <th key={key} className="left_data_column_header">
+                                    <th key={key} style={{marginLeft: key === "CountyID" ? "10px" : "0px"}} className="left_data_column_header">
                                         {columnNameMapping[key] || key}
-                                        {isExpanded && (
+                                        {isExpanded && key !== "CountyID" && (
                                             <span className="pin-icon" onClick={() => togglePin(key)} size={1.1}>
                                                 <Icon name={pinnedColumns[key] ? "thumbtack-solid" : "thumbtack"} />
                                             </span>
