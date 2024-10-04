@@ -66,7 +66,7 @@ export const MMD_vs_SMD_Comparison = ({ data }) => {
   };
 
   return (
-    <div>
+    <div style={{ marginBottom: "50px" }}>
       <div>
         <button
           className={
