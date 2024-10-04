@@ -7,7 +7,7 @@ import {
   ZoomControl,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import arizonaCongressionalData from "./arizona_data/arizona_congressional_plan.geojson";
+import utahCongressionalData from "./utah_data/utah_congressional_plan.geojson"
 import { LeftDataPanel } from "./LeftDataPanel";
 import { MAPBOX_ACCESS_TOKEN } from "./constants";
 import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
@@ -33,15 +33,37 @@ const CreatePanes = () => {
 };
 
 export const UtahMap = () => {
-  const [congressionalDistricts, setCongressionalDistricts] = useState(null);
-  const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
-  const [districtColors, setDistrictColors] = useState({});
-  const [precincts, setPrecincts] = useState(null);
-  const geoJsonRef = useRef(); // Ref to access GeoJSON layer
-  const mapRef = useRef(); // Ref to access the map instance
+    const [congressionalDistricts,setCongressionalDistricts] = useState(null)
+    const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
+    const [districtColors, setDistrictColors] = useState({})
+    const [precincts, setPrecincts] = useState(null);
+    const geoJsonRef = useRef(); // Ref to access GeoJSON layer
+    const mapRef = useRef(); // Ref to access the map instance
+    
+    useEffect(() => {
+        fetch(utahCongressionalData)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+                setCongressionalDistricts(data)
+                const colors = {};
+                data.features.forEach((feature, index) => {
+                const district = feature.properties.DISTRICT;
+                    if (!colors[district]) {
+                        colors[district] = {
+                            color: "black",
+                            fillColor: COLORS[index],
+                            fillOpacity: 0.6
+                        }
+                    }
+                });
+                setDistrictColors(colors); // Set district colors after processing all features
+            })
+        .catch((error => console.error("Error loading the Congressional Districts GeoJSON data: ", error)))
+    }, [])
 
   useEffect(() => {
-    fetch(arizonaCongressionalData)
+    fetch(utahCongressionalData)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -119,6 +141,15 @@ export const UtahMap = () => {
       fillOpacity: districtColors[district].fillOpacity,
     };
   };
+
+  const stylePrecincts = (feature) => {
+    return {
+      color: "black",
+      fillColor: "none",
+      weight: 2,
+      fillOpacity: 0
+    }
+  }
 
   const showPopulationData = (feature, layer) => {
     const popupContent = `
@@ -202,21 +233,21 @@ export const UtahMap = () => {
               attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
             />
             <LayersControl>
-              <Overlay name="Congressional Districts" checked>
-                {congressionalDistricts && (
-                  <GeoJSON
-                    ref={geoJsonRef} // Set reference to GeoJSON layer
-                    data={congressionalDistricts}
-                    style={styleFeature} // Use dynamic styling for each feature
-                    onEachFeature={showPopulationData}
-                  />
-                )}
-              </Overlay>
               <Overlay name="Precincts" checked>
                 {precincts && (
                   <GeoJSON
                     // ref={geoJsonRef} // Set reference to GeoJSON layer
                     data={precincts}
+                    style={stylePrecincts} // Use dynamic styling for each feature
+                    onEachFeature={showPopulationData}
+                  />
+                )}
+              </Overlay>
+              <Overlay name="Congressional Districts" checked>
+                {congressionalDistricts && (
+                  <GeoJSON
+                    ref={geoJsonRef} // Set reference to GeoJSON layer
+                    data={congressionalDistricts}
                     style={styleFeature} // Use dynamic styling for each feature
                     onEachFeature={showPopulationData}
                   />
