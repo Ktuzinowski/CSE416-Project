@@ -7,7 +7,7 @@ import {
   ZoomControl,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import utahCongressionalData from "./utah_data/utah_congressional_plan.geojson"
+import utahCongressionalData from "./utah_data/utah_congressional_plan.geojson";
 import { LeftDataPanel } from "./LeftDataPanel";
 import { MAPBOX_ACCESS_TOKEN } from "./constants";
 import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
@@ -15,17 +15,16 @@ import { COLORS } from "./Colors";
 import utahAggDistrictData from "./utah_data/aggregatedUtahDistricts.geojson";
 import chroma from "chroma-js"; //this for the chloropeth map
 
-
-const { Overlay } = LayersControl
+const { Overlay } = LayersControl;
 
 export const UtahMap = () => {
-    const [congressionalDistricts,setCongressionalDistricts] = useState(null)
-    const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
-    const [districtColors, setDistrictColors] = useState({})
-    const [precincts, setPrecincts] = useState(null);
-    const [selectedRace, setSelectedRace] = useState("PP_BAAALN"); // State for selecting CHOROPLETH race, defaulted on black
-    const geoJsonRef = useRef(); // Ref to access GeoJSON layer
-    const mapRef = useRef(); // Ref to access the map instance
+  const [congressionalDistricts, setCongressionalDistricts] = useState(null);
+  const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
+  const [districtColors, setDistrictColors] = useState({});
+  const [precincts, setPrecincts] = useState(null);
+  const [selectedRace, setSelectedRace] = useState("PP_BAAALN"); // State for selecting CHOROPLETH race, defaulted on black
+  const geoJsonRef = useRef(); // Ref to access GeoJSON layer
+  const mapRef = useRef(); // Ref to access the map instance
 
   useEffect(() => {
     fetch(utahAggDistrictData)
@@ -130,19 +129,21 @@ export const UtahMap = () => {
   // }
 
   //choropleth color scale
-  const colorScale = chroma.scale(["#ffe6cc", "#ff6600", "#ff3300"]).domain([0, 100]);
+  const colorScale = chroma
+    .scale(["#ffe6cc", "#ff6600", "#ff3300"])
+    .domain([0, 100]);
 
   const stylePrecincts = (feature) => {
     const totalPop = feature.properties.PP_TOTAL;
     const racePop = feature.properties[selectedRace];
     const percent = totalPop > 0 ? (racePop / totalPop) * 100 : 0;
-  
+
     //fill teh colors based on the racial demogprahic percentage
     const fillColor = colorScale(percent).hex();
-  
+
     return {
-      color: "#000", 
-      fillColor: fillColor, 
+      color: "#000",
+      fillColor: fillColor,
       weight: 1,
       fillOpacity: 0.7,
     };
@@ -151,18 +152,41 @@ export const UtahMap = () => {
   const showPopulationData = (feature, layer) => {
     const popupContent = `
         <div style="font-family: Arial, sans-serif; line-height: 1.5;">
-            <h3 style="margin: 0;">Precinct: ${feature.properties.resultspre}</h3>
+            <h3 style="margin: 0;">Precinct: ${
+              feature.properties.resultspre
+            }</h3>
             <p><strong>Republican:</strong> ${feature.properties.G20PRERTRU}</p>
             <p><strong>Democrat:</strong> ${feature.properties.G20PREDBID}</p>
             <p><strong>Population:</strong> ${feature.properties.PP_TOTAL}</p>
 
-            <p><strong>White:</strong> ${((feature.properties.PP_WHTALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Black:</strong> ${((feature.properties.PP_BAAALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Hispanic:</strong> ${((feature.properties.PP_HISPLAT / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Asian:</strong> ${((feature.properties.PP_ASNALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Pacific:</strong> ${((feature.properties.PP_HPIALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Native:</strong> ${((feature.properties.PP_NAMALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Other:</strong> ${((feature.properties.PP_OTHALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>White:</strong> ${(
+              (feature.properties.PP_WHTALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Black:</strong> ${(
+              (feature.properties.PP_BAAALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Hispanic:</strong> ${(
+              (feature.properties.PP_HISPLAT / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Asian:</strong> ${(
+              (feature.properties.PP_ASNALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Pacific:</strong> ${(
+              (feature.properties.PP_HPIALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Native:</strong> ${(
+              (feature.properties.PP_NAMALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Other:</strong> ${(
+              (feature.properties.PP_OTHALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
 
         </div>
         `;
@@ -177,13 +201,34 @@ export const UtahMap = () => {
             <p><strong>Democrat:</strong> ${feature.properties.G20PREDBID}</p>
             <p><strong>Population:</strong> ${feature.properties.PP_TOTAL}</p>
 
-            <p><strong>White:</strong> ${((feature.properties.PP_WHTALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Black:</strong> ${((feature.properties.PP_BAAALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Hispanic:</strong> ${((feature.properties.PP_HISPLAT / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Asian:</strong> ${((feature.properties.PP_ASNALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Pacific:</strong> ${((feature.properties.PP_HPIALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Native:</strong> ${((feature.properties.PP_NAMALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
-            <p><strong>Other:</strong> ${((feature.properties.PP_OTHALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>White:</strong> ${(
+              (feature.properties.PP_WHTALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Black:</strong> ${(
+              (feature.properties.PP_BAAALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Hispanic:</strong> ${(
+              (feature.properties.PP_HISPLAT / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Asian:</strong> ${(
+              (feature.properties.PP_ASNALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Pacific:</strong> ${(
+              (feature.properties.PP_HPIALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Native:</strong> ${(
+              (feature.properties.PP_NAMALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
+            <p><strong>Other:</strong> ${(
+              (feature.properties.PP_OTHALN / feature.properties.PP_TOTAL) *
+              100
+            ).toFixed(2)}%</p>
 
         </div>
         `;
@@ -226,7 +271,6 @@ export const UtahMap = () => {
   return (
     <>
       <div className="map-wrapper">
-
         {" "}
         {/* New wrapper for Flexbox layout */}
         <LeftDataPanel
@@ -237,14 +281,12 @@ export const UtahMap = () => {
             onChangeBorderForHoverOverDistrict
           }
           onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict}
-          selectedRace={selectedRace} 
-          setSelectedRace={setSelectedRace} 
-
+          selectedRace={selectedRace}
+          setSelectedRace={setSelectedRace}
         />
-
         <div className="map-container">
           <MapContainer
-            center={[39.320980, -111.093731]} // Center the map on Utah's coordinates
+            center={[39.32098, -111.093731]} // Center the map on Utah's coordinates
             zoom={6}
             minZoom={3}
             maxZoom={11}
@@ -257,7 +299,6 @@ export const UtahMap = () => {
               attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
             />
             <LayersControl>
-
               <Overlay name="Congressional Districts" checked>
                 {congressionalDistricts && (
                   <GeoJSON
@@ -278,8 +319,6 @@ export const UtahMap = () => {
                   />
                 )}
               </Overlay>
-
-
             </LayersControl>
 
             <ZoomControl position="bottomright" />
