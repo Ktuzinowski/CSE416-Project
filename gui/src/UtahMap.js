@@ -23,6 +23,7 @@ export const UtahMap = () => {
     const [utGeo, setGeo] = useState(null)
     const [selectedRace, setSelectedRace] = useState(""); // State for selecting CHOROPLETH race, defaulted on black
     const geoJsonRef = useRef(); // Ref to access GeoJSON layer
+    const geoJSONRefPrecincts = useRef(); // Ref to access GeoJSON layer of precincts
     const mapRef = useRef(); // Ref to access the map instance
     const [activeLayer, setActiveLayer] = useState("districts"); // State to track the active layer
 
@@ -64,8 +65,8 @@ export const UtahMap = () => {
           features: data.features.map((feature, index) => ({
             ...feature,
             properties: {
-              ...feature.properties,
-              DISTRICT: 1, // Assign a value to the DISTRICT property
+              DISTRICT: index, // Assign a value to the DISTRICT property
+              ...feature.properties
             },
           })),
         };
@@ -141,6 +142,39 @@ export const UtahMap = () => {
   //     );
   // }, []);
 
+  const setStyleForSelection = (feature) => {
+    let totalPop = feature.properties.PP_TOTAL;
+    const racePop = feature.properties[selectedRace];
+    if (selectedRace === "G20PRERTRU" || selectedRace === "G20PREDBID") {
+      totalPop = feature.properties["G20PRERTRU"] + feature.properties["G20PREDBID"]
+    }
+    const percent = totalPop > 0 ? (racePop / totalPop) * 100 : 0;
+
+    //fill teh colors based on the racial demogprahic percentage
+    let fillColor = colorScale(percent).hex();
+    let selectedOutlineColor = colorScale(percent).hex()
+
+    if (selectedRace === "") {
+      fillColor = "#ffff"
+      selectedOutlineColor = "#0000"
+    }
+    else if (selectedRace === "G20PRERTRU") {
+      fillColor = colorScaleRed(percent).hex()
+      selectedOutlineColor = colorScaleBlue(percent).hex()
+    }
+    else if (selectedRace === "G20PREDBID") {
+      fillColor = colorScaleBlue(percent).hex()
+      selectedOutlineColor = colorScaleRed(percent).hex()
+    }
+
+    return {
+      color: selectedOutlineColor,
+      fillColor: fillColor,
+      weight: 5,
+      fillOpacity: 0.7,
+    };
+  }
+
   // Zoom to selected feature whenever it changes
   useEffect(() => {
     if (selectedFeature && geoJsonRef.current && mapRef.current) {
@@ -154,6 +188,20 @@ export const UtahMap = () => {
       if (layer) {
         const bounds = layer.getBounds();
 
+        mapRef.current.fitBounds(bounds);
+      }
+    }
+    else if (selectedFeature && geoJSONRefPrecincts.current && mapRef.current) {
+      const layer = geoJSONRefPrecincts.current
+        .getLayers()
+        .find(
+          (l) =>
+            l.feature.properties.DISTRICT ===
+            selectedFeature.properties.DISTRICT
+        );
+      if (layer) {
+        const bounds = layer.getBounds();
+        layer.setStyle(setStyleForSelection(layer.feature));
         mapRef.current.fitBounds(bounds);
       }
     }
@@ -260,7 +308,14 @@ export const UtahMap = () => {
       const percent = totalPop > 0 ? (racePop / totalPop) * 100 : 0;
 
       //fill teh colors based on the racial demogprahic percentage
-      const fillColor = colorScale(percent).hex();
+      let fillColor = colorScale(percent).hex();
+
+      if (selectedRace === "G20PRERTRU") {
+        fillColor = colorScaleRed(percent).hex()
+      }
+      else if (selectedRace === "G20PREDBID") {
+        fillColor = colorScaleBlue(percent).hex()
+      }
 
       return {
         color: "#000",
@@ -450,7 +505,6 @@ export const UtahMap = () => {
             center={[39.32098, -111.093731]} // Center the map on Utah's coordinates
             zoom={6}
             minZoom={3}
-            maxZoom={11}
             className="map-container" // Attach the new class
             zoomControl={false} // Disable default zoom control
             ref={mapRef} // Attach the ref to the MapContainer
@@ -516,6 +570,7 @@ export const UtahMap = () => {
             {activeLayer === "precincts" && precincts && (
               <GeoJSON
                 data={precincts}
+                ref={geoJSONRefPrecincts}
                 style={stylePrecincts}
                 onEachFeature={showPopulationData}
               />

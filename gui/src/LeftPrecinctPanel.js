@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
+import { MMD_vs_SMD_Comparison } from "./MMD_vs_SMD_Comparison";
 import Icon from "./Icon";
 import "./App.css";
 
@@ -9,6 +10,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
     const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
+    const [displayMMD_vs_SMD_Comparison, setDisplayMMD_vs_SMD_Comparison] = useState(false)
 
     const unwantedColumns = [
         "vistapre", "G20PRELJOR", "G20PREGHAW", "G20PRECBLA", "G20PREIPIE", 
@@ -19,6 +21,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
     ]; // These are useless columns that we will not need to show in LEFT hand panel
 
     const columnNameMapping = { // Map the names to change the weird names to something more readable
+        "DISTRICT": "index",
         "PP_TOTAL": "Population",
         "resultspre": "Precinct",
         "G20PRERTRU": "Republican",
@@ -42,6 +45,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
     }, [data]);
 
     const togglePanel = () => {
+        setDisplayMMD_vs_SMD_Comparison(false)
         setIsExpanded(!isExpanded);
     };
 
@@ -69,17 +73,32 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
         }
     }, [selectedFeature, onSelectFeature]);
 
+    // Pass the selected feature back to the parent when clicked
+    const handleFeatureSelect = (feature) => {
+        setSelectedFeature(feature); // This calls the parent's setSelectedFeature
+    };
+
     const getVisibleColumns = () => {
         if (isExpanded) {
             return columnNames;
         }
         else {
-            const filtered_column_names = columnNames.filter((key) => pinnedColumns[key]);
-            if (filtered_column_names.length === 0) {
-                return columnNames.slice(0, 4); // Show at least 4 columns if nothing is pinned
-            }
-            return filtered_column_names;
+        const filtered_column_names = columnNames.filter((key) => {
+                if (key === "DISTRICT") {
+                    return true
+                }
+                return pinnedColumns[key]
+        });
+        if (filtered_column_names.length === 1) {
+            return columnNames.slice(0, 4); // Show at least 4 columns if nothing is pinned
         }
+        return filtered_column_names;
+        }
+    }
+
+    const switchToAnalysisOfSMD_vs_MDD = () => {
+        setDisplayMMD_vs_SMD_Comparison(true)
+        setIsExpanded(true)
     }
 
     return (
@@ -89,13 +108,19 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
             minWidth: "200px", // Set a minimum width for the panel
         }}>
             <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">Precincts</h2>
+                <h2 className="left_data_panel_title">{displayMMD_vs_SMD_Comparison ? "MMD vs. SMD" : "Precincts"}</h2>
                 <button className="left_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
             </div>
 
-            <div style={{ marginBottom: "20px" }}>
+            {displayMMD_vs_SMD_Comparison && (
+                <MMD_vs_SMD_Comparison />
+            )}
+
+            {!displayMMD_vs_SMD_Comparison && (
+                <>
+                <div style={{ marginBottom: "20px" }}>
                 <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
                 <select
                     id="race-select"
@@ -114,6 +139,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                     <option value="PP_NAMALN">Native </option>
                     <option value="PP_OTHALN">Other</option>
                 </select>
+                <button className="evaluate_mmd_vs_smd" onClick={switchToAnalysisOfSMD_vs_MDD}>Evaluate MMD vs. SMD</button>
             </div>
 
             <hr style={{ width: "100%", border: "1px solid #ccc", marginTop: "-5px" }} />
@@ -123,27 +149,41 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                     <table className="left_data_column_names">
                         <thead>
                             <tr>
-                                {getVisibleColumns().map((key) => (
-                                    <th key={key} className="left_data_column_header">
+                                {getVisibleColumns().map((key) => {
+                                    return (
+                                        <th key={key} className="left_data_column_header">
+                                        <div style={{ marginLeft: key === "DISTRICT" ? "10px" : "0px" }}>
+
                                         {columnNameMapping[key] || key}
-                                        {isExpanded && (
+                                        {key !== "DISTRICT" && isExpanded && (
                                             <span className="pin-icon" onClick={() => togglePin(key)} size={1.1}>
                                                 <Icon name={pinnedColumns[key] ? "thumbtack-solid" : "thumbtack"} />
                                             </span>
                                         )}
+                                        </div>
                                     </th>
-                                ))}
+                                    )
+                                }
+                                )}
                             </tr>
                         </thead>
                         <tbody>
                             {data.features.map((feature, featureIndex) => {
                                 return (
                                     <tr key={featureIndex} onMouseEnter={() => handleHoverOverRowOfData(feature)} onMouseLeave={() => handleLeaveHoverOverData(feature)}>
-                                        {getVisibleColumns().map((key, idx) => (
-                                            <td key={idx} style={{ textAlign: "right" }}>
+                                        {getVisibleColumns().map((key, idx) => {
+                                            if (!isExpanded && key === "DISTRICT") {
+                                                console.log("SHOULD BE WORKING!");
+                                                return (<td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between", marginLeft: "10px"}}>
+                                                <span className="zoom-icon" onClick={() => handleFeatureSelect(feature)}>
+                                                            <Icon name="search" size={1.1}/>
+                                                   </span>
+                                                </td>)
+                                            }
+                                            return (<td key={idx} style={{ textAlign: "right" }}>
                                                 {feature.properties[key] + ""}
-                                            </td>
-                                        ))}
+                                            </td>)
+                            })}
                                         
                                     </tr>
                                 );
@@ -152,6 +192,9 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                     </table>
                 </div>
             )}
+                </>
+            )}
+            
         </div>
     );
 };
