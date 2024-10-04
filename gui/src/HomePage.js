@@ -8996,7 +8996,6 @@ export const HomePage = () => {
                 window.location.href = feature.properties.link;
             }
         });
-        layer.bindPopup(`<b>${feature.properties.name}</b>`);
     };
 
     return (
