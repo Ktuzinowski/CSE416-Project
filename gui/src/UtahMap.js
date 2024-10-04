@@ -13,6 +13,7 @@ import { MAPBOX_ACCESS_TOKEN } from "./constants";
 import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
 import { COLORS } from "./Colors";
 import utahAggDistrictData from "./utah_data/aggregatedUtahDistricts.geojson";
+import chroma from "chroma-js"; //this for the chloropeth map
 
 
 const { Overlay } = LayersControl
@@ -39,8 +40,13 @@ export const UtahMap = () => {
     const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
     const [districtColors, setDistrictColors] = useState({})
     const [precincts, setPrecincts] = useState(null);
+    const [selectedRace, setSelectedRace] = useState("PP_WHTALN"); // State for selecting CHOROPLETH race
     const geoJsonRef = useRef(); // Ref to access GeoJSON layer
     const mapRef = useRef(); // Ref to access the map instance
+
+    //choropleth color scale
+    const colorScale = chroma.scale(["#ffe6e6", "#ff0000"]).domain([0, 100]);
+
     
 
   useEffect(() => {
@@ -136,14 +142,30 @@ export const UtahMap = () => {
     };
   };
 
+  // const stylePrecincts = (feature) => {
+  //   return {
+  //     color: "black",
+  //     fillColor: "none",
+  //     weight: 2,
+  //     fillOpacity: 0
+  //   }
+  // }
+
   const stylePrecincts = (feature) => {
+    const totalPopulation = feature.properties.PP_TOTAL;
+    const racePopulation = feature.properties[selectedRace];
+    const percentage = totalPopulation > 0 ? (racePopulation / totalPopulation) * 100 : 0;
+  
+    //fill teh colors based on the racial demogprahic percentage
+    const fillColor = colorScale(percentage).hex();
+  
     return {
-      color: "black",
-      fillColor: "none",
-      weight: 2,
-      fillOpacity: 0
-    }
-  }
+      color: "#000", 
+      fillColor: fillColor, 
+      weight: 1,
+      fillOpacity: 0.7,
+    };
+  };
 
   const showPopulationData = (feature, layer) => {
     const popupContent = `
@@ -223,6 +245,7 @@ export const UtahMap = () => {
   return (
     <>
       <div className="map-wrapper">
+
         {" "}
         {/* New wrapper for Flexbox layout */}
         <LeftDataPanel
@@ -233,7 +256,26 @@ export const UtahMap = () => {
             onChangeBorderForHoverOverDistrict
           }
           onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict}
+
         />
+
+<div className="race-selector">
+    <label htmlFor="race-select"><strong>Select Race:</strong></label>
+    <select
+      id="race-select"
+      value={selectedRace}
+      onChange={(e) => setSelectedRace(e.target.value)}
+    >
+      <option value="PP_WHTALN">White</option>
+      <option value="PP_BAAALN">Black</option>
+      <option value="PP_ASNALN">Asian</option>
+      <option value="PP_HISPLAT">Hispanic</option>
+      <option value="PP_HPIALN">Pacific</option>
+      <option value="PP_NAMALN">Native</option>
+      <option value="PP_OTHALN">Other</option>
+    </select>
+  </div>
+
         <div className="map-container">
           <MapContainer
             center={[34.0489, -113.0937]} // Center the map on Utah's coordinates

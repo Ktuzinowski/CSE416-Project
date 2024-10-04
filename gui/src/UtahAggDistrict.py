@@ -13,7 +13,7 @@ precinct_to_district_assignment = maup.assign(precincts, districts)
 districts[variables] = precincts[variables].groupby(precinct_to_district_assignment).sum()
 
 #put it into new geojson fiele now
-districts.to_file("aggregated_districts.geojson", driver='GeoJSON')
+# districts.to_file("aggregated_districts.geojson", driver='GeoJSON')
 
 districts_with_nan = districts[variables].isnull().any(axis=1) #count the Nan
 nan_districts_count = districts_with_nan.sum() 
