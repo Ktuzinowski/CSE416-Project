@@ -51,15 +51,14 @@ nav {
   position: relative; /* For layering above the overlay */
   z-index: 1; /* Above the overlay */
   font-family: 'Arial', sans-serif;
-  font-size: 36px;
+  font-size: 2.2rem;
   color: #000000;
   width: 400px;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 50px;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
+  margin-top: 40px;
+  margin-bottom: 10px;
   border-radius: 10px;
   padding: 15px 30px;
 }
@@ -269,3 +268,76 @@ nav {
   position: relative;
   margin-top: 20px;
 }
+
+.home_page_map_container {
+  flex-grow: 1; /* Take remaining space */
+  height: calc(100% - 20px);
+  margin-top: 20px;
+  position: relative;
+}
+
+/* EDUCATION */
+.education_container {
+  overflow-y: scroll; /* Always show vertical scrollbar */
+  height: 95%;
+  margin-top: 25px;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.education_title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.education_section {
+  margin-bottom: 30px;
+}
+
+.education_section h2 {
+  font-size: 1.5rem;
+  color: #555;
+}
+
+.education_section p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+.background-section {
+  background-color: #f7f9fc; /* light background for contrast */
+  padding: 20px;
+  border-radius: 8px; /* smooth corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* subtle shadow for depth */
+  max-width: 100%; /* limit width for readability */
+  margin-top: -2.5%;
+}
+
+.background-title {
+  font-size: 1.8rem; /* larger title font */
+  color: #2c3e50; /* dark text color for readability */
+  margin-bottom: 16px; /* spacing below title */
+  text-align: left; /* center align title */
+}
+
+.background-text {
+  font-size: 1.1rem; /* slightly larger text for easier reading */
+  color: #34495e; /* darker gray text */
+  line-height: 1.6; /* increased line height for better readability */
+  margin-bottom: 16px; /* space between paragraphs */
+  text-align: justify; /* makes the text block look cleaner */
+}
+
+.background-link {
+  color: #3498db; /* blue link color */
+  text-decoration: underline;
+  font-weight: bold; /* make the link stand out */
+}
+
+.background-link:hover {
+  color: #2980b9; /* darker blue on hover */
+  text-decoration: none; /* remove underline on hover for cleaner effect */
+}
+
