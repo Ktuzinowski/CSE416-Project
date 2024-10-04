@@ -142,6 +142,26 @@ export const UtahMap = () => {
     layer.bindPopup(popupContent);
   };
 
+  const showDistrictData = (feature, layer) => {
+    const popupContent = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.5;">
+            <h3 style="margin: 0;">Precinct: ${feature.properties.resultspre}</h3>
+            <p><strong>Republican:</strong> ${feature.properties.G20PRERTRU}</p>
+            <p><strong>Democrat:</strong> ${feature.properties.G20PREDBID}</p>
+            <p><strong>Population:</strong> ${feature.properties.PP_TOTAL}</p>
+            <p><strong>White:</strong> ${feature.properties.PP_WHTALN}</p>
+            <p><strong>Black:</strong> ${feature.properties.PP_BAAALN}</p>
+            <p><strong>Hispanic:</strong> ${feature.properties.PP_HISPLAT}</p>
+            <p><strong>Asian:</strong> ${feature.properties.PP_ASNALN}</p>
+            <p><strong>Native:</strong> ${feature.properties.PP_NAMALN}</p>
+            <p><strong>Pacific:</strong> ${feature.properties.PP_HPIALN}</p>
+            <p><strong>Other:</strong> ${feature.properties.PP_OTHALN}</p>
+
+        </div>
+        `;
+    layer.bindPopup(popupContent);
+  };
+
   // Pass the selected feature back to the parent when clicked
   const onSelectFeature = (feature) => {
     setSelectedFeature(feature);
@@ -210,7 +230,7 @@ export const UtahMap = () => {
                     ref={geoJsonRef} // Set reference to GeoJSON layer
                     data={congressionalDistricts}
                     style={styleFeature} // Use dynamic styling for each feature
-                    onEachFeature={showPopulationData}
+                    onEachFeature={showDistrictData}
                   />
                 )}
               </Overlay>
