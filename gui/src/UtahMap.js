@@ -44,11 +44,6 @@ export const UtahMap = () => {
     const geoJsonRef = useRef(); // Ref to access GeoJSON layer
     const mapRef = useRef(); // Ref to access the map instance
 
-    //choropleth color scale
-    const colorScale = chroma.scale(["#ffe6e6", "#ff0000"]).domain([0, 100]);
-
-    
-
   useEffect(() => {
     fetch(utahAggDistrictData)
       .then((response) => response.json())
@@ -151,13 +146,16 @@ export const UtahMap = () => {
   //   }
   // }
 
+  //choropleth color scale
+  const colorScale = chroma.scale(["#ffe6cc", "#ff6600", "#ff3300"]).domain([0, 100]);
+
   const stylePrecincts = (feature) => {
-    const totalPopulation = feature.properties.PP_TOTAL;
-    const racePopulation = feature.properties[selectedRace];
-    const percentage = totalPopulation > 0 ? (racePopulation / totalPopulation) * 100 : 0;
+    const totalPop = feature.properties.PP_TOTAL;
+    const racePop = feature.properties[selectedRace];
+    const percent = totalPop > 0 ? (racePop / totalPop) * 100 : 0;
   
     //fill teh colors based on the racial demogprahic percentage
-    const fillColor = colorScale(percentage).hex();
+    const fillColor = colorScale(percent).hex();
   
     return {
       color: "#000", 
@@ -244,6 +242,8 @@ export const UtahMap = () => {
 
   return (
     <>
+    
+  
       <div className="map-wrapper">
 
         {" "}
@@ -259,22 +259,7 @@ export const UtahMap = () => {
 
         />
 
-<div className="race-selector">
-    <label htmlFor="race-select"><strong>Select Race:</strong></label>
-    <select
-      id="race-select"
-      value={selectedRace}
-      onChange={(e) => setSelectedRace(e.target.value)}
-    >
-      <option value="PP_WHTALN">White</option>
-      <option value="PP_BAAALN">Black</option>
-      <option value="PP_ASNALN">Asian</option>
-      <option value="PP_HISPLAT">Hispanic</option>
-      <option value="PP_HPIALN">Pacific</option>
-      <option value="PP_NAMALN">Native</option>
-      <option value="PP_OTHALN">Other</option>
-    </select>
-  </div>
+
 
         <div className="map-container">
           <MapContainer
