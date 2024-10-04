@@ -3,6 +3,9 @@ import { SMDBarChartGraph } from "./SMDBarChartGraph";
 import { MMDBarChartGraph } from "./MMDBarChartGraph";
 import BWGraph from "./BoxWhiskerPlot.js"; // Import the BW graph component
 import utahAggDistrictData from "./utah_data/aggregatedUtahDistricts.geojson";
+import VoterSeats from "./VoterSeats"; // Import the new VoterSeats component
+import SMDVoter from "./SMDVoter.js";
+import MMDVoter from "./MMDVoter.js";
 
 export const MMD_vs_SMD_Comparison = ({ data }) => {
   const [selectedGraph, setSelectedGraph] = useState("SMD"); // Default to 'SMD'
@@ -23,22 +26,29 @@ export const MMD_vs_SMD_Comparison = ({ data }) => {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>
             <SMDBarChartGraph data={dataForSMD} />
+            <SMDVoter />
           </div>
         );
       case "MMD":
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>
             <MMDBarChartGraph />
+            <MMDVoter />
           </div>
         );
       case "Compare":
         return (
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <div>
-              <SMDBarChartGraph data={dataForSMD} />
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <div>
+                <SMDBarChartGraph data={dataForSMD} />
+              </div>
+              <div>
+                <MMDBarChartGraph data={dataForSMD} />
+              </div>
             </div>
             <div>
-              <MMDBarChartGraph data={dataForSMD} />
+              <VoterSeats />
             </div>
           </div>
         );
@@ -46,6 +56,7 @@ export const MMD_vs_SMD_Comparison = ({ data }) => {
         return null;
     }
   };
+
   const renderBWP = () => {
     return geojsonData ? (
       <BWGraph geojsonData={geojsonData} />
@@ -91,7 +102,11 @@ export const MMD_vs_SMD_Comparison = ({ data }) => {
         </button>
       </div>
       <div>{renderGraph()}</div>
-      <div>{renderBWP()}</div>
+      {selectedGraph === "SMD" && ( // Only render the BWGraph if SMD is selected
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          {renderBWP()}
+        </div>
+      )}
     </div>
   );
 };
