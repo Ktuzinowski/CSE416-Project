@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMap } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -16,23 +16,6 @@ import utahAggDistrictData from "./utah_data/aggregatedUtahDistricts.geojson";
 
 
 const { Overlay } = LayersControl
-
-// Component to create and set the panes
-const CreatePanes = () => {
-  const map = useMap();
-
-  //hello
-
-  // Create a pane for precincts (lower zIndex)
-  map.createPane("precinctsPane");
-  map.getPane("precinctsPane").style.zIndex = 400;
-
-  // Create a pane for counties (higher zIndex)
-  map.createPane("countiesPane");
-  map.getPane("countiesPane").style.zIndex = 500;
-
-  return null; // No visible rendering
-};
 
 export const UtahMap = () => {
     const [congressionalDistricts,setCongressionalDistricts] = useState(null)
@@ -140,7 +123,7 @@ export const UtahMap = () => {
     return {
       color: "black",
       fillColor: "none",
-      weight: 2,
+      weight: 0.75,
       fillOpacity: 0
     }
   }
@@ -236,10 +219,10 @@ export const UtahMap = () => {
         />
         <div className="map-container">
           <MapContainer
-            center={[34.0489, -113.0937]} // Center the map on Utah's coordinates
+            center={[39.320980, -111.093731]} // Center the map on Utah's coordinates
             zoom={6}
             minZoom={3}
-            maxZoom={10}
+            maxZoom={11}
             className="map-container" // Attach the new class
             zoomControl={false} // Disable default zoom control
             ref={mapRef} // Attach the ref to the MapContainer
@@ -252,7 +235,6 @@ export const UtahMap = () => {
               <Overlay name="Precincts" checked>
                 {precincts && (
                   <GeoJSON
-                    // ref={geoJsonRef} // Set reference to GeoJSON layer
                     data={precincts}
                     style={stylePrecincts} // Use dynamic styling for each feature
                     onEachFeature={showPopulationData}
