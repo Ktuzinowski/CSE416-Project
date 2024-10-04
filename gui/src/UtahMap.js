@@ -344,7 +344,7 @@ export const UtahMap = () => {
               attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
             />
 
-          <div className="custom-layer-controls">
+           <div className="custom-layer-controls" style={{display: "flex", flexDirection: "column"}}>
               <button 
                 onClick={() => setActiveLayer("districts")} 
                 style={{ margin: '5px', padding: '10px', backgroundColor: activeLayer === "districts" ? '#007bff' : '#ccc', color: '#fff' }}
