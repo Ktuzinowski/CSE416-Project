@@ -308,7 +308,14 @@ export const UtahMap = () => {
       const percent = totalPop > 0 ? (racePop / totalPop) * 100 : 0;
 
       //fill teh colors based on the racial demogprahic percentage
-      const fillColor = colorScale(percent).hex();
+      let fillColor = colorScale(percent).hex();
+
+      if (selectedRace === "G20PRERTRU") {
+        fillColor = colorScaleRed(percent).hex()
+      }
+      else if (selectedRace === "G20PREDBID") {
+        fillColor = colorScaleBlue(percent).hex()
+      }
 
       return {
         color: "#000",

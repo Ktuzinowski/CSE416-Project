@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
+import { MMD_vs_SMD_Comparison } from "./MMD_vs_SMD_Comparison";
 import Icon from "./Icon";
 import "./App.css";
 
@@ -9,6 +10,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
     const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
+    const [displayMMD_vs_SMD_Comparison, setDisplayMMD_vs_SMD_Comparison] = useState(false)
 
     const unwantedColumns = [
         "vistapre", "G20PRELJOR", "G20PREGHAW", "G20PRECBLA", "G20PREIPIE", 
@@ -43,6 +45,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
     }, [data]);
 
     const togglePanel = () => {
+        setDisplayMMD_vs_SMD_Comparison(false)
         setIsExpanded(!isExpanded);
     };
 
@@ -93,6 +96,11 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
         }
     }
 
+    const switchToAnalysisOfSMD_vs_MDD = () => {
+        setDisplayMMD_vs_SMD_Comparison(true)
+        setIsExpanded(true)
+    }
+
     return (
         <div className="container_left_data_panel" style={{
             width: isExpanded ? "100%" : "auto", // Auto-width when collapsed
@@ -100,13 +108,19 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
             minWidth: "200px", // Set a minimum width for the panel
         }}>
             <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">Precincts</h2>
+                <h2 className="left_data_panel_title">{displayMMD_vs_SMD_Comparison ? "MMD vs. SMD" : "Precincts"}</h2>
                 <button className="left_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
             </div>
 
-            <div style={{ marginBottom: "20px" }}>
+            {displayMMD_vs_SMD_Comparison && (
+                <MMD_vs_SMD_Comparison />
+            )}
+
+            {!displayMMD_vs_SMD_Comparison && (
+                <>
+                <div style={{ marginBottom: "20px" }}>
                 <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
                 <select
                     id="race-select"
@@ -125,7 +139,7 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                     <option value="PP_NAMALN">Native </option>
                     <option value="PP_OTHALN">Other</option>
                 </select>
-                <button className="evaluate_mmd_vs_smd">Evaluate MMD vs. SMD</button>
+                <button className="evaluate_mmd_vs_smd" onClick={switchToAnalysisOfSMD_vs_MDD}>Evaluate MMD vs. SMD</button>
             </div>
 
             <hr style={{ width: "100%", border: "1px solid #ccc", marginTop: "-5px" }} />
@@ -178,6 +192,9 @@ export const LeftPrecinctPanel = ({ data, onSelectFeature, selectedRace, setSele
                     </table>
                 </div>
             )}
+                </>
+            )}
+            
         </div>
     );
 };
