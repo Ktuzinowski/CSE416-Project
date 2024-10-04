@@ -220,7 +220,7 @@ export const UtahMap = () => {
         />
         <div className="map-container">
           <MapContainer
-            center={[34.0489, -113.0937]} // Center the map on Utah's coordinates
+            center={[39.320980, -111.093731]} // Center the map on Utah's coordinates
             zoom={6}
             minZoom={3}
             maxZoom={10}
@@ -236,7 +236,6 @@ export const UtahMap = () => {
               <Overlay name="Precincts" checked>
                 {precincts && (
                   <GeoJSON
-                    // ref={geoJsonRef} // Set reference to GeoJSON layer
                     data={precincts}
                     style={stylePrecincts} // Use dynamic styling for each feature
                     onEachFeature={showPopulationData}
