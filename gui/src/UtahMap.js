@@ -23,7 +23,7 @@ export const UtahMap = () => {
     const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
     const [districtColors, setDistrictColors] = useState({})
     const [precincts, setPrecincts] = useState(null);
-    const [selectedRace, setSelectedRace] = useState("PP_WHTALN"); // State for selecting CHOROPLETH race
+    const [selectedRace, setSelectedRace] = useState("PP_BAAALN"); // State for selecting CHOROPLETH race
     const geoJsonRef = useRef(); // Ref to access GeoJSON layer
     const mapRef = useRef(); // Ref to access the map instance
 
