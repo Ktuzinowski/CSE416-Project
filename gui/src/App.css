@@ -153,7 +153,10 @@ nav {
   flex-direction: column;
   z-index: 2002;
   overflow-x: hidden; /* Prevent horizontal overflow */
+
+  
 }
+
 
 .left_data_panel_current_selection {
   display: flex;
@@ -165,12 +168,14 @@ nav {
 
 .left_data_panel_title {
   text-align: center;
+  
 }
 
 .left_data_table {
   padding-left: 10px;
   flex-grow: 1; /* Allows content to expand */
   overflow-y: auto; /* Scroll only vertically if needed */
+  
 }
 
 .left_data_expand_button {
@@ -197,6 +202,8 @@ nav {
   cursor: default;
   color: black;
   margin-left: -12px;
+
+  max-width: 120px;
 }
 
 .left_data_column_names th, .left_data_column_names td, .left_data_column_names tr {
@@ -238,6 +245,7 @@ nav {
 
 .left_data_column_header {
   position: relative;
+  
 }
 
 .pin-icon {

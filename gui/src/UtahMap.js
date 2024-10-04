@@ -9,6 +9,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import utahCongressionalData from "./utah_data/utah_congressional_plan.geojson";
 import { LeftDataPanel } from "./LeftDataPanel";
+import { LeftPrecinctPanel } from "./LeftPrecinctPanel";
 import { MAPBOX_ACCESS_TOKEN } from "./constants";
 import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
 import { COLORS } from "./Colors";
@@ -307,17 +308,27 @@ export const UtahMap = () => {
       <div className="map-wrapper">
         {" "}
         {/* New wrapper for Flexbox layout */}
-        <LeftDataPanel
-          data={congressionalDistricts}
-          onSelectFeature={onSelectFeature}
-          districtColors={districtColors}
-          onChangeBorderForHoverOverDistrict={
-            onChangeBorderForHoverOverDistrict
-          }
-          onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict}
-          selectedRace={selectedRace}
-          setSelectedRace={setSelectedRace}
-        />
+
+        {activeLayer === "districts" ? (
+            <LeftDataPanel
+                data={congressionalDistricts}
+                onSelectFeature={onSelectFeature}
+                districtColors={districtColors}
+                onChangeBorderForHoverOverDistrict={onChangeBorderForHoverOverDistrict}
+                onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict}
+                selectedRace={selectedRace}
+                setSelectedRace={setSelectedRace}
+            />
+        ) : (
+            <LeftPrecinctPanel
+                data={precincts}
+                onSelectFeature={onSelectFeature}
+                onChangeBorderForHoverOverDistrict={onChangeBorderForHoverOverDistrict}
+                onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict}
+                selectedRace={selectedRace}
+                setSelectedRace={setSelectedRace}
+            />
+        )}
         <div className="map-container">
           <MapContainer
             center={[39.32098, -111.093731]} // Center the map on Utah's coordinates
