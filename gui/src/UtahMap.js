@@ -12,6 +12,8 @@ import { LeftDataPanel } from "./LeftDataPanel";
 import { MAPBOX_ACCESS_TOKEN } from "./constants";
 import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
 import { COLORS } from "./Colors";
+import utahAggDistrictData from "./utah_data/aggregatedUtahDistricts.geojson";
+
 
 const { Overlay } = LayersControl
 
@@ -40,30 +42,9 @@ export const UtahMap = () => {
     const geoJsonRef = useRef(); // Ref to access GeoJSON layer
     const mapRef = useRef(); // Ref to access the map instance
     
-    useEffect(() => {
-        fetch(utahCongressionalData)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data)
-                setCongressionalDistricts(data)
-                const colors = {};
-                data.features.forEach((feature, index) => {
-                const district = feature.properties.DISTRICT;
-                    if (!colors[district]) {
-                        colors[district] = {
-                            color: "black",
-                            fillColor: COLORS[index],
-                            fillOpacity: 0.6
-                        }
-                    }
-                });
-                setDistrictColors(colors); // Set district colors after processing all features
-            })
-        .catch((error => console.error("Error loading the Congressional Districts GeoJSON data: ", error)))
-    }, [])
 
   useEffect(() => {
-    fetch(utahCongressionalData)
+    fetch(utahAggDistrictData)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -113,6 +94,19 @@ export const UtahMap = () => {
       );
   }, []);
 
+  // useEffect(() => {
+  //   fetch(utahAggDistrictData)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+
+  //       setCongressionalDistricts(data); // Set the updated GeoJSON data
+  //       console.log("Update with aggregated precinct data to District:", data);
+  //     })
+  //     .catch((error) =>
+  //       console.error("Error loading the Precinct GeoJSON data: ", error)
+  //     );
+  // }, []);
+
   // Zoom to selected feature whenever it changes
   useEffect(() => {
     if (selectedFeature && geoJsonRef.current && mapRef.current) {
@@ -155,16 +149,38 @@ export const UtahMap = () => {
     const popupContent = `
         <div style="font-family: Arial, sans-serif; line-height: 1.5;">
             <h3 style="margin: 0;">Precinct: ${feature.properties.resultspre}</h3>
-            <p><strong>Donald Trump:</strong> ${feature.properties.G20PRERTRU}</p>
-            <p><strong>Joe Biden:</strong> ${feature.properties.G20PREDBID}</p>
+            <p><strong>Republican:</strong> ${feature.properties.G20PRERTRU}</p>
+            <p><strong>Democrat:</strong> ${feature.properties.G20PREDBID}</p>
             <p><strong>Population:</strong> ${feature.properties.PP_TOTAL}</p>
-            <p><strong>White:</strong> ${feature.properties.PP_WHTALN}</p>
-            <p><strong>Black:</strong> ${feature.properties.PP_BAAALN}</p>
-            <p><strong>Hispanic:</strong> ${feature.properties.PP_HISPLAT}</p>
-            <p><strong>Asian:</strong> ${feature.properties.PP_ASNALN}</p>
-            <p><strong>Native:</strong> ${feature.properties.PP_NAMALN}</p>
-            <p><strong>Pacific:</strong> ${feature.properties.PP_HPIALN}</p>
-            <p><strong>Other:</strong> ${feature.properties.PP_OTHALN}</p>
+
+            <p><strong>White:</strong> ${((feature.properties.PP_WHTALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Black:</strong> ${((feature.properties.PP_BAAALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Hispanic:</strong> ${((feature.properties.PP_HISPLAT / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Asian:</strong> ${((feature.properties.PP_ASNALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Pacific:</strong> ${((feature.properties.PP_HPIALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Native:</strong> ${((feature.properties.PP_NAMALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Other:</strong> ${((feature.properties.PP_OTHALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+
+        </div>
+        `;
+    layer.bindPopup(popupContent);
+  };
+
+  const showDistrictData = (feature, layer) => {
+    const popupContent = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.5;">
+            <h3 style="margin: 0;">District: ${feature.properties.DISTRICT}</h3>
+            <p><strong>Republican:</strong> ${feature.properties.G20PRERTRU}</p>
+            <p><strong>Democrat:</strong> ${feature.properties.G20PREDBID}</p>
+            <p><strong>Population:</strong> ${feature.properties.PP_TOTAL}</p>
+
+            <p><strong>White:</strong> ${((feature.properties.PP_WHTALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Black:</strong> ${((feature.properties.PP_BAAALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Hispanic:</strong> ${((feature.properties.PP_HISPLAT / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Asian:</strong> ${((feature.properties.PP_ASNALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Pacific:</strong> ${((feature.properties.PP_HPIALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Native:</strong> ${((feature.properties.PP_NAMALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
+            <p><strong>Other:</strong> ${((feature.properties.PP_OTHALN / feature.properties.PP_TOTAL) * 100).toFixed(2)}%</p>
 
         </div>
         `;
@@ -249,7 +265,7 @@ export const UtahMap = () => {
                     ref={geoJsonRef} // Set reference to GeoJSON layer
                     data={congressionalDistricts}
                     style={styleFeature} // Use dynamic styling for each feature
-                    onEachFeature={showPopulationData}
+                    onEachFeature={showDistrictData}
                   />
                 )}
               </Overlay>
