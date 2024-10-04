@@ -23,11 +23,28 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
     const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
 
+    const unwantedColumns = ["TAPERSONS", "VAPERSONS"]; //these are useless columns that we will not need to show in LEFT hand panel
+
+    const columnNameMapping = { //map the names to change the weird names to something more readable
+        "PP_TOTAL": "Population",
+        "G20PRERTRU": "Republican",
+        "G20PREDBID": "Democrat",
+        "PP_WHTALN": "White",
+        "PP_BAAALN": "Black",
+        "PP_HISPLAT": "Hispanic",
+        "PP_ASNALN": "Asian",
+        "PP_HPIALN": "Pacific",
+        "PP_NAMALN": "Native",
+        "PP_OTHALN": "Other",
+       
+    };
+
     useEffect(() => {
         if (data !== null) {
             const keys = ["index", ...Object.keys(data.features[0].properties)];
-            setColumnNames(keys);
-            setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
+            const filteredKeys = keys.filter(key => !unwantedColumns.includes(key)); // Filter out unwanted columns
+            setColumnNames(filteredKeys);
+            setPinnedColumns(filteredKeys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
         }
     }, [data]);
 
@@ -79,7 +96,6 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
 
     return (
         
-        
         <div className="container_left_data_panel" style={{
             width: isExpanded ? "100%" : "auto", // Auto-width when collapsed
             maxWidth: isExpanded ? "100%" : "fit-content", // Fit the content naturally
@@ -92,14 +108,15 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
                 </button>
             </div>
 
-            <div style={{ border: "1px solid #ccc", marginBottom: "20px" }}>
-            <label style={{ fontSize:"17px", fontWeight:"Bold", marginLeft: "30px" }} htmlFor="race-select"> Choropleth Map: Select Race</label>
+            <div style={{ marginBottom: "20px" }}>
+            <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
             <select
                 id="race-select"
                 value={selectedRace}
                 onChange={(e) => setSelectedRace(e.target.value)}
-                style={{marginLeft: "10px", fontSize:"15px"}}
-            >
+                style={{marginLeft: "10px", fontSize:"15px", padding: "1px"}}
+            >   
+                <option value="">Default</option>
                 <option value="PP_WHTALN">White</option>
                 <option value="PP_BAAALN">Black</option>
                 <option value="PP_HISPLAT">Hispanic</option>
@@ -120,7 +137,7 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
                             <tr>
                                 {getVisibleColumns().map((key) => (
                                     <th key={key} className="left_data_column_header">
-                                        {key}
+                                        {columnNameMapping[key] || key}
                                         {key !== "index" && isExpanded && (
                                             <span className="pin-icon" onClick={() => togglePin(key)} size={1.1}>
                                                 <Icon name={pinnedColumns[key] ? "thumbtack-solid" : "thumbtack"} />

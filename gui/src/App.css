@@ -153,7 +153,10 @@ nav {
   flex-direction: column;
   z-index: 2002;
   overflow-x: hidden; /* Prevent horizontal overflow */
+
+  
 }
+
 
 .left_data_panel_current_selection {
   display: flex;
@@ -171,6 +174,7 @@ nav {
   padding-left: 10px;
   flex-grow: 1; /* Allows content to expand */
   overflow-y: auto; /* Scroll only vertically if needed */
+  
 }
 
 .left_data_expand_button {
@@ -197,6 +201,8 @@ nav {
   cursor: default;
   color: black;
   margin-left: -12px;
+
+  max-width: 120px;
 }
 
 .left_data_column_names th, .left_data_column_names td, .left_data_column_names tr {
@@ -238,6 +244,7 @@ nav {
 
 .left_data_column_header {
   position: relative;
+  
 }
 
 .pin-icon {
@@ -341,3 +348,19 @@ nav {
   text-decoration: none; /* remove underline on hover for cleaner effect */
 }
 
+.custom-layer-controls {
+  position: absolute; /* Position relative to the nearest positioned ancestor */
+  top: 10px; /* Distance from the top */
+  right: 10px; /* Distance from the left */
+  z-index: 1000; /* Ensure it appears above the map */
+  background-color: rgba(255, 255, 255, 0.8); /* Optional: semi-transparent background */
+  border-radius: 5px; /* Optional: rounded corners */
+  padding: 10px; /* Optional: padding around the buttons */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
+}
+
+.dropdown_for_choropleth {
+  font-size: 17px;
+  font-weight: bold;
+  padding-left: 10px;
+}
