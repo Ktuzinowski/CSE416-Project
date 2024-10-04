@@ -93,13 +93,14 @@ export const LeftDataPanel = ({ data, onSelectFeature, selectedRace, setSelected
             </div>
 
             <div style={{ border: "1px solid #ccc", marginBottom: "20px" }}>
-            <label style={{ fontSize:"17px", fontWeight:"Bold", marginLeft: "30px" }} htmlFor="race-select"> Choropleth Map: Select Race</label>
+            <label style={{ fontSize:"17px", fontWeight:"Bold", marginLeft: "30px" }} htmlFor="race-select"> Choropleth Map</label>
             <select
                 id="race-select"
                 value={selectedRace}
                 onChange={(e) => setSelectedRace(e.target.value)}
                 style={{marginLeft: "10px", fontSize:"15px"}}
-            >
+            >   
+                <option value="">Default</option>
                 <option value="PP_WHTALN">White</option>
                 <option value="PP_BAAALN">Black</option>
                 <option value="PP_HISPLAT">Hispanic</option>

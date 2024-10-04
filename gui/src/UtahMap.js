@@ -22,7 +22,7 @@ export const UtahMap = () => {
   const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
   const [districtColors, setDistrictColors] = useState({});
   const [precincts, setPrecincts] = useState(null);
-  const [selectedRace, setSelectedRace] = useState("PP_BAAALN"); // State for selecting CHOROPLETH race, defaulted on black
+  const [selectedRace, setSelectedRace] = useState(""); // State for selecting CHOROPLETH race, defaulted on black
   const geoJsonRef = useRef(); // Ref to access GeoJSON layer
   const mapRef = useRef(); // Ref to access the map instance
 
@@ -149,6 +149,38 @@ export const UtahMap = () => {
       weight: 1,
       fillOpacity: 0.7,
     };
+  };
+
+  
+  const styleDistricts = (feature) => {
+
+    if(selectedRace == ""){ //if NOT choropleth
+      const district = feature.properties.DISTRICT;
+
+      return {
+        color: districtColors[district].color, // border color for each district
+        fillColor: districtColors[district].fillColor, // unique color for the district
+        weight: 2,
+        fillOpacity: districtColors[district].fillOpacity,
+      };
+
+    } else{ //if CHOROpleth
+      const totalPop = feature.properties.PP_TOTAL;
+      const racePop = feature.properties[selectedRace];
+      const percent = totalPop > 0 ? (racePop / totalPop) * 100 : 0;
+
+      //fill teh colors based on the racial demogprahic percentage
+      const fillColor = colorScale(percent).hex();
+
+      return {
+        color: "#000",
+        fillColor: fillColor,
+        weight: 1,
+        fillOpacity: 0.7,
+      };
+      
+    }
+    
   };
 
   const showPopulationData = (feature, layer) => {
@@ -320,7 +352,7 @@ export const UtahMap = () => {
               <GeoJSON
                 ref={geoJsonRef}
                 data={congressionalDistricts}
-                style={styleFeature}
+                style={styleDistricts}
                 onEachFeature={showDistrictData}
               />
             )}
