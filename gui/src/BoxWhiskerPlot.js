@@ -13,8 +13,9 @@ const BWGraph = ({ geojsonData }) => {
       return await Promise.all(data.map(async (d) => {
         const districtId = d.properties.DISTRICT
         const response = await axios.get(
-            `http://localhost:8080/district/${districtId}/votes`
+            `http://localhost:8080/districts/${districtId}/votes`
         );
+        console.log(response)
         const { republicanPercentage, democratPercentage } = response.data;
         return ({
             district: districtId,
