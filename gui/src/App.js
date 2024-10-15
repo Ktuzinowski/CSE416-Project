@@ -5,7 +5,6 @@ import { HomePage } from './HomePage';
 import { ArizonaMap } from "./ArizonaMap";
 import { UtahMap } from "./UtahMap";
 import { TexasMap } from './TexasMap'
-import { Education } from "./Education";
 import { Routes, Route, Link } from "react-router-dom"
 
 // Fix marker icon issue
@@ -33,9 +32,6 @@ function App() {
           <li>
             <Link to="/utah" className="navigation_links">Utah</Link>
           </li>
-          <li>
-            <Link to="/education" className="navigation_links">Education</Link>
-          </li>
         </ul>
       </nav>
       <Routes>
@@ -43,7 +39,6 @@ function App() {
         <Route path="/arizona" element={<ArizonaMap />} />
         <Route path="/texas" element={<TexasMap />} />
         <Route path="/utah" element={<UtahMap />} />
-        <Route path="/education" element={<Education />} />
       </Routes>
     </>
   );
