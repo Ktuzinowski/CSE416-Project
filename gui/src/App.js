@@ -7,6 +7,7 @@ import { ArizonaMap } from "./ArizonaMap";
 import { UtahMap } from "./UtahMap";
 import { TexasMap } from './TexasMap'
 import { Routes, Route, Link, useNavigate, useLocation } from "react-router-dom"
+import {DataSources} from "./DataSources";
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -73,6 +74,9 @@ function App() {
               <option value="Utah">Utah</option>
             </select>
           </li>
+          <li>
+            <Link to="/datasources" className="navigation_links">Sources</Link>
+          </li>
         </ul>
       </nav>
       <Routes>
@@ -80,6 +84,7 @@ function App() {
         <Route path="/arizona" element={<ArizonaMap />} />
         <Route path="/texas" element={<TexasMap />} />
         <Route path="/utah" element={<UtahMap />} />
+        <Route path="/datasources" element={<DataSources />} />
       </Routes>
     </>
   );

@@ -48,6 +48,8 @@ li {
   line-height: 1.5rem; /* Consistent line-height */
   text-decoration: none;
   transition: background-color 0.3s ease;
+  vertical-align: middle; /* Ensure inline alignment with Link */
+  font-family: Arial, sans-serif; /* Match font with .navigation_links */
   /* Do not use appearance: none to keep the default chevron */
 }
 
@@ -83,6 +85,8 @@ select.navigation_select_links:hover {
   display: inline-flex;
   align-items: center; /* Center the text inside the select */
   line-height: 1.2rem; /* Consistent line-height */
+  vertical-align: middle; /* Ensure inline alignment with select */
+  font-family: Arial, sans-serif; /* Match font with .navigation_links */
 }
 
 .navigation_links:hover {
