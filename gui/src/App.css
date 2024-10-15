@@ -38,7 +38,6 @@ li {
   background-color: #333; /* Match background to nav */
   color: white; /* White text */
   font-size: 1rem; /* Match font size to links */
-  font-weight: normal; /* Ensure normal font weight */
   cursor: pointer;
   border: none;
   padding: 8px 16px; /* Ensure consistent padding */
