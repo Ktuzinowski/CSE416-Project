@@ -4,11 +4,14 @@ import "leaflet/dist/leaflet.css";
 import { LeftDataPanel } from "./LeftDataPanel";
 import { LeftPrecinctPanel } from "./LeftPrecinctPanel";
 import { MAPBOX_ACCESS_TOKEN } from "./constants";
-import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
 import { COLORS } from "./Colors";
-import utahAggDistrictData from "./utah_data/aggregatedUtahDistricts.geojson";
 import utahGeo from "./utah_data/utah.geojson";
 import chroma from "chroma-js"; //this for the chloropeth map
+
+//this is for aggregated Districts (has precincts and census blocks data)
+import utahAggDistrictData from "./utah_data/aggregatedUtahDistricts.geojson"; 
+//this is for aggregated precincts (has census blocks data)
+import utahPrecinctData from "./utah_data/aggregated_pre.geojson";
 
 export const UtahMap = () => {
   const [congressionalDistricts, setCongressionalDistricts] = useState(null);
