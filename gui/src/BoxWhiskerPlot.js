@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import axios from "axios";
 
-const BWGraph = ({ geojsonData }) => {
+const BWGraph = ({ geojsonData, state }) => {
   const svgRef = useRef();
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const BWGraph = ({ geojsonData }) => {
       return await Promise.all(data.map(async (d) => {
         const districtId = d.properties.DISTRICT
         const response = await axios.get(
-            `http://localhost:8080/districts/${districtId}/votes`
+            `http://localhost:8080/${state}/districts/${districtId}/votes`
         );
         console.log(response)
         const { republicanPercentage, democratPercentage } = response.data;

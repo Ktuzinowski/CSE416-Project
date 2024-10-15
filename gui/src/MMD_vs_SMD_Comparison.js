@@ -59,7 +59,7 @@ export const MMD_vs_SMD_Comparison = ({ data }) => {
 
   const renderBWP = () => {
     return geojsonData ? (
-      <BWGraph geojsonData={geojsonData} />
+      <BWGraph geojsonData={geojsonData} state={"utah"}/>
     ) : (
       <p>Loading BWP...</p>
     );

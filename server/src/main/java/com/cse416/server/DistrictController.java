@@ -14,8 +14,8 @@ public class DistrictController {
     @Autowired
     private VoteService voteService;
     
-    @GetMapping("/districts/{id_for_district}/votes")
-    public ResponseEntity<VotePercentageResponse> getVotesPercentage(@PathVariable("id_for_district") Long districtId) {
+    @GetMapping("/{state}/districts/{id_for_district}/votes")
+    public ResponseEntity<VotePercentageResponse> getVotesPercentage(@PathVariable("state") String state, @PathVariable("id_for_district") Long districtId) {
         VotePercentageResponse response = voteService.calculateVotePercentage(districtId);
         return ResponseEntity.ok(response);
     }
