@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import "./App.css"
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -5,7 +6,7 @@ import { HomePage } from './HomePage';
 import { ArizonaMap } from "./ArizonaMap";
 import { UtahMap } from "./UtahMap";
 import { TexasMap } from './TexasMap'
-import { Routes, Route, Link } from "react-router-dom"
+import { Routes, Route, Link, useNavigate, useLocation } from "react-router-dom"
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -16,21 +17,61 @@ L.Icon.Default.mergeOptions({
 });
 
 function App() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  // Set default state based on the current route
+  const getDefaultState = () => {
+    switch (location.pathname) {
+      case "/arizona": return "Arizona";
+      case "/texas": return "Texas";
+      case "/utah": return "Utah";
+      default: return "State"; // for HomePage or default
+    }
+  };
+
+  const [selectedState, setSelectedState] = useState(getDefaultState);
+
+  // Handle state change and navigation
+  const handleStateChange = (e) => {
+    const state = e.target.value;
+    setSelectedState(state);
+
+    // Navigate to the corresponding state map
+    switch (state) {
+      case "Arizona":
+        navigate("/arizona");
+        break;
+      case "Texas":
+        navigate("/texas");
+        break;
+      case "Utah":
+        navigate("/utah");
+        break;
+      default:
+        navigate("/");
+        break;
+    }
+  }
+
   return (
     <>
       <nav >
         <ul>
           <li>
-            <Link to="/" className="navigation_links">Home</Link>
+            <Link to="/" className="navigation_links" onClick={() => setSelectedState("State")}>Home</Link>
           </li>
           <li>
-            <Link to="/arizona" className="navigation_links">Arizona</Link>
-          </li>
-          <li>
-            <Link to="/texas" className="navigation_links">Texas</Link>
-          </li>
-          <li>
-            <Link to="/utah" className="navigation_links">Utah</Link>
+            <select
+              value={selectedState}
+              onChange={handleStateChange}
+              className="navigation_select_links"
+            >
+              <option value="State">State</option>
+              <option value="Arizona">Arizona</option>
+              <option value="Texas">Texas</option>
+              <option value="Utah">Utah</option>
+            </select>
           </li>
         </ul>
       </nav>

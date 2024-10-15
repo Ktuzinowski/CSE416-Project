@@ -7,45 +7,87 @@ body,
   padding: 0;
   overflow: hidden;
 }
-
+/* General navbar styling */
 nav {
-  position: fixed; /* For layering above the overlay */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #333; /* Dark background for the navbar */
+  background-color: #333; /* Dark background */
   padding: 0.75%; /* Add some padding */
-  height: 20px;
+  height: 20px; /* Adjust height for better layout */
   z-index: 2003;
+  display: flex;
+  align-items: center; /* Align items vertically */
 }
 
+/* Styling for unordered list */
 ul {
   list-style-type: none; /* Remove default bullet points */
   margin: 0; /* Remove margin */
   padding: 0; /* Remove padding */
   display: flex; /* Horizontally align items */
-  justify-content: flex-start; /* Align items to the left */
+  align-items: center; /* Ensure vertical alignment */
 }
 
 li {
   margin-right: 1%; /* Add space between items */
+}/* Custom dropdown styling to match links but keep the default chevron */
+
+.navigation_select_links {
+  background-color: #333; /* Match background to nav */
+  color: white; /* White text */
+  font-size: 1rem; /* Match font size to links */
+  font-weight: normal; /* Ensure normal font weight */
+  cursor: pointer;
+  border: none;
+  padding: 8px 16px; /* Ensure consistent padding */
+  height: 100%; /* Full height to match the link */
+  display: inline-flex;
+  align-items: center; /* Center the text inside the select */
+  line-height: 1.5rem; /* Consistent line-height */
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  /* Do not use appearance: none to keep the default chevron */
 }
 
+/* Ensure the select maintains its background on focus */
+.navigation_select_links:focus {
+  background-color: #333; /* Keep the dark background */
+  color: white; /* Ensure text stays white */
+  outline: none; /* Remove the default outline */
+}
+
+/* Hover effect for dropdown */
+select.navigation_select_links:hover {
+  background-color: #575757; /* Hover background */
+  border-radius: 5px; /* Rounded corners on hover */
+}
+
+/* Dropdown option styling */
+.navigation_select_links option {
+  background-color: #333; /* Match background */
+  color: white; /* White text */
+}
+
+
+
+/* Navigation links styling */
 .navigation_links {
   color: white; /* White text color */
   text-decoration: none; /* Remove underline */
   font-size: 1rem; /* Adjust font size */
   padding: 8px 16px; /* Add padding inside links */
   transition: background-color 0.3s ease; /* Smooth transition for hover */
+  height: 100%; /* Ensure full height to match select */
+  display: inline-flex;
+  align-items: center; /* Center the text inside the select */
+  line-height: 1.2rem; /* Consistent line-height */
 }
 
 .navigation_links:hover {
   background-color: #575757; /* Change background on hover */
-  border-radius: 5.5%; /* Rounded corners on hover */
-}
-
-.navigation_links:active {
-  background-color: #222; /* Darker background when clicked */
+  border-radius: 5px; /* Rounded corners on hover */
 }
 
 /* Styling for the state heading */
@@ -269,14 +311,14 @@ li {
 
 .map-container {
   flex-grow: 1; /* Take remaining space */
-  height: calc(100% - 20px);
+  height: calc(100% - 22px);
   position: relative;
   margin-top: 20px;
 }
 
 .home_page_map_container {
   flex-grow: 1; /* Take remaining space */
-  height: calc(100% - 20px);
+  height: calc(100% - 22px);
   margin-top: 20px;
   position: relative;
 }
