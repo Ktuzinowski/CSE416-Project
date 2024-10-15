@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, ZoomControl } from 'react-leaflet';
 import { MAPBOX_ACCESS_TOKEN } from "./constants"
 import "leaflet/dist/leaflet.css"; // Ensure Leaflet CSS is imported
 
@@ -8998,18 +8998,23 @@ export const HomePage = () => {
         });
     };
 
+    const bounds = [
+        [24.396308, -125.0], // Southwest coordinates (Hawaii / Southern California)
+        [49.384358, -66.93457] // Northeast coordinates (Maine)
+      ];
+
     return (
         <>            
-            <MapContainer className='home_page_map_container' center={[38, -95]} zoom={5}     
-                scrollWheelZoom={false}   // Disable zoom on scroll
-                doubleClickZoom={false}   // Disable zoom on double-click
-                zoomControl={false}       // Disable zoom controls
+            <MapContainer className='home_page_map_container' center={[38, -95]} zoom={4} minZoom={4} maxZoom={8} maxBounds={bounds}  // Set the bounding box
+            maxBoundsViscosity={1.0}  // Prevent the map from panning out of the bounds     
+            zoomControl={false} // Disable default zoom control
             >
                 <TileLayer
                     url={`https://api.mapbox.com/styles/v1/ktuzinowski/cm1msivj900k601p69fqk5tlt/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_ACCESS_TOKEN}&fresh=True`}
                     attribution="&copy; OpenStreetMap contributors"
                 />
                 <GeoJSON data={statesGeoJSON} onEachFeature={onEachFeature} />
+                <ZoomControl position="bottomright" />
             </MapContainer>
         </>
     );
