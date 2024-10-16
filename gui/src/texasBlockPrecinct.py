@@ -4,7 +4,9 @@ import maup
 
 #yang used this to aggregate the TExas census block data into the precincts
 
-blocks = geopandas.read_file("src/texas_data/texasBlocks.geojson").to_crs(26914)
+#texasBlocks is the 2021 Block Group data
+#texasBlockData is 2020 Block level from CVAP
+blocks = geopandas.read_file("src/texas_data/texasBlockData.geojson").to_crs(26914)
 precincts = geopandas.read_file("src/texas_data/texasPrecinctData.geojson").to_crs(26914)
 
 #white, blk, hispanic, asian, native, pacific, other
@@ -18,7 +20,7 @@ blocks_to_precincts_assignment = maup.assign(blocks, precincts)
 # Aggregate the block data by precinct using the assignment and sum the values
 precincts[variables] = blocks[variables].groupby(blocks_to_precincts_assignment).sum()
 
-precincts.to_file("texasAggPrecinct.geojson", driver='GeoJSON')
+#precincts.to_file("texasAggPrecinct.geojson", driver='GeoJSON')
 
 # Check if any of the variables is NaN for a precinct
 precincts_with_nan = precincts[variables].isnull().any(axis=1)

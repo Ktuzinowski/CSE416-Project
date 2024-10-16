@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { LeftDataPanel } from "./LeftDataPanel";
-import { LeftPrecinctPanel } from "./LeftPrecinctPanel";
+import { LeftDistrictPanelTX } from "./LeftDistrictPanelTX";
+import { LeftPrecinctPanelTX } from "./LeftPrecinctPanelTX";
 import { MAPBOX_ACCESS_TOKEN } from "./constants";
 import { COLORS } from "./Colors";
 //import utahGeo from "./utah_data/utah.geojson";
@@ -325,7 +325,7 @@ export const TexasMap = () => {
   };
 
   //show population data just shows precinct data basically
-  
+
   const showPopulationData = (feature, layer) => {
     const popupContent = `
         <div style="font-family: Arial, sans-serif; line-height: 1.5;">
@@ -484,7 +484,7 @@ export const TexasMap = () => {
         {" "}
         {/* New wrapper for Flexbox layout */}
         {activeLayer === "districts" ? (
-          <LeftDataPanel
+          <LeftDistrictPanelTX
             data={congressionalDistricts}
             onSelectFeature={onSelectFeature}
             districtColors={districtColors}
@@ -496,7 +496,7 @@ export const TexasMap = () => {
             setSelectedRace={setSelectedRace}
           />
         ) : (
-          <LeftPrecinctPanel
+          <LeftPrecinctPanelTX
             data={precincts}
             onSelectFeature={onSelectFeature}
             onChangeBorderForHoverOverDistrict={
