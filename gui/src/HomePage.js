@@ -1008,7 +1008,8 @@ export const HomePage = () => {
                  "landarea": 676588,
                  "houseseats": 36,
                  "statehood": "1845-12-29",
-                 "group": "US States"
+                 "group": "US States",
+                 "link": "/texas" 
                 },
                 "geometry": {
                  "coordinates": [

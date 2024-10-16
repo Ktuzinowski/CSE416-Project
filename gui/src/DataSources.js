@@ -22,7 +22,7 @@ export const DataSources = () => {
           <p>
             RDH has data involving precinct boundaries, election results, demographic data from the census, voter files, and community maps.
             For this application, we obtained different types of data from the RDH for our two states, Utah and Texas. 
-            All of our data was from 2022, which was the most recently available and up-to-date information.
+            All of our data was from between 2020 and 2022, which was the most recently available and up-to-date information.
             We obtained district level data in order to display the different districts for our states on the map. 
             We also got precinct level data for the election voting data, for example, whether Republican or Democrats won and which candidates received the most votes.
             Lastly, we obtained census block level data in order to get more information on the population and racial demographics.
