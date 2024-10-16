@@ -2,6 +2,8 @@ import geopandas
 import maup
 import pandas
 
+# yang used this to aggregate the precincts into the Districts, which now have the racial demographics and election data.
+
 precincts = geopandas.read_file("src/utah_data/aggregated_pre.geojson").to_crs(26912)
 districts = geopandas.read_file("src/utah_data/utah_congressional_plan.geojson").to_crs(26912)
 
