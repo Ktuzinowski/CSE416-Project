@@ -129,8 +129,8 @@ export const ArizonaMap = () => {
             <LeftDataPanel data={congressionalDistricts} onSelectFeature={onSelectFeature} districtColors={districtColors} onChangeBorderForHoverOverDistrict={onChangeBorderForHoverOverDistrict} onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict} />
             <div className="map-container">
                 <MapContainer
-                    center={[34.0489, -113.0937]} // Center the map on Utah's coordinates
-                    zoom={6}
+                    center={[34.2489, -112.0937]} // Center the map on Utah's coordinates
+                    zoom={7}
                     minZoom={3}
                     maxZoom={10}
                     className="map-container"  // Attach the new class

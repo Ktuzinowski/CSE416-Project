@@ -519,8 +519,8 @@ export const UtahMap = () => {
         )}
         <div className="map-container">
           <MapContainer
-            center={[39.32098, -111.093731]} // Center the map on Utah's coordinates
-            zoom={6}
+            center={[39.52098, -111.093731]} // Center the map on Utah's coordinates
+            zoom={7}
             minZoom={3}
             className="map-container" // Attach the new class
             zoomControl={false} // Disable default zoom control
