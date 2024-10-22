@@ -6,11 +6,11 @@ import maup
 
 #texasBlocks is the 2021 Block Group data
 #texasBlockData is 2020 Block level from CVAP
-blocks = geopandas.read_file("src/texas_data/texasBlockData.geojson").to_crs(26914)
+blocks = geopandas.read_file("src/texas_data/txBlocks.geojson").to_crs(26914)
 precincts = geopandas.read_file("src/texas_data/texasPrecinctData.geojson").to_crs(26914)
 
-#white, blk, hispanic, asian, native, pacific, other
-variables = ["TOT_POP21", "WHT_NHSP21", "BLK_NHSP21","HSP_POP21", "ASN_NHSP21", "AIA_NHSP21", "HPI_NHSP21", "OTH_NHSP21"]
+#pop total, white, blk, hispanic, asian, native, pacific, other
+variables = ["P0010001", "P0010003", "P0010004","P0020002", "P0010006", "P0010005", "P0010007", "P0010008"]
 
 #"G20PRERTRU", "G20PREDBID", "G20PRELJOR", "G20PREGHAW", "G20PREOWRI"]
 
