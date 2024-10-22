@@ -403,11 +403,6 @@ export const TexasMap = () => {
           (feature.properties.WHT_NHSP21 / feature.properties.TOT_POP21) *
           100
         ).toFixed(2)}%</p>
-
-        <p><strong>White:</strong> ${(
-          (feature.properties.WHT_NHSP21 / feature.properties.TOT_POP21) *
-          100
-        ).toFixed(2)}%</p>
         <p><strong>Black:</strong> ${(
           (feature.properties.BLK_NHSP21 / feature.properties.TOT_POP21) *
           100
