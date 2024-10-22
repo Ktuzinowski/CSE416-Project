@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react"
 import { MapContainer, TileLayer, GeoJSON, LayersControl, ZoomControl } from "react-leaflet"
 import 'leaflet/dist/leaflet.css'
 import arizonaCongressionalData from "./arizona_data/arizona_congressional_plan.geojson"
-import { LeftDataPanel } from "./LeftDataPanel"
+import { LeftDistrictPanelUT } from "./LeftDistrictPanelUT"
 import { MAPBOX_ACCESS_TOKEN } from "./constants"
 import { COLORS } from "./Colors"
 
@@ -126,7 +126,7 @@ export const ArizonaMap = () => {
     return (
         <>
         <div className="map-wrapper">  {/* New wrapper for Flexbox layout */}
-            <LeftDataPanel data={congressionalDistricts} onSelectFeature={onSelectFeature} districtColors={districtColors} onChangeBorderForHoverOverDistrict={onChangeBorderForHoverOverDistrict} onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict} />
+            <LeftDistrictPanelUT data={congressionalDistricts} onSelectFeature={onSelectFeature} districtColors={districtColors} onChangeBorderForHoverOverDistrict={onChangeBorderForHoverOverDistrict} onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict} />
             <div className="map-container">
                 <MapContainer
                     center={[34.0489, -113.0937]} // Center the map on Utah's coordinates

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { LeftDataPanel } from "./LeftDataPanel";
-import { LeftPrecinctPanel } from "./LeftPrecinctPanel";
+import { LeftDistrictPanelUT } from "./LeftDistrictPanelUT";
+import { LeftPrecinctPanelUT } from "./LeftPrecinctPanelUT";
 import { MAPBOX_ACCESS_TOKEN } from "./constants";
 import { COLORS } from "./Colors";
 import utahGeo from "./utah_data/utah.geojson";
@@ -497,7 +497,7 @@ export const UtahMap = () => {
         {" "}
         {/* New wrapper for Flexbox layout */}
         {activeLayer === "districts" ? (
-          <LeftDataPanel
+          <LeftDistrictPanelUT
             data={congressionalDistricts}
             onSelectFeature={onSelectFeature}
             districtColors={districtColors}
@@ -509,7 +509,7 @@ export const UtahMap = () => {
             setSelectedRace={setSelectedRace}
           />
         ) : (
-          <LeftPrecinctPanel
+          <LeftPrecinctPanelUT
             data={precincts}
             onSelectFeature={onSelectFeature}
             onChangeBorderForHoverOverDistrict={
