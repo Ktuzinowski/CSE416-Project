@@ -7,7 +7,6 @@ import { REQUESTS, axiosClient } from './axiosClient';
 export const HomePage = () => {
     const [stateOutlines, setStateOutlines] = useState(null);
 
-    // Function to fetch district outlines from the Spring Boot API
     const fetchDistrictOutlines = async () => {
         try {
             const response = await axiosClient.get(REQUESTS.State_Outlines);

@@ -74,9 +74,6 @@ function App() {
           <li>
             <Link to="/datasources" className="navigation_links">Data Sources</Link>
           </li>
-          <li>
-            <Link to="/datasources" className="navigation_links">Data Sources</Link>
-          </li>
         </ul>
       </nav>
       <Routes>
