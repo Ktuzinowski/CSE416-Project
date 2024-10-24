@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
-import { MMD_vs_SMD_Comparison } from "./MMD_vs_SMD_Comparison";
-import Icon from "./Icon";
-import "./App.css";
+import { MMD_vs_SMD_Comparison } from "../mmd_vs_smd/MMD_vs_SMD_Comparison";
+import Icon from "../utils/Icon";
+import "../App.css";
 
 function argbToRgb(argbColor) {
     // Convert to unsigned 32-bit if the number is negative

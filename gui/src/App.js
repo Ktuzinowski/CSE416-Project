@@ -1,13 +1,12 @@
+import React, { useState } from "react";
 import "./App.css"
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { HomePage } from './HomePage';
-import { ArizonaMap } from "./ArizonaMap";
-import { UtahMap } from "./UtahMap";
-import { TexasMap } from './TexasMap'
-import { Education } from "./Education";
-import {DataSources} from "./DataSources";
-import { Routes, Route, Link } from "react-router-dom"
+import { UtahMap } from "./state_map/UtahMap";
+import { TexasMap } from './state_map/TexasMap'
+import { Routes, Route, Link, useNavigate, useLocation } from "react-router-dom"
+import { DataSourcesPage } from "./DataSourcesPage";
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -18,24 +17,62 @@ L.Icon.Default.mergeOptions({
 });
 
 function App() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  // Set default state based on the current route
+  const getDefaultState = () => {
+    switch (location.pathname) {
+      case "/texas": return "Texas";
+      case "/utah": return "Utah";
+      default: return "State"; // for HomePage or default
+    }
+  };
+
+  const [selectedState, setSelectedState] = useState(getDefaultState);
+
+  // Handle state change and navigation
+  const handleStateChange = (e) => {
+    const state = e.target.value;
+    setSelectedState(state);
+
+    // Navigate to the corresponding state map
+    switch (state) {
+      case "Texas":
+        navigate("/texas");
+        break;
+      case "Utah":
+        navigate("/utah");
+        break;
+      default:
+        navigate("/");
+        break;
+    }
+  }
+
   return (
     <>
       <nav >
         <ul>
           <li>
-            <Link to="/" className="navigation_links">Home</Link>
+            <Link to="/" className="navigation_links" onClick={() => setSelectedState("State")}>Home</Link>
           </li>
           <li>
-            <Link to="/arizona" className="navigation_links">Arizona</Link>
+            <select
+              value={selectedState}
+              onChange={handleStateChange}
+              className="navigation_select_links"
+            >
+              <option value="State">State</option>
+              <option value="Texas">Texas</option>
+              <option value="Utah">Utah</option>
+            </select>
           </li>
           <li>
-            <Link to="/texas" className="navigation_links">Texas</Link>
+            <Link to="/datasources" className="navigation_links">Sources</Link>
           </li>
           <li>
-            <Link to="/utah" className="navigation_links">Utah</Link>
-          </li>
-          <li>
-            <Link to="/education" className="navigation_links">Education</Link>
+            <Link to="/datasources" className="navigation_links">Data Sources</Link>
           </li>
           <li>
             <Link to="/datasources" className="navigation_links">Data Sources</Link>
@@ -44,11 +81,9 @@ function App() {
       </nav>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/arizona" element={<ArizonaMap />} />
         <Route path="/texas" element={<TexasMap />} />
         <Route path="/utah" element={<UtahMap />} />
-        <Route path="/education" element={<Education />} />
-        <Route path="/datasources" element={<DataSources />} />
+        <Route path="/datasources" element={<DataSourcesPage />} />
       </Routes>
     </>
   );
