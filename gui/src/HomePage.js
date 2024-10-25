@@ -11,7 +11,6 @@ export const HomePage = () => {
         try {
             const response = await axiosClient.get(REQUESTS.State_Outlines);
             setStateOutlines(response.data);
-            console.log(response.data)
         } catch (err) {
             console.log(err.message);
         }
@@ -30,8 +29,8 @@ export const HomePage = () => {
     };
 
     const bounds = [
-        [24.396308, -125.0], // Southwest coordinates (Hawaii / Southern California)
-        [49.384358, -66.93457] // Northeast coordinates (Maine)
+        [24.396308, -125.0],
+        [49.384358, -66.93457]
       ];
 
     return (

@@ -3,8 +3,6 @@ import "./App.css"
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { HomePage } from './HomePage';
-import { UtahMap } from "./state_map/UtahMap";
-import { TexasMap } from './state_map/TexasMap'
 import { StateMap } from "./state_map/StateMap";
 import { Routes, Route, Link, useNavigate, useLocation } from "react-router-dom"
 import { DataSourcesPage } from "./DataSourcesPage";
@@ -25,7 +23,6 @@ function App() {
   const getDefaultState = () => {
     switch (location.pathname) {
       case "/texas": return "Texas";
-      case "/utah": return "Utah";
       default: return "State"; // for HomePage or default
     }
   };
@@ -41,9 +38,6 @@ function App() {
     switch (state) {
       case "Texas":
         navigate("/texas");
-        break;
-      case "Utah":
-        navigate("/utah");
         break;
       default:
         navigate("/");
@@ -66,21 +60,16 @@ function App() {
             >
               <option value="State">State</option>
               <option value="Texas">Texas</option>
-              <option value="Utah">Utah</option>
             </select>
           </li>
           <li>
             <Link to="/datasources" className="navigation_links">Sources</Link>
           </li>
-          <li>
-            <Link to="/datasources" className="navigation_links">Data Sources</Link>
-          </li>
         </ul>
       </nav>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/texas" element={<TexasMap />} />
-        <Route path="/utah" element={<UtahMap />} />
+        <Route path="/texas" element={<StateMap state={"texas"} />} />
         <Route path="/datasources" element={<DataSourcesPage />} />
       </Routes>
     </>

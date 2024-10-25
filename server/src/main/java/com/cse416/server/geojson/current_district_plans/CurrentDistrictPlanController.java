@@ -12,7 +12,7 @@ public class CurrentDistrictPlanController {
 	@Autowired
 	public CurrentDistrictPlanService currentDistrictPlanService;
 	
-	@GetMapping("/current_district_plan/{state}")
+	@GetMapping("/current_district_plans/{state}")
 	public FeatureCollection getPrecinctData(@PathVariable("state") String state) {
 		FeatureCollection currentDistrictPlanData = currentDistrictPlanService.getStateByName(state);
 		return currentDistrictPlanData;

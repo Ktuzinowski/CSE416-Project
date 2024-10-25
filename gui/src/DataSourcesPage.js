@@ -47,9 +47,6 @@ Export as GeoJSON and with the GeoJSON file ready, you can now integrate it into
           To aggregate data using the maup library, you align datasets across different geographies (e.g., precincts, districts, and census blocks) by redistributing values based on geographic intersections. In this case, you can use maup to match election results from precincts with district boundaries and population demographics from census blocks. First, obtain the shapefiles and data from the Redistricting Data Hub for Utah and Texas. Then, use maup.assign() to map each block or precinct to the relevant district. If the geographic units don’t perfectly align, maup uses area-weighted interpolation to distribute data proportionally. This enables you to aggregate the population data from blocks and election results from precincts into districts, ensuring all data sources contribute meaningfully to your Leaflet map visualization.
           </p>
         </section>
-
-      
-  
       </div>
     );
   };

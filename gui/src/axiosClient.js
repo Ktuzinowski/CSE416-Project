@@ -1,20 +1,21 @@
 import axios from "axios";
 
 // Create an Axios instance with a base URL
-export const axiosClient = axios.create({
+const axiosClient = axios.create({
     baseURL: 'http://localhost:8080', // Base URL for Spring Boot server
     headers: {
         "Content-Type": "application/json",
     },
 });
 
-export const REQUESTS = {
+const REQUESTS = {
+    States_Available: "states_available",
     State_Outlines: "state_outlines",
-    Current_Congressional_Districts: "current_congressional_districts",
+    Current_District_Plans: "current_district_plans",
     Precincts: "precincts"
 }
 
-export const makeRequest = async (requestType, params = {}, config = {}) => {
+const makeRequest = async (requestType, params = {}, config = {}) => {
     try {
         const response = await axiosClient.get(`/${requestType}`, {
             params, // Query parameters
@@ -25,5 +26,9 @@ export const makeRequest = async (requestType, params = {}, config = {}) => {
         console.error("Request failed:", error.response?.data || error.message);
         throw error;
     }
+}
+
+export const getStateOutlines = async () => {
+    
 }
 
