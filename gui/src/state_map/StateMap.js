@@ -12,7 +12,7 @@ import utahAggDistrictData from "../utah_data/aggregatedUtahDistricts.geojson";
 //this is for aggregated precincts (has census blocks data)
 import utahPrecinctData from "../utah_data/aggregated_pre.geojson";
 
-export const UtahMap = ({ currentState }) => {
+export const StateMap = ({ currentState }) => {
   const [congressionalDistricts, setCongressionalDistricts] = useState(null);
   const [selectedFeature, setSelectedFeature] = useState(null); // State for selected feature
   const [districtColors, setDistrictColors] = useState({});

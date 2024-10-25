@@ -5,6 +5,7 @@ import L from 'leaflet';
 import { HomePage } from './HomePage';
 import { UtahMap } from "./state_map/UtahMap";
 import { TexasMap } from './state_map/TexasMap'
+import { StateMap } from "./state_map/StateMap";
 import { Routes, Route, Link, useNavigate, useLocation } from "react-router-dom"
 import { DataSourcesPage } from "./DataSourcesPage";
 
