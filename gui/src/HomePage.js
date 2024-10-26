@@ -2,28 +2,28 @@ import { useState, useEffect } from "react"
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from 'react-leaflet';
 import { MAPBOX_ACCESS_TOKEN } from "./utils/Constants"
 import "leaflet/dist/leaflet.css"; // Ensure Leaflet CSS is imported
-import { REQUESTS, axiosClient } from './axiosClient';
+import { getStateOutlines } from './axiosClient';
 
-export const HomePage = () => {
+export const HomePage = ({ handleStateMapSelect }) => {
     const [stateOutlines, setStateOutlines] = useState(null);
 
-    const fetchDistrictOutlines = async () => {
-        try {
-            const response = await axiosClient.get(REQUESTS.State_Outlines);
-            setStateOutlines(response.data);
-        } catch (err) {
-            console.log(err.message);
-        }
-    }
-
     useEffect(() => {
-        fetchDistrictOutlines();
+        const loadStateOutlines = async () => {
+            try {
+                const outlines = await getStateOutlines();
+                setStateOutlines(outlines);
+            } catch (error) {
+                console.error("Failed to load state outlines:", error.message);
+            }
+        }
+
+        loadStateOutlines();
     }, [])
 
     const onEachFeature = (feature, layer) => {
         layer.on({
             click: () => {
-                window.location.href = feature.properties.link;
+                handleStateMapSelect(feature.properties.link);
             }
         });
     };

@@ -29,6 +29,22 @@ const makeRequest = async (requestType, params = {}, config = {}) => {
 }
 
 export const getStateOutlines = async () => {
-    
+    try {
+        const data = await makeRequest(REQUESTS.State_Outlines);
+        return data;
+    } catch (error) {
+        console.error("Failed to fetch state outlines:", error.message);
+        throw error;
+    }
+}
+
+export const getStatesAvailable = async () => {
+    try {
+        const data = await makeRequest(REQUESTS.States_Available);
+        return data.map((stateDocument) => stateDocument.state);
+    } catch (error) {
+        console.error("Failed to fetch states available:", error.message);
+        throw error;
+    }
 }
 

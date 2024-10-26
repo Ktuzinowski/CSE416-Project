@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import "./App.css"
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import React, { useState, useEffect } from "react";
 import { HomePage } from './HomePage';
 import { StateMap } from "./state_map/StateMap";
 import { Routes, Route, Link, useNavigate, useLocation } from "react-router-dom"
 import { DataSourcesPage } from "./DataSourcesPage";
+import { getStatesAvailable } from "./axiosClient";
+import "./App.css"
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -16,33 +17,57 @@ L.Icon.Default.mergeOptions({
 });
 
 function App() {
-  const navigate = useNavigate()
-  const location = useLocation()
+  const [statesAvailable, setStatesAvailable] = useState([]);
+  const [selectedState, setSelectedState] = useState("State");
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // Set default state based on the current route
-  const getDefaultState = () => {
-    switch (location.pathname) {
-      case "/texas": return "Texas";
-      default: return "State"; // for HomePage or default
+  useEffect(() => {
+    const loadStatesAvailable = async () => {
+      try {
+        const states = await getStatesAvailable();
+        setStatesAvailable(states);
+      } catch (error) {
+        console.error("Failed to load state outlines:", error.message);
+      }
     }
-  };
+    loadStatesAvailable();
+  }, []);
 
-  const [selectedState, setSelectedState] = useState(getDefaultState);
+   // Synchronize selectedState with URL path changes
+   useEffect(() => {
+    const pathState = location.pathname.slice(1).toLowerCase(); // Extract state from path
+
+    // Check if pathState matches a state in statesAvailable
+    const matchedState = statesAvailable.find(
+      (state) => state.toLowerCase() === pathState
+    );
+
+    // Update selectedState if a match is found; otherwise, default to "State"
+    if (matchedState) {
+      setSelectedState(matchedState);
+    } else {
+      setSelectedState("State");
+    }
+  }, [location.pathname, statesAvailable]);
 
   // Handle state change and navigation
   const handleStateChange = (e) => {
     const state = e.target.value;
     setSelectedState(state);
 
-    // Navigate to the corresponding state map
-    switch (state) {
-      case "Texas":
-        navigate("/texas");
-        break;
-      default:
-        navigate("/");
-        break;
+    if (state === "State") {
+      navigate("/");
     }
+    else {
+      navigate(`/${state.toLowerCase()}`);
+    }
+  }
+
+  const handleStateMapSelect = (link) => {
+    const selectedState = link.charAt(1).toUpperCase() + link.slice(2);
+    setSelectedState(selectedState);
+    navigate(link);
   }
 
   return (
@@ -59,7 +84,13 @@ function App() {
               className="navigation_select_links"
             >
               <option value="State">State</option>
-              <option value="Texas">Texas</option>
+              {(
+                statesAvailable.map((state) => (
+                  <option key={state} value={state}>
+                    {state.charAt(0).toUpperCase() + state.slice(1)}
+                  </option>
+                ))
+              )}
             </select>
           </li>
           <li>
@@ -68,9 +99,16 @@ function App() {
         </ul>
       </nav>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/texas" element={<StateMap state={"texas"} />} />
+        <Route path="/" element={<HomePage handleStateMapSelect={handleStateMapSelect} />} />
+        {statesAvailable.map((state) => (
+          <Route
+          key={state}
+          path={`/${state.toLowerCase()}`}
+          element={<StateMap state={state.toLowerCase()} />}
+          />
+        ))}
         <Route path="/datasources" element={<DataSourcesPage />} />
+        <Route path="*" element={<HomePage />} /> {/* Fallback route */}
       </Routes>
     </>
   );
