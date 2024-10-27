@@ -1,13 +1,12 @@
+import React, { useState, useEffect } from "react";
+import { HomePage } from './HomePage';
+import { StateMap } from "./state_map/StateMap";
+import { Routes, Route, Link, useNavigate, useLocation } from "react-router-dom"
+import { DataSourcesPage } from "./DataSourcesPage";
+import { getStatesAvailable } from "./axiosClient";
 import "./App.css"
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { HomePage } from './HomePage';
-import { ArizonaMap } from "./ArizonaMap";
-import { UtahMap } from "./UtahMap";
-import { TexasMap } from './TexasMap'
-import { Education } from "./Education";
-import {DataSources} from "./DataSources";
-import { Routes, Route, Link } from "react-router-dom"
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -18,37 +17,100 @@ L.Icon.Default.mergeOptions({
 });
 
 function App() {
+  const [statesAvailable, setStatesAvailable] = useState([]);
+  const [selectedState, setSelectedState] = useState("State");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const loadStatesAvailable = async () => {
+      try {
+        const states = await getStatesAvailable();
+        setStatesAvailable(states);
+      } catch (error) {
+        console.error("Failed to load state outlines:", error.message);
+      }
+    }
+    loadStatesAvailable();
+  }, []);
+
+   // Synchronize selectedState with URL path changes
+   useEffect(() => {
+    const pathState = location.pathname.slice(1).toLowerCase(); // Extract state from path
+
+    // Check if pathState matches a state in statesAvailable
+    const matchedState = statesAvailable.find(
+      (state) => state.toLowerCase() === pathState
+    );
+
+    // Update selectedState if a match is found; otherwise, default to "State"
+    if (matchedState)  {
+      setSelectedState(matchedState);
+    } else {
+      setSelectedState("State");
+    }
+  }, [location.pathname, statesAvailable]);
+
+  // Handle state change and navigation
+  const handleStateChange = (e) => {
+    const state = e.target.value;
+    const formattedState = state.charAt(0).toUpperCase() + state.slice(1).toLowerCase();
+
+    setSelectedState(formattedState);
+
+    if (formattedState === "State") {
+      navigate("/");
+    }
+    else {
+      navigate(`/${state.toLowerCase()}`);
+    }
+  }
+
+  const handleStateMapSelect = (link) => {
+    const selectedState = link.charAt(1).toUpperCase() + link.slice(2);
+    setSelectedState(selectedState);
+    navigate(link);
+  }
+
   return (
     <>
       <nav >
         <ul>
           <li>
-            <Link to="/" className="navigation_links">Home</Link>
+            <Link to="/" className="navigation_links" onClick={() => setSelectedState("State")}>Home</Link>
           </li>
           <li>
-            <Link to="/arizona" className="navigation_links">Arizona</Link>
+            <select
+              value={selectedState}
+              onChange={handleStateChange}
+              className="navigation_select_links"
+            >
+              <option value="State">State</option>
+              {(
+                statesAvailable.map((state) => (
+                  <option key={state} value={state}>
+                    {state.charAt(0).toUpperCase() + state.slice(1)}
+                  </option>
+                ))
+              )}
+            </select>
           </li>
           <li>
-            <Link to="/texas" className="navigation_links">Texas</Link>
-          </li>
-          <li>
-            <Link to="/utah" className="navigation_links">Utah</Link>
-          </li>
-          <li>
-            <Link to="/education" className="navigation_links">Education</Link>
-          </li>
-          <li>
-            <Link to="/datasources" className="navigation_links">Data Sources</Link>
+            <Link to="/datasources" className="navigation_links">Sources</Link>
           </li>
         </ul>
       </nav>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/arizona" element={<ArizonaMap />} />
-        <Route path="/texas" element={<TexasMap />} />
-        <Route path="/utah" element={<UtahMap />} />
-        <Route path="/education" element={<Education />} />
-        <Route path="/datasources" element={<DataSources />} />
+        <Route path="/" element={<HomePage handleStateMapSelect={handleStateMapSelect} />} />
+        {statesAvailable.map((state) => (
+          <Route
+          key={state}
+          path={`/${state.toLowerCase()}`}
+          element={<StateMap key={state} state={state.toLowerCase()} />}
+          />
+        ))}
+        <Route path="/datasources" element={<DataSourcesPage />} />
+        <Route path="*" element={<HomePage />} /> {/* Fallback route */}
       </Routes>
     </>
   );
