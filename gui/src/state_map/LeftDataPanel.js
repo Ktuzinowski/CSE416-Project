@@ -145,7 +145,7 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
                             <tr>
                                 {getVisibleColumns().map((key) => (
                                     <th key={key} className="left_data_column_header">
-                                        {key}
+                                        {key.charAt(0).toUpperCase() + key.slice(1)}
                                         {key !== "index" && isExpanded && (
                                             <span className="pin-icon" onClick={() => togglePin(key)} size={1.1}>
                                                 <Icon name={pinnedColumns[key] ? "thumbtack-solid" : "thumbtack"} />
