@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from 'react-leaflet';
-import { MAPBOX_ACCESS_TOKEN } from "./utils/Constants"
+import { MAPBOX_ACCESS_TOKEN, centerOfTheUS, boundsForTheUS, defaultMinZoom, defaultZoom, defaultMaxZoom } from "./utils/Constants"
 import "leaflet/dist/leaflet.css"; // Ensure Leaflet CSS is imported
 import { getStateOutlines } from './axiosClient';
 
@@ -27,15 +27,10 @@ export const HomePage = ({ handleStateMapSelect }) => {
             }
         });
     };
-
-    const bounds = [
-        [24.396308, -125.0],
-        [49.384358, -66.93457]
-      ];
-
+    
     return (
         <>            
-            <MapContainer className='home_page_map_container' center={[38, -95]} zoom={4} minZoom={4} maxZoom={8} maxBounds={bounds}  // Set the bounding box
+            <MapContainer className='home_page_map_container' center={centerOfTheUS} zoom={defaultZoom} minZoom={defaultMinZoom} maxZoom={defaultMaxZoom} maxBounds={boundsForTheUS}  // Set the bounding box
             maxBoundsViscosity={1.0}  // Prevent the map from panning out of the bounds     
             zoomControl={false} // Disable default zoom control
             >

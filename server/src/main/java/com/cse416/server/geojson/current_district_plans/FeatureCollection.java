@@ -13,6 +13,9 @@ public class FeatureCollection {
 	
 	private String type;
 	private String name;
+	private Integer zoom;
+	private Integer minZoom;
+	private Double[] center;
 	
 	@Field("features")
 	private List<Feature> features;
@@ -47,5 +50,32 @@ public class FeatureCollection {
 
 	public void setFeatures(List<Feature> features) {
 		this.features = features;
+	}
+	
+	public Integer getZoom() {
+		return zoom;
+	}
+	
+	public void setZoom(Integer zoom) {
+		this.zoom = zoom;
+	}
+	
+	public Integer getMinZoom() {
+		return minZoom;
+	}
+	
+	public void setMinZoom(Integer minZoom) {
+		this.minZoom = minZoom;
+	}
+	
+	public Double[] getCenter() {
+	    return center;
+	}
+
+	public void setCenter(Double[] center) {
+	    if (center == null || center.length != 2) {
+	        throw new IllegalArgumentException("Center must be an array of exactly two doubles.");
+	    }
+	    this.center = center;
 	}
 }

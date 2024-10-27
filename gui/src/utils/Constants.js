@@ -1,3 +1,5 @@
+import chroma from "chroma-js";
+
 export const MAPBOX_ACCESS_TOKEN = "pk.eyJ1Ijoia3R1emlub3dza2kiLCJhIjoiY2x1djlvOWM3MDE4NDJqbGx2aWx6djh2dSJ9.jJ8agn3EPWlLE_u8VsAs4w";
 
 export const COLORS = [
@@ -44,3 +46,28 @@ export const COLORS = [
     'rgb(139, 69, 19)',     // Saddle Brown
     'rgb(160, 82, 45)',     // Sienna
   ];
+
+//choropleth color scale
+export const colorScale = chroma
+.scale(["#e6ffe6", "#00cc00", "#004d00"]) // Light green to dark green
+.domain([0, 100]);
+
+// Choropleth color scale with shades of red
+export const colorScaleRed = chroma
+.scale(["#ffe6e6", "#ff4d4d", "#990000"]) // Light red to dark red
+.domain([0, 100]);
+
+// Choropleth color scale with shades of blue
+export const colorScaleBlue = chroma
+.scale(["#e6f0ff", "#4d79ff", "#003399"]) // Light blue to dark blue
+.domain([0, 100]);
+
+export const centerOfTheUS = [39.8283, -98.5795];
+export const boundsForTheUS = [
+  [24.396308, -125.0],
+  [49.384358, -66.93457]
+];
+
+export const defaultZoom = 4;
+export const defaultMinZoom = 4;
+export const defaultMaxZoom = 8;

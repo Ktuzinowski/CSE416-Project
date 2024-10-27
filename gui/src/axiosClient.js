@@ -48,3 +48,22 @@ export const getStatesAvailable = async () => {
     }
 }
 
+export const getCurrentDistrictPlans = async (state) => {
+    try {
+        const data = await makeRequest(REQUESTS.Current_District_Plans, {state: state});
+        return data;
+    } catch (error) {
+        console.error(`Failed to fetch current district plans for state ${state}:`, error.message);
+        throw error;
+    }
+}
+
+export const getPrecincts = async (state) => {
+    try {
+        const data = await makeRequest(REQUESTS.Precincts, {state: state});
+        return data;
+    } catch (error) {
+        console.error(`Failed to fetch precincts for state ${state}:`, error.message);
+        throw error;
+    }
+}

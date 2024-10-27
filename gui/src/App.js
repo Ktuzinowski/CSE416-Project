@@ -44,7 +44,7 @@ function App() {
     );
 
     // Update selectedState if a match is found; otherwise, default to "State"
-    if (matchedState) {
+    if (matchedState)  {
       setSelectedState(matchedState);
     } else {
       setSelectedState("State");
@@ -54,9 +54,11 @@ function App() {
   // Handle state change and navigation
   const handleStateChange = (e) => {
     const state = e.target.value;
-    setSelectedState(state);
+    const formattedState = state.charAt(0).toUpperCase() + state.slice(1).toLowerCase();
 
-    if (state === "State") {
+    setSelectedState(formattedState);
+
+    if (formattedState === "State") {
       navigate("/");
     }
     else {
@@ -104,7 +106,7 @@ function App() {
           <Route
           key={state}
           path={`/${state.toLowerCase()}`}
-          element={<StateMap state={state.toLowerCase()} />}
+          element={<StateMap key={state} state={state.toLowerCase()} />}
           />
         ))}
         <Route path="/datasources" element={<DataSourcesPage />} />
