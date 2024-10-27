@@ -3,7 +3,7 @@ import { getCurrentDistrictPlans, getPrecincts } from "../axiosClient";
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css"
 import { LeftDataPanel } from "./LeftDataPanel";
-import { MAPBOX_ACCESS_TOKEN, COLORS, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom } from "../utils/Constants";
+import { MAPBOX_ACCESS_TOKEN, COLORS, ActiveLayers, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom } from "../utils/Constants";
 import { CurrentDistrictPlansProperties, CurrentDistrictPlansFeatureProperties, PrecinctsFeatureProperties } from "../utils/MongoDocumentProperties";
 import { getDistrictDataPopupContent, getPrecinctDataPopupContent } from "./PopupStyling";
 
@@ -13,7 +13,7 @@ export const StateMap = ({ state }) => {
   const [districtColors, setDistrictColors] = useState({});
   const [precincts, setPrecincts] = useState(null);
   const [selectedDataColumn, setSelectedDataColumn] = useState("");
-  const [activeLayer, setActiveLayer] = useState("districts");
+  const [activeLayer, setActiveLayer] = useState(ActiveLayers.Districts);
   const [mapCenter, setMapCenter] = useState(centerOfTheUS);
   const [mapZoom, setMapZoom] = useState(defaultZoom);
   const [mapMinZoom, setMapMinZoom] = useState(defaultMinZoom);
@@ -211,7 +211,7 @@ export const StateMap = ({ state }) => {
   }
 
   const onChangeBorderForHoverOverDistrict = (district) => {
-    if (activeLayer !== "districts") {
+    if (activeLayer !== ActiveLayers.Districts) {
       return;
     }
     setDistrictColors((prevColors) => {
@@ -227,7 +227,7 @@ export const StateMap = ({ state }) => {
   }
 
   const onChangeLeftHoverOverDistrict = (district_number) => {
-    if (activeLayer !== "districts") {
+    if (activeLayer !== ActiveLayers.Districts) {
       return;
     }
     setDistrictColors((prevColors) => {
@@ -246,7 +246,9 @@ export const StateMap = ({ state }) => {
     <>
       <div className="map-wrapper">
           <LeftDataPanel
-          data={congressionalDistricts}
+          districtData={congressionalDistricts}
+          precinctData={precincts}
+          activeLayer={activeLayer}
           onSelectFeature={onSelectFeature}
           districtColors={districtColors}
           onChangeBorderForHoverOverDistrict={onChangeBorderForHoverOverDistrict}
@@ -273,24 +275,24 @@ export const StateMap = ({ state }) => {
               style={{ display: "flex", flexDirection: "column" }}
             >
               <button
-                onClick={() => setActiveLayer("districts")}
+                onClick={() => setActiveLayer(ActiveLayers.Districts)}
                 style={{
                   margin: "5px",
                   padding: "10px",
                   backgroundColor:
-                    activeLayer === "districts" ? "#007bff" : "#ccc",
+                    activeLayer === ActiveLayers.Districts ? "#007bff" : "#ccc",
                   color: "#fff",
                 }}
               >
                 Districts
               </button>
               <button
-                onClick={() => setActiveLayer("precincts")}
+                onClick={() => setActiveLayer(ActiveLayers.Precincts)}
                 style={{
                   margin: "5px",
                   padding: "10px",
                   backgroundColor:
-                    activeLayer === "precincts" ? "#007bff" : "#ccc",
+                    activeLayer === ActiveLayers.Precincts ? "#007bff" : "#ccc",
                   color: "#fff",
                 }}
               >
@@ -298,7 +300,7 @@ export const StateMap = ({ state }) => {
               </button>
             </div>
 
-            {activeLayer === "districts" && congressionalDistricts && (
+            {activeLayer === ActiveLayers.Districts && congressionalDistricts && (
               <GeoJSON
                 ref={geoJsonRefDistricts} // Set reference to GeoJSON layer
                 data={congressionalDistricts}
@@ -307,7 +309,7 @@ export const StateMap = ({ state }) => {
               />
             )}
 
-            {activeLayer === "precincts" && precincts && (
+            {activeLayer === ActiveLayers.Precincts && precincts && (
               <GeoJSON
                 data={precincts}
                 ref={geoJsonRefPrecincts}

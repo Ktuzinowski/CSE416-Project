@@ -62,6 +62,19 @@ export const colorScaleBlue = chroma
 .scale(["#e6f0ff", "#4d79ff", "#003399"]) // Light blue to dark blue
 .domain([0, 100]);
 
+export const argbToRgb = (argbColor) => {
+  // Convert to unsigned 32-bit if the number is negative
+  if (argbColor < 0) {
+      argbColor = argbColor + 0xFFFFFFFF + 1;
+  }
+
+  // Extract RGB components
+  const red = (argbColor >> 16) & 0xFF;
+  const green = (argbColor >> 8) & 0xFF;
+  const blue = argbColor & 0xFF;
+  return `rgb(${red}, ${green}, ${blue})`
+}
+
 export const centerOfTheUS = [39.8283, -98.5795];
 export const boundsForTheUS = [
   [24.396308, -125.0],
@@ -71,3 +84,8 @@ export const boundsForTheUS = [
 export const defaultZoom = 4;
 export const defaultMinZoom = 4;
 export const defaultMaxZoom = 8;
+
+export const ActiveLayers = {
+  Districts: "districts",
+  Precincts: "precincts"
+}
