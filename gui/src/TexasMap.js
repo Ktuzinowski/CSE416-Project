@@ -76,68 +76,7 @@ export const TexasMap = () => {
       );
   }, []);
 
-  // New useEffect to fetch Utah GeoJSON and aggregate specified variables
-//   useEffect(() => {
-//     fetch(utahGeo)
-//       .then((response) => response.json())
-//       .then((utahData) => {
-//         if (congressionalDistricts) {
-//           const variables = [
-//             "G20PRERTRU",
-//             "G20PREDBID",
-//             "PP_TOTAL",
-//             "PP_WHTALN",
-//             "PP_BAAALN",
-//             "PP_NAMALN",
-//             "PP_ASNALN",
-//             "PP_HPIALN",
-//             "PP_HISPLAT",
-//             "PP_OTHALN",
-//           ];
-
-//           const aggregatedValues = {};
-
-//           // Initialize the aggregatedValues for the desired variables
-//           variables.forEach((variable) => {
-//             aggregatedValues[variable] = 0;
-//           });
-
-//           // Aggregate values from congressionalDistricts
-//           congressionalDistricts.features.forEach((feature) => {
-//             variables.forEach((variable) => {
-//               if (feature.properties[variable]) {
-//                 aggregatedValues[variable] += feature.properties[variable];
-//               }
-//             });
-//           });
-
-//           // Add aggregated values to the Utah GeoJSON properties
-//           utahData.properties = {
-//             ...utahData.properties,
-//             ...aggregatedValues,
-//           };
-
-//           setGeo(utahData); // Set the updated Utah GeoJSON data
-//           console.log("Updated Utah GeoJSON with aggregated values:", utahData);
-//         }
-//       })
-//       .catch((error) =>
-//         console.error("Error loading the Utah GeoJSON data: ", error)
-//       );
-//   }, [congressionalDistricts]); // Dependency array to run when congressionalDistricts is available
-
-  // useEffect(() => {
-  //   fetch(utahAggDistrictData)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-
-  //       setCongressionalDistricts(data); // Set the updated GeoJSON data
-  //       console.log("Update with aggregated precinct data to District:", data);
-  //     })
-  //     .catch((error) =>
-  //       console.error("Error loading the Precinct GeoJSON data: ", error)
-  //     );
-  // }, []);
+ 
 
   const setStyleForSelection = (feature) => {
     let totalPop = feature.properties.TOT_POP21;
