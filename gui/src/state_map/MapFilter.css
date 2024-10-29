@@ -1,0 +1,38 @@
+/* MapFilter.css */
+
+/* Container styles */
+.map_filter {
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 400px;
+    height: calc(100% - 22px);
+    z-index: 2003;
+}
+
+/* Button styles */
+.map_filter_option {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: black;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.map_filter_option:hover {
+    background-color: #f0f8ff; /* Light blue for hover */
+}
+
+.map_filter_option.selected {
+    background-color: #e0f0ff; /* Light blue for selected */
+    border-bottom: 3px solid #007bff; /* Strong blue underline */
+}
+
+/* Optional: make selected button bold */
+.map_filter_option.selected {
+    font-weight: bold;
+}

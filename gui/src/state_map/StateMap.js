@@ -6,6 +6,7 @@ import { LeftDataPanel } from "./LeftDataPanel";
 import { MAPBOX_ACCESS_TOKEN, COLORS, ActiveLayers, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom } from "../utils/Constants";
 import { CurrentDistrictPlansProperties, CurrentDistrictPlansFeatureProperties, PrecinctsFeatureProperties } from "../utils/MongoDocumentProperties";
 import { getDistrictDataPopupContent, getPrecinctDataPopupContent } from "./PopupStyling";
+import { MapFilter } from "./MapFilter";
 
 export const StateMap = ({ state }) => {
   const [congressionalDistricts, setCongressionalDistricts] = useState(null);
@@ -270,35 +271,7 @@ export const StateMap = ({ state }) => {
               attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
             />
 
-            <div
-              className="custom-layer-controls"
-              style={{ display: "flex", flexDirection: "column" }}
-            >
-              <button
-                onClick={() => setActiveLayer(ActiveLayers.Districts)}
-                style={{
-                  margin: "5px",
-                  padding: "10px",
-                  backgroundColor:
-                    activeLayer === ActiveLayers.Districts ? "#007bff" : "#ccc",
-                  color: "#fff",
-                }}
-              >
-                Districts
-              </button>
-              <button
-                onClick={() => setActiveLayer(ActiveLayers.Precincts)}
-                style={{
-                  margin: "5px",
-                  padding: "10px",
-                  backgroundColor:
-                    activeLayer === ActiveLayers.Precincts ? "#007bff" : "#ccc",
-                  color: "#fff",
-                }}
-              >
-                Precincts
-              </button>
-            </div>
+           <MapFilter />
 
             {activeLayer === ActiveLayers.Districts && congressionalDistricts && (
               <GeoJSON
