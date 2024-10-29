@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
-import { AnalysisScreen } from "../mmd_vs_smd/AnalysisScreen";
 import Icon from "../utils/Icon";
 import "../App.css";
 import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties } from "../utils/MongoDocumentProperties";
@@ -14,6 +13,7 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
     const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
     const [displayAnalysisScreen, setDisplayAnalysisScreen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [isToggled, setIsToggled] = useState(true);
 
     useEffect(() => {
         if (districtData !== null && precinctData !== null) {
@@ -86,40 +86,63 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
             paddingBottom: "35px"
         }}>
             <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">{displayAnalysisScreen ? "MMD vs. SMD" : activeLayer === ActiveLayers.Districts ? "Congressional Districts" : "Precincts"}</h2>
+                <h2 className="left_data_panel_title">{activeLayer === ActiveLayers.Districts ? "Congressional Districts" : "Precincts"}</h2>
                 <button className="left_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
             </div>
 
-            {displayAnalysisScreen && (
-                <AnalysisScreen data={districtData}/>
-            )}
-
             {!displayAnalysisScreen && (
-                <>
-                            <div style={{ marginBottom: "20px" }}>
-            <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
-            <select
-                id="race-select"
-                value={selectedDataColumn}
-                onChange={(e) => setSelectedDataColumn(e.target.value)}
-                style={{marginLeft: "10px", fontSize:"15px", padding: "1px"}}
-            >   
-                <option value="">Default</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.republican}`}>Republican</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.democrat}`}>Democrat</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.white}`}>White</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.black}`}>Black</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.hispanic}`}>Hispanic</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.asian}`}>Asian</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.pacific}`}>Pacific </option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.native}`}>Native </option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.other}`}>Other</option>
-            </select>
-            <button className="evaluate_mmd_vs_smd" onClick={onAnalysisScreenButtonClick}>Evaluate MMD vs. SMD</button>
+            <>
+            <div style={{ marginBottom: "20px" }}>
+                <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
+                <select
+                    id="race-select"
+                    value={selectedDataColumn}
+                    onChange={(e) => setSelectedDataColumn(e.target.value)}
+                    style={{marginLeft: "10px", fontSize:"15px", padding: "1px", marginRight: "10px"}}
+                >   
+                    <option value="">Default</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.republican}`}>Republican</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.democrat}`}>Democrat</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.white}`}>White</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.black}`}>Black</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.hispanic}`}>Hispanic</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.asian}`}>Asian</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.pacific}`}>Pacific </option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.native}`}>Native </option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.other}`}>Other</option>
+                </select>
+                <label className="dropdown_for_choropleth">View Data</label>
+                <select
+                    id="race-select"
+                    style={{marginLeft: "10px", fontSize:"15px", padding: "1px", marginRight: "10px"}}
+                >   
+                    <option value="Current">Current</option>
+                    <option value="SMD">SMD</option>
+                    <option value="MMD">MMD</option>
+                    <option value="Precincts">Precincts</option>
+                </select>
             </div>
-
+            <div style={{marginBottom: "20px"}}>
+                <label className="dropdown_for_choropleth">Color Districts</label>
+                <select
+                    id="race-select"
+                    style={{marginLeft: "10px", fontSize: "15px", padding: "1px", marginRight: "10px"}}
+                >
+                    <option value="Current">Current</option>
+                    <option value="SMD">SMD</option>
+                    <option value="MMD">MMD</option>
+                </select>
+                <label className="toggle">
+                    <input
+                        type="checkbox"
+                        checked={isToggled}
+                        onChange={() => setIsToggled(!isToggled)}
+                    />
+                    <span className="slider"></span>
+                </label>
+            </div>
             {
                 activeLayer === ActiveLayers.Precincts &&
                 (
