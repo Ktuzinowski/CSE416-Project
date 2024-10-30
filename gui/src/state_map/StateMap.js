@@ -249,7 +249,7 @@ export const StateMap = ({ state }) => {
   return (
     <>
       <div className="map-wrapper">
-          <LeftDataPanel
+          {!isRightAnalysisPanelExpanded && <LeftDataPanel
           districtData={congressionalDistricts}
           precinctData={precincts}
           activeLayer={activeLayer}
@@ -260,9 +260,9 @@ export const StateMap = ({ state }) => {
           selectedDataColumn={selectedDataColumn}
           setSelectedDataColumn={setSelectedDataColumn}
           setIsLeftDataPanelExpanded={setIsLeftDataPanelExpanded}
-          />
+          />}
         <div className="map-container">
-          {!isLeftDataPanelExpanded && <MapFilter />}
+          {!isLeftDataPanelExpanded && !isRightAnalysisPanelExpanded && <MapFilter />}
           <MapContainer
             center={mapCenter} //center on texas coords
             zoom={mapZoom}
@@ -297,7 +297,7 @@ export const StateMap = ({ state }) => {
             <ZoomControl position="bottomright" />
           </MapContainer>
         </div>
-        {!isLeftDataPanelExpanded && <RightAnalysisPanel />}
+        {!isLeftDataPanelExpanded && <RightAnalysisPanel setIsRightAnalysisPanelExpanded={setIsRightAnalysisPanelExpanded}/>}
       </div>
     </>
   )
