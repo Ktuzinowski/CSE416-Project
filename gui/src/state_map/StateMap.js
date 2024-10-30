@@ -258,6 +258,7 @@ export const StateMap = ({ state }) => {
           setSelectedDataColumn={setSelectedDataColumn}
           />
         <div className="map-container">
+          <MapFilter />
           <MapContainer
             center={mapCenter} //center on texas coords
             zoom={mapZoom}
@@ -270,8 +271,6 @@ export const StateMap = ({ state }) => {
               url={`https://api.mapbox.com/styles/v1/ktuzinowski/cm1msivj900k601p69fqk5tlt/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_ACCESS_TOKEN}&fresh=True`}
               attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
             />
-
-           <MapFilter />
 
             {activeLayer === ActiveLayers.Districts && congressionalDistricts && (
               <GeoJSON
