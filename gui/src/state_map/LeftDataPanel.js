@@ -6,7 +6,7 @@ import "../App.css";
 import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties } from "../utils/MongoDocumentProperties";
 import { ActiveLayers } from "../utils/Constants"
 
-export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelectFeature, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn }) => {
+export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelectFeature, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
@@ -33,6 +33,7 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
     const togglePanel = () => {
         setDisplayAnalysisScreen(false);
         setIsExpanded(!isExpanded);
+        setIsLeftDataPanelExpanded(!isExpanded);
     }
 
     const togglePin = (column) => {

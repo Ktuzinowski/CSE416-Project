@@ -7,6 +7,7 @@ import { MAPBOX_ACCESS_TOKEN, COLORS, ActiveLayers, colorScale, colorScaleRed, c
 import { CurrentDistrictPlansProperties, CurrentDistrictPlansFeatureProperties, PrecinctsFeatureProperties } from "../utils/MongoDocumentProperties";
 import { getDistrictDataPopupContent, getPrecinctDataPopupContent } from "./PopupStyling";
 import { MapFilter } from "./MapFilter";
+import { RightAnalysisPanel } from "./RightAnalysisPanel"
 
 export const StateMap = ({ state }) => {
   const [congressionalDistricts, setCongressionalDistricts] = useState(null);
@@ -18,6 +19,8 @@ export const StateMap = ({ state }) => {
   const [mapCenter, setMapCenter] = useState(centerOfTheUS);
   const [mapZoom, setMapZoom] = useState(defaultZoom);
   const [mapMinZoom, setMapMinZoom] = useState(defaultMinZoom);
+  const [isLeftDataPanelExpanded, setIsLeftDataPanelExpanded] = useState(false);
+  const [isRightAnalysisPanelExpanded, setIsRightAnalysisPanelExpanded] = useState(false);
   const geoJsonRefDistricts = useRef();
   const geoJsonRefPrecincts = useRef();
   const mapRef = useRef();
@@ -256,9 +259,10 @@ export const StateMap = ({ state }) => {
           onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict}
           selectedDataColumn={selectedDataColumn}
           setSelectedDataColumn={setSelectedDataColumn}
+          setIsLeftDataPanelExpanded={setIsLeftDataPanelExpanded}
           />
         <div className="map-container">
-          <MapFilter />
+          {!isLeftDataPanelExpanded && <MapFilter />}
           <MapContainer
             center={mapCenter} //center on texas coords
             zoom={mapZoom}
@@ -293,6 +297,7 @@ export const StateMap = ({ state }) => {
             <ZoomControl position="bottomright" />
           </MapContainer>
         </div>
+        {!isLeftDataPanelExpanded && <RightAnalysisPanel />}
       </div>
     </>
   )
