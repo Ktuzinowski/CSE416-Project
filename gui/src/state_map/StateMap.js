@@ -15,7 +15,7 @@ export const StateMap = ({ state }) => {
   const [districtColors, setDistrictColors] = useState({});
   const [precincts, setPrecincts] = useState(null);
   const [selectedDataColumn, setSelectedDataColumn] = useState("");
-  const [activeLayer, setActiveLayer] = useState(ActiveLayers.Districts);
+  const [activeLayer, setActiveLayer] = useState(ActiveLayers.Precincts);
   const [mapCenter, setMapCenter] = useState(centerOfTheUS);
   const [mapZoom, setMapZoom] = useState(defaultZoom);
   const [mapMinZoom, setMapMinZoom] = useState(defaultMinZoom);
