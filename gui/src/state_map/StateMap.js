@@ -16,6 +16,10 @@ export const StateMap = ({ state }) => {
   const [precincts, setPrecincts] = useState(null);
   const [selectedDataColumn, setSelectedDataColumn] = useState("");
   const [activeLayer, setActiveLayer] = useState(ActiveLayers.Precincts);
+  const [showCurrentDistrictPlan, setShowCurrentDistrictPlan] = useState(true);
+  const [showPrecincts, setShowPrecincts] = useState(false);
+  const [showSMD, setShowSMD] = useState(false);
+  const [showMMD, setShowMMD] = useState(false);
   const [mapCenter, setMapCenter] = useState(centerOfTheUS);
   const [mapZoom, setMapZoom] = useState(defaultZoom);
   const [mapMinZoom, setMapMinZoom] = useState(defaultMinZoom);
@@ -205,8 +209,7 @@ export const StateMap = ({ state }) => {
     return {
       color: "black",
       fillColor: fillColor,
-      weight: 1,
-      fillOpacity: 0.7,
+      weight: 0.7
     };
   }
 
@@ -215,7 +218,7 @@ export const StateMap = ({ state }) => {
   }
 
   const onChangeBorderForHoverOverDistrict = (district) => {
-    if (activeLayer !== ActiveLayers.Districts) {
+    if (!showCurrentDistrictPlan) {
       return;
     }
     setDistrictColors((prevColors) => {
@@ -231,7 +234,7 @@ export const StateMap = ({ state }) => {
   }
 
   const onChangeLeftHoverOverDistrict = (district_number) => {
-    if (activeLayer !== ActiveLayers.Districts) {
+    if (!showCurrentDistrictPlan) {
       return;
     }
     setDistrictColors((prevColors) => {
@@ -262,7 +265,7 @@ export const StateMap = ({ state }) => {
           setIsLeftDataPanelExpanded={setIsLeftDataPanelExpanded}
           />}
         <div className="map-container">
-          {!isLeftDataPanelExpanded && !isRightAnalysisPanelExpanded && <MapFilter />}
+          {!isLeftDataPanelExpanded && !isRightAnalysisPanelExpanded && <MapFilter showCurrent={showCurrentDistrictPlan} setShowCurrent={setShowCurrentDistrictPlan} showSMD={showSMD} setShowSMD={setShowSMD} showMMD={showMMD} setShowMMD={setShowMMD} showPrecincts={showPrecincts} setShowPrecincts={setShowPrecincts} />}
           <MapContainer
             center={mapCenter} //center on texas coords
             zoom={mapZoom}
@@ -276,7 +279,7 @@ export const StateMap = ({ state }) => {
               attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
             />
 
-            {activeLayer === ActiveLayers.Districts && congressionalDistricts && (
+            {showCurrentDistrictPlan && congressionalDistricts && (
               <GeoJSON
                 ref={geoJsonRefDistricts} // Set reference to GeoJSON layer
                 data={congressionalDistricts}
@@ -285,7 +288,7 @@ export const StateMap = ({ state }) => {
               />
             )}
 
-            {activeLayer === ActiveLayers.Precincts && precincts && (
+            {showPrecincts && precincts && (
               <GeoJSON
                 data={precincts}
                 ref={geoJsonRefPrecincts}
