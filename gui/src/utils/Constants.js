@@ -85,11 +85,6 @@ export const defaultZoom = 4;
 export const defaultMinZoom = 4;
 export const defaultMaxZoom = 8;
 
-export const ActiveLayers = {
-  Districts: "districts",
-  Precincts: "precincts"
-}
-
 export const ColorDistrictsOptions = {
   Current: "Current",
   SMD: "SMD",

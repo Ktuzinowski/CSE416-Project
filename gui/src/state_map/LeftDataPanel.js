@@ -4,9 +4,9 @@ import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import Icon from "../utils/Icon";
 import "../App.css";
 import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties } from "../utils/MongoDocumentProperties";
-import { ActiveLayers, ViewDataOptions, BoundaryChoroplethOptions } from "../utils/Constants"
+import { ViewDataOptions, BoundaryChoroplethOptions } from "../utils/Constants"
 
-export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleOn, districtData, smdData, mmdData, precinctData, activeLayer, onSelectFeature, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded }) => {
+export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleOn, districtData, smdData, mmdData, precinctData, onSelectFeature, congressionalDistrictColors, smdDistrictColors, mmdDistrictColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded, choroplethBoundarySelection, setChoroplethBoundarySelection }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
@@ -59,13 +59,13 @@ export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleO
 
     const handleHoverOverRowOfData = (feature) => {
         if (currentDataView !== ViewDataOptions.Precincts) {
-            onChangeBorderForHoverOverDistrict(feature.properties.district)
+            onChangeBorderForHoverOverDistrict(currentDataView, feature.properties.district)
         }
     }
 
     const handleLeaveHoverOverData = (feature) => {
         if (currentDataView !== ViewDataOptions.Precincts) {
-            onChangeLeftHoverOverDistrict(feature.properties.district)
+            onChangeLeftHoverOverDistrict(currentDataView, feature.properties.district)
         }
     }
 
@@ -101,7 +101,7 @@ export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleO
             paddingBottom: "35px"
         }}>
             <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">{activeLayer === ActiveLayers.Districts ? "Congressional Districts" : "Precincts"}</h2>
+                <h2 className="left_data_panel_title">{currentDataView === ViewDataOptions.Current ? "Current District Plan" : currentDataView}</h2>
                 <button className="left_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
@@ -113,6 +113,8 @@ export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleO
                 <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
                 <select
                     id="race-select"
+                    value={choroplethBoundarySelection}
+                    onChange={(e) => setChoroplethBoundarySelection(e.target.value)}
                     style={{marginLeft: "10px", fontSize: "15px", padding: "1px", marginRight: "10px"}}
                 >
                     <option value={`${BoundaryChoroplethOptions.Current}`}>Current</option>
@@ -124,7 +126,7 @@ export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleO
                     id="race-select"
                     value={selectedDataColumn}
                     onChange={(e) => setSelectedDataColumn(e.target.value)}
-                    style={{marginLeft: "10px", fontSize:"15px", padding: "1px", marginRight: "10px"}}
+                    style={{fontSize:"15px", padding: "1px", marginRight: "10px"}}
                 >   
                     <option value="">Default</option>
                     <option value={`${CurrentDistrictPlansFeatureProperties.republican}`}>Republican</option>
@@ -209,10 +211,10 @@ export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleO
                                             return (
                                                 <td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
                                                     {
-                                                        currentDataView === ViewDataOptions.Districts &&
+                                                        currentDataView !== ViewDataOptions.Precincts &&
                                                         (
                                                             <span>
-                                                                    <Icon name="roundedSquare" size={1.2} color={districtColors[feature.properties.district].fillColor} borderWidth={"1px"} borderColor={"black"} />
+                                                                    <Icon name="roundedSquare" size={1.2} color={currentDataView === ViewDataOptions.Current ? congressionalDistrictColors[feature.properties.district].fillColor : currentDataView === ViewDataOptions.SMD ? smdDistrictColors[feature.properties.district].fillColor : mmdDistrictColors[feature.properties.district].fillColor} borderWidth={"1px"} borderColor={"black"} />
                                                             </span>
                                                         )
                                                     }
