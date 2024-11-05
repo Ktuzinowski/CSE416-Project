@@ -102,3 +102,10 @@ export const ViewDataOptions = {
   MMD: "MMD",
   Precincts: "Precincts"
 }
+
+export const BoundaryChoroplethOptions = {
+  Current: "Current",
+  SMD: "SMD",
+  MMD: "MMD",
+  Precincts: "Precincts"
+}

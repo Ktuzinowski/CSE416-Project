@@ -120,6 +120,7 @@ export const StateMap = ({ state }) => {
     const loadPrecincts = async () => {
       try {
         const precincts = await getPrecincts(state);
+        console.log(precincts);
         setPrecincts(precincts);
       } catch (error) {
         console.error("Failed to load precincts:", error.message);

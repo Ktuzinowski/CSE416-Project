@@ -4,7 +4,7 @@ import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import Icon from "../utils/Icon";
 import "../App.css";
 import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties } from "../utils/MongoDocumentProperties";
-import { ActiveLayers, ViewDataOptions } from "../utils/Constants"
+import { ActiveLayers, ViewDataOptions, BoundaryChoroplethOptions } from "../utils/Constants"
 
 export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleOn, districtData, smdData, mmdData, precinctData, activeLayer, onSelectFeature, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -113,6 +113,15 @@ export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleO
                 <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
                 <select
                     id="race-select"
+                    style={{marginLeft: "10px", fontSize: "15px", padding: "1px", marginRight: "10px"}}
+                >
+                    <option value={`${BoundaryChoroplethOptions.Current}`}>Current</option>
+                    <option value={`${BoundaryChoroplethOptions.SMD}`}>SMD</option>
+                    <option value={`${BoundaryChoroplethOptions.MMD}`}>MMD</option>
+                    <option value={`${BoundaryChoroplethOptions.Precincts}`}>Precincts</option>
+                </select>
+                <select
+                    id="race-select"
                     value={selectedDataColumn}
                     onChange={(e) => setSelectedDataColumn(e.target.value)}
                     style={{marginLeft: "10px", fontSize:"15px", padding: "1px", marginRight: "10px"}}
@@ -125,9 +134,11 @@ export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleO
                     <option value={`${CurrentDistrictPlansFeatureProperties.hispanic}`}>Hispanic</option>
                     <option value={`${CurrentDistrictPlansFeatureProperties.asian}`}>Asian</option>
                     <option value={`${CurrentDistrictPlansFeatureProperties.pacific}`}>Pacific </option>
-                    <option value={`${CurrentDistrictPlansFeatureProperties.native}`}>Native </option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.indigenous}`}>Indigenous </option>
                     <option value={`${CurrentDistrictPlansFeatureProperties.other}`}>Other</option>
                 </select>
+            </div>
+            <div style={{marginBottom: "20px"}}>
                 <label className="dropdown_for_choropleth">View Data</label>
                 <select
                     id="race-select"
@@ -140,27 +151,6 @@ export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleO
                     <option value={`${ViewDataOptions.MMD}`}>MMD</option>
                     <option value={`${ViewDataOptions.Precincts}`}>Precincts</option>
                 </select>
-            </div>
-            <div style={{marginBottom: "20px"}}>
-                <label className="dropdown_for_choropleth">Color Districts</label>
-                <select
-                    id="race-select"
-                    style={{marginLeft: "10px", fontSize: "15px", padding: "1px", marginRight: "10px"}}
-                >
-                    <option value="Current">Current</option>
-                    <option value="SMD">SMD</option>
-                    <option value="MMD">MMD</option>
-                </select>
-                <label className="toggle">
-                    <input
-                        type="checkbox"
-                        checked={colorDistrictsToggleOn}
-                        onChange={() => setColorDistrictsToggleOn((prevColorDistrictsToggleOn) => {
-                            return !colorDistrictsToggleOn
-                        })}
-                    />
-                    <span className="slider"></span>
-                </label>
             </div>
             {
                 currentDataView === ViewDataOptions.Precincts &&

@@ -1,7 +1,5 @@
 package com.cse416.server.geojson.current_district_plans;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Properties {
 	private Integer district;
 	private String incumbent;
@@ -14,8 +12,7 @@ public class Properties {
     private Integer hispanic;
     private Integer asian;
     private Integer pacific;
-    @JsonProperty("native")
-    private Integer nativePopulation;
+    private Integer indigenous;
     private Integer other;
     
     public Integer getDistrict() {
@@ -106,14 +103,6 @@ public class Properties {
         this.pacific = pacific;
     }
 
-    public Integer getNativePopulation() {
-        return nativePopulation != null ? nativePopulation : 0; // Default to 0 if null
-    }
-
-    public void setNativePopulation(Integer nativePopulation) {
-        this.nativePopulation = nativePopulation;
-    }
-
     public Integer getOther() {
         return other != null ? other : 0; // Default to 0 if null
     }
@@ -121,4 +110,12 @@ public class Properties {
     public void setOther(Integer other) {
         this.other = other;
     }
+
+	public Integer getIndigenous() {
+		return indigenous;
+	}
+
+	public void setIndigenous(Integer indigenous) {
+		this.indigenous = indigenous;
+	}
 }
