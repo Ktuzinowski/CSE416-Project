@@ -4,20 +4,30 @@ import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import Icon from "../utils/Icon";
 import "../App.css";
 import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties } from "../utils/MongoDocumentProperties";
-import { ActiveLayers } from "../utils/Constants"
+import { ActiveLayers, ViewDataOptions } from "../utils/Constants"
 
-export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelectFeature, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded }) => {
+export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleOn, districtData, smdData, mmdData, precinctData, activeLayer, onSelectFeature, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
     const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
     const [displayAnalysisScreen, setDisplayAnalysisScreen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [isToggled, setIsToggled] = useState(true);
+    const [currentDataView, setCurrentDataView] = useState(ViewDataOptions.Current);
 
     useEffect(() => {
-        if (districtData !== null && precinctData !== null) {
-            if (activeLayer === ActiveLayers.Districts) {
+        if (districtData !== null && precinctData !== null && smdData !== null && mmdData !== null) {
+            if (currentDataView === ViewDataOptions.Current) {
+                const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
+                setColumnNames(keys);
+                setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
+            }
+            else if (currentDataView === ViewDataOptions.SMD) {
+                const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
+                setColumnNames(keys);
+                setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
+            }
+            else if (currentDataView === ViewDataOptions.MMD) {
                 const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
                 setColumnNames(keys);
                 setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
@@ -28,7 +38,7 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
                 setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
             }
         }
-    }, [districtData, precinctData, activeLayer]);
+    }, [districtData, precinctData, currentDataView]);
 
     const togglePanel = () => {
         setDisplayAnalysisScreen(false);
@@ -48,11 +58,15 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
     }
 
     const handleHoverOverRowOfData = (feature) => {
-        onChangeBorderForHoverOverDistrict(feature.properties.district)
+        if (currentDataView !== ViewDataOptions.Precincts) {
+            onChangeBorderForHoverOverDistrict(feature.properties.district)
+        }
     }
 
     const handleLeaveHoverOverData = (feature) => {
-        onChangeLeftHoverOverDistrict(feature.properties.district)
+        if (currentDataView !== ViewDataOptions.Precincts) {
+            onChangeLeftHoverOverDistrict(feature.properties.district)
+        }
     }
 
     useEffect(() => {
@@ -117,12 +131,14 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
                 <label className="dropdown_for_choropleth">View Data</label>
                 <select
                     id="race-select"
+                    value={currentDataView}
+                    onChange={(e) => setCurrentDataView(e.target.value)}
                     style={{marginLeft: "10px", fontSize:"15px", padding: "1px", marginRight: "10px"}}
                 >   
-                    <option value="Current">Current</option>
-                    <option value="SMD">SMD</option>
-                    <option value="MMD">MMD</option>
-                    <option value="Precincts">Precincts</option>
+                    <option value={`${ViewDataOptions.Current}`}>Current</option>
+                    <option value={`${ViewDataOptions.SMD}`}>SMD</option>
+                    <option value={`${ViewDataOptions.MMD}`}>MMD</option>
+                    <option value={`${ViewDataOptions.Precincts}`}>Precincts</option>
                 </select>
             </div>
             <div style={{marginBottom: "20px"}}>
@@ -138,14 +154,16 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
                 <label className="toggle">
                     <input
                         type="checkbox"
-                        checked={isToggled}
-                        onChange={() => setIsToggled(!isToggled)}
+                        checked={colorDistrictsToggleOn}
+                        onChange={() => setColorDistrictsToggleOn((prevColorDistrictsToggleOn) => {
+                            return !colorDistrictsToggleOn
+                        })}
                     />
                     <span className="slider"></span>
                 </label>
             </div>
             {
-                activeLayer === ActiveLayers.Precincts &&
+                currentDataView === ViewDataOptions.Precincts &&
                 (
                     <div className="search_for_precinct_name">
                         <input
@@ -180,7 +198,7 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
                             </tr>
                         </thead>
                         <tbody>
-                            {districtData && precinctData && (activeLayer === ActiveLayers.Districts ? districtData.features : precinctData.features.filter((feature) => {
+                            {districtData && precinctData && smdData && mmdData && (currentDataView === ViewDataOptions.Current ? districtData.features : currentDataView === ViewDataOptions.SMD ? smdData.features : currentDataView === ViewDataOptions.MMD ? mmdData.features : precinctData.features.filter((feature) => {
                                 // Get the precinct name and check if it includes the search query
                                 if (feature.properties[PrecinctsFeatureProperties.precinct]) {
                                     const precinctName = feature.properties[PrecinctsFeatureProperties.precinct].toLowerCase();
@@ -201,7 +219,7 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
                                             return (
                                                 <td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
                                                     {
-                                                        activeLayer === ActiveLayers.Districts &&
+                                                        currentDataView === ViewDataOptions.Districts &&
                                                         (
                                                             <span>
                                                                     <Icon name="roundedSquare" size={1.2} color={districtColors[feature.properties.district].fillColor} borderWidth={"1px"} borderColor={"black"} />

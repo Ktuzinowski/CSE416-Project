@@ -11,10 +11,19 @@ import { RightAnalysisPanel } from "./RightAnalysisPanel"
 
 export const StateMap = ({ state }) => {
   const [congressionalDistricts, setCongressionalDistricts] = useState(null);
-  const [selectedFeature, setSelectedFeature] = useState(null);
-  const [districtColors, setDistrictColors] = useState({});
+  const [smdDistricts, setSmdDistricts] = useState(null);
+  const [mmdDistricts, setMmdDistricts] = useState(null);
+
+  const [congressionalDistrictColors, setCongressionalDistrictColors] = useState({});
+  const [smdDistrictColors, setSmdDistrictColors] = useState({}); 
+  const [mmdDistrictColors, setMmdDistrictColors] = useState({});
+
   const [precincts, setPrecincts] = useState(null);
+  const [selectedFeature, setSelectedFeature] = useState(null);
   const [selectedDataColumn, setSelectedDataColumn] = useState("");
+
+  const [colorDistrictsToggleOn, setColorDistrictsToggleOn] = useState(true);
+
   const [activeLayer, setActiveLayer] = useState(ActiveLayers.Precincts);
   const [showCurrentDistrictPlan, setShowCurrentDistrictPlan] = useState(true);
   const [showPrecincts, setShowPrecincts] = useState(false);
@@ -50,13 +59,63 @@ export const StateMap = ({ state }) => {
           };
         });
 
-        setDistrictColors(colorsForDistricts);
+        setCongressionalDistrictColors(colorsForDistricts);
       } catch (error) {
         console.error("Failed to load current plans:", error.message);
       }
     }
 
     loadCurrentDistrictPlans();
+
+    const loadSmdDistrictPlans = async () => {
+      try {
+        const state_smd = `${state}_smd`
+        const smdDistrictPlans = await getCurrentDistrictPlans(state_smd);
+
+        setSmdDistricts(smdDistrictPlans);
+        const colorsForDistricts = {}
+
+        smdDistrictPlans.features.forEach((feature, index) => {
+          const district = feature.properties.district;
+          colorsForDistricts[district] = {
+            color: "black", // outline
+            fillColor: COLORS[index + 4],
+            fillOpacity: 0.6
+          };
+        });
+
+        setSmdDistrictColors(colorsForDistricts);
+      } catch (error) {
+        console.error("Failed to load current plans:", error.message);
+      }
+    }
+
+    loadSmdDistrictPlans();
+
+    const loadMmdDistrictPlans = async () => {
+      try {
+        const state_mmd = `${state}_mmd`
+        const mmdDistrictPlans = await getCurrentDistrictPlans(state_mmd);
+
+        setMmdDistricts(mmdDistrictPlans);
+        const colorsForDistricts = {}
+
+        mmdDistrictPlans.features.forEach((feature, index) => {
+          const district = feature.properties.district;
+          colorsForDistricts[district] = {
+            color: "black", // outline
+            fillColor: COLORS[index + 8],
+            fillOpacity: 0.6
+          };
+        });
+
+        setMmdDistrictColors(colorsForDistricts);
+      } catch (error) {
+        console.error("Failed to load current plans:", error.message);
+      }
+    }
+
+    loadMmdDistrictPlans();
 
     const loadPrecincts = async () => {
       try {
@@ -137,13 +196,13 @@ export const StateMap = ({ state }) => {
     }
   }, [selectedFeature, setStyleForPrecinctSelection]);
 
-  const styleDistricts = (feature) => {
+  const styleDistricts = (districtColors, feature) => {
     if (selectedDataColumn === "") {
       const district = feature.properties.district;
 
       return {
-        color: districtColors[district].color, // border color for each district
-        fillColor: districtColors[district].fillColor, // unique color for the district
+        color: colorDistrictsToggleOn ? districtColors[district].color : districtColors[district].fillColor, // border color for each district
+        fillColor: colorDistrictsToggleOn ? districtColors[district].fillColor : "white", // unique color for the district
         weight: 2,
         fillOpacity: districtColors[district].fillOpacity,
       };
@@ -221,7 +280,7 @@ export const StateMap = ({ state }) => {
     if (!showCurrentDistrictPlan) {
       return;
     }
-    setDistrictColors((prevColors) => {
+    setCongressionalDistrictColors((prevColors) => {
       return {
         ...prevColors,
         [district]: {
@@ -237,7 +296,7 @@ export const StateMap = ({ state }) => {
     if (!showCurrentDistrictPlan) {
       return;
     }
-    setDistrictColors((prevColors) => {
+    setCongressionalDistrictColors((prevColors) => {
       return {
         ...prevColors,
         [district_number]: {
@@ -253,11 +312,15 @@ export const StateMap = ({ state }) => {
     <>
       <div className="map-wrapper">
           {!isRightAnalysisPanelExpanded && <LeftDataPanel
+          colorDistrictsToggleOn={colorDistrictsToggleOn}
+          setColorDistrictsToggleOn={setColorDistrictsToggleOn}
           districtData={congressionalDistricts}
+          smdData={smdDistricts}
+          mmdData={mmdDistricts}
           precinctData={precincts}
           activeLayer={activeLayer}
           onSelectFeature={onSelectFeature}
-          districtColors={districtColors}
+          districtColors={congressionalDistrictColors}
           onChangeBorderForHoverOverDistrict={onChangeBorderForHoverOverDistrict}
           onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict}
           selectedDataColumn={selectedDataColumn}
@@ -283,8 +346,26 @@ export const StateMap = ({ state }) => {
               <GeoJSON
                 ref={geoJsonRefDistricts} // Set reference to GeoJSON layer
                 data={congressionalDistricts}
-                style={styleDistricts}
+                style={(feature) => styleDistricts(congressionalDistrictColors, feature)}
                 onEachFeature={showDistrictData}
+              />
+            )}
+
+            {showSMD && smdDistricts && (
+              <GeoJSON
+                ref={geoJsonRefDistricts} // Set reference to GeoJSON layer
+                data={smdDistricts}
+                style={(feature) => styleDistricts(smdDistrictColors, feature)}
+                onEachFeature={showDistrictData}
+              />
+            )}
+
+            {showMMD && mmdDistricts && (
+              <GeoJSON
+              ref={geoJsonRefDistricts} // Set reference to GeoJSON layer
+              data={mmdDistricts}
+              style={(feature) => styleDistricts(mmdDistrictColors, feature)}
+              onEachFeature={showDistrictData}
               />
             )}
 

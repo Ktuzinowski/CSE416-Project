@@ -89,3 +89,16 @@ export const ActiveLayers = {
   Districts: "districts",
   Precincts: "precincts"
 }
+
+export const ColorDistrictsOptions = {
+  Current: "Current",
+  SMD: "SMD",
+  MMD: "MMD"
+}
+
+export const ViewDataOptions = {
+  Current: "Current",
+  SMD: "SMD",
+  MMD: "MMD",
+  Precincts: "Precincts"
+}
