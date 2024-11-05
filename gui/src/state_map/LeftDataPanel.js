@@ -71,7 +71,7 @@ export const LeftDataPanel = ({ colorDistrictsToggleOn, setColorDistrictsToggleO
 
     useEffect(() => {
         if (selectedFeature) {
-            onSelectFeature(selectedFeature);
+            onSelectFeature(currentDataView, selectedFeature);
         }
     }, [selectedFeature, onSelectFeature]);
 
