@@ -1,0 +1,15 @@
+.right_analysis_panel_container {
+    height: 100%;
+    background-color: white;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    top: 5.5%; /* Push it down to start just below the navbar */
+    left: 0;
+    transition: width 0.3 ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    border-left: 1px solid #ccc;
+}

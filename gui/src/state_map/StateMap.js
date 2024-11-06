@@ -3,21 +3,42 @@ import { getCurrentDistrictPlans, getPrecincts } from "../axiosClient";
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css"
 import { LeftDataPanel } from "./LeftDataPanel";
-import { MAPBOX_ACCESS_TOKEN, COLORS, ActiveLayers, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom } from "../utils/Constants";
+import { MAPBOX_ACCESS_TOKEN, COLORS, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom, BoundaryChoroplethOptions, ViewDataOptions} from "../utils/Constants";
 import { CurrentDistrictPlansProperties, CurrentDistrictPlansFeatureProperties, PrecinctsFeatureProperties } from "../utils/MongoDocumentProperties";
 import { getDistrictDataPopupContent, getPrecinctDataPopupContent } from "./PopupStyling";
+import { MapFilter } from "./MapFilter";
+import { RightAnalysisPanel } from "./RightAnalysisPanel"
 
 export const StateMap = ({ state }) => {
   const [congressionalDistricts, setCongressionalDistricts] = useState(null);
-  const [selectedFeature, setSelectedFeature] = useState(null);
-  const [districtColors, setDistrictColors] = useState({});
+  const [smdDistricts, setSmdDistricts] = useState(null);
+  const [mmdDistricts, setMmdDistricts] = useState(null);
+
+  const [congressionalDistrictColors, setCongressionalDistrictColors] = useState({});
+  const [smdDistrictColors, setSmdDistrictColors] = useState({}); 
+  const [mmdDistrictColors, setMmdDistrictColors] = useState({});
+
   const [precincts, setPrecincts] = useState(null);
+  const [selectedFeature, setSelectedFeature] = useState(null);
   const [selectedDataColumn, setSelectedDataColumn] = useState("");
-  const [activeLayer, setActiveLayer] = useState(ActiveLayers.Districts);
+
+  const [showCurrentDistrictPlan, setShowCurrentDistrictPlan] = useState(true);
+  const [showPrecincts, setShowPrecincts] = useState(false);
+  const [showSMD, setShowSMD] = useState(false);
+  const [showMMD, setShowMMD] = useState(false);
   const [mapCenter, setMapCenter] = useState(centerOfTheUS);
   const [mapZoom, setMapZoom] = useState(defaultZoom);
   const [mapMinZoom, setMapMinZoom] = useState(defaultMinZoom);
-  const geoJsonRefDistricts = useRef();
+  const [isLeftDataPanelExpanded, setIsLeftDataPanelExpanded] = useState(false);
+  const [isRightAnalysisPanelExpanded, setIsRightAnalysisPanelExpanded] = useState(false);
+
+  const [choroplethBoundarySelection, setChoroplethBoundarySelection] = useState(BoundaryChoroplethOptions.Current);
+
+  const [selectedDataViewOption, setSelectedDataViewOption] = useState(null);
+
+  const geoJsonRefCurrentDistricts = useRef();
+  const geoJsonRefSmdDistricts = useRef();
+  const geoJsonRefMmdDistricts = useRef();
   const geoJsonRefPrecincts = useRef();
   const mapRef = useRef();
 
@@ -42,13 +63,69 @@ export const StateMap = ({ state }) => {
           };
         });
 
-        setDistrictColors(colorsForDistricts);
+        setCongressionalDistrictColors(colorsForDistricts);
+
+        return currentDistrictPlans.features.length;
+      } catch (error) {
+        console.error("Failed to load current plans:", error.message);
+        return 0;
+      }
+    }
+
+    const loadSmdDistrictPlans = async (lengthOfPreviousDistricts) => {
+      try {
+        const state_smd = `${state}_smd`
+        const smdDistrictPlans = await getCurrentDistrictPlans(state_smd);
+
+        setSmdDistricts(smdDistrictPlans);
+        const colorsForDistricts = {}
+
+        smdDistrictPlans.features.forEach((feature, index) => {
+          const district = feature.properties.district;
+          colorsForDistricts[district] = {
+            color: "black", // outline
+            fillColor: COLORS[lengthOfPreviousDistricts + index],
+            fillOpacity: 0.6
+          };
+        });
+
+        setSmdDistrictColors(colorsForDistricts);
       } catch (error) {
         console.error("Failed to load current plans:", error.message);
       }
     }
 
-    loadCurrentDistrictPlans();
+    const loadMmdDistrictPlans = async (lengthOfPreviousDistricts) => {
+      try {
+        const state_mmd = `${state}_mmd`
+        const mmdDistrictPlans = await getCurrentDistrictPlans(state_mmd);
+
+        setMmdDistricts(mmdDistrictPlans);
+        const colorsForDistricts = {}
+
+        mmdDistrictPlans.features.forEach((feature, index) => {
+          const district = feature.properties.district;
+          colorsForDistricts[district] = {
+            color: "black", // outline
+            fillColor: COLORS[lengthOfPreviousDistricts + index],
+            fillOpacity: 0.6
+          };
+        });
+
+        setMmdDistrictColors(colorsForDistricts);
+      } catch (error) {
+        console.error("Failed to load current plans:", error.message);
+      }
+    }
+
+    // Ensure follows this order since they increasingly select
+    // colors from the array of colors COLORS
+    const loadAllDistrictPlans = async () => {
+      const lengthOfFeaturesForCurrentDistrictPlan = await loadCurrentDistrictPlans();
+      const lengthOfFeaturesForSmdDistrictPlan = await loadSmdDistrictPlans(lengthOfFeaturesForCurrentDistrictPlan);
+      await loadMmdDistrictPlans(lengthOfFeaturesForSmdDistrictPlan + lengthOfFeaturesForCurrentDistrictPlan);
+    }
+    loadAllDistrictPlans();
 
     const loadPrecincts = async () => {
       try {
@@ -96,8 +173,8 @@ export const StateMap = ({ state }) => {
 
   // Zoom to selected feature
   useEffect(() => {
-    if (selectedFeature && geoJsonRefDistricts.current && mapRef.current) {
-      const layer = geoJsonRefDistricts.current
+    if (selectedDataViewOption === ViewDataOptions.Current && selectedFeature && geoJsonRefCurrentDistricts.current && mapRef.current) {
+      const layer = geoJsonRefCurrentDistricts.current
         .getLayers()
         .find(
           (l) =>
@@ -109,8 +186,37 @@ export const StateMap = ({ state }) => {
 
         mapRef.current.fitBounds(bounds);
       }
-    } else if (
-      selectedFeature &&
+    } 
+    else if (selectedDataViewOption === ViewDataOptions.SMD && selectedFeature && geoJsonRefSmdDistricts.current && mapRef.current) {
+      const layer = geoJsonRefSmdDistricts.current
+        .getLayers()
+        .find(
+          (l) =>
+            l.feature.properties.district ===
+            selectedFeature.properties.district
+        );
+      if (layer) {
+        const bounds = layer.getBounds();
+
+        mapRef.current.fitBounds(bounds);
+      }
+    }
+    else if (selectedDataViewOption === ViewDataOptions.MMD && selectedFeature && geoJsonRefMmdDistricts.current && mapRef.current) {
+      const layer = geoJsonRefMmdDistricts.current
+        .getLayers()
+        .find(
+          (l) =>
+            l.feature.properties.district ===
+            selectedFeature.properties.district
+        );
+      if (layer) {
+        const bounds = layer.getBounds();
+
+        mapRef.current.fitBounds(bounds);
+      }
+    }
+    else if (
+      selectedDataViewOption === ViewDataOptions.Precincts &&
       geoJsonRefPrecincts.current &&
       mapRef.current
     ) {
@@ -118,8 +224,8 @@ export const StateMap = ({ state }) => {
         .getLayers()
         .find(
           (l) =>
-            l.feature.properties.district ===
-            selectedFeature.properties.district
+            l.feature.properties.precinct ===
+            selectedFeature.properties.precinct
         );
       if (layer) {
         const bounds = layer.getBounds();
@@ -127,17 +233,18 @@ export const StateMap = ({ state }) => {
         mapRef.current.fitBounds(bounds);
       }
     }
-  }, [selectedFeature, setStyleForPrecinctSelection]);
+  }, [selectedFeature, selectedDataViewOption]);
 
-  const styleDistricts = (feature) => {
+  const styleDistricts = (boundary, districtColors, feature) => {
+    const district = feature.properties.district;
+
     if (selectedDataColumn === "") {
-      const district = feature.properties.district;
 
       return {
-        color: districtColors[district].color, // border color for each district
+        color: choroplethBoundarySelection === boundary ? districtColors[district].color : districtColors[district].fillColor, // border color for each district
         fillColor: districtColors[district].fillColor, // unique color for the district
-        weight: 2,
-        fillOpacity: districtColors[district].fillOpacity,
+        weight: choroplethBoundarySelection === boundary ? 2 : 4,
+        fillOpacity: choroplethBoundarySelection === boundary ? districtColors[district].fillOpacity : 0.2,
       };
     } else {
       const totalPop = feature.properties.population;
@@ -154,10 +261,10 @@ export const StateMap = ({ state }) => {
       }
 
       return {
-        color: "black",
-        fillColor: fillColor,
-        weight: 1,
-        fillOpacity: 0.7,
+        color: choroplethBoundarySelection === boundary ? "black" : districtColors[district].fillColor,
+        fillColor: choroplethBoundarySelection === boundary ? fillColor : districtColors[district].fillColor,
+        weight: choroplethBoundarySelection === boundary ? 1 : 3,
+        fillOpacity: choroplethBoundarySelection === boundary ? 0.7 : 0.2,
       };
     }
   };
@@ -200,63 +307,116 @@ export const StateMap = ({ state }) => {
 
     return {
       color: "black",
-      fillColor: fillColor,
-      weight: 1,
-      fillOpacity: 0.7,
+      fillColor: choroplethBoundarySelection === BoundaryChoroplethOptions.Precincts ? fillColor : "white",
+      weight: 0.7
     };
   }
 
-  const onSelectFeature = (feature) => {
+  const onSelectFeature = (dataViewOption, feature) => {
     setSelectedFeature(feature);
+    setSelectedDataViewOption(dataViewOption);
   }
 
-  const onChangeBorderForHoverOverDistrict = (district) => {
-    if (activeLayer !== ActiveLayers.Districts) {
-      return;
+  const onChangeBorderForHoverOverDistrict = (currentDataView, district) => {
+    if (showCurrentDistrictPlan && currentDataView === ViewDataOptions.Current) {
+      setCongressionalDistrictColors((prevColors) => {
+        return {
+          ...prevColors,
+          [district]: {
+            color: prevColors[district].fillColor,
+            fillColor: prevColors[district].fillColor,
+            fillOpacity: 0.8,
+          },
+        };
+      });
     }
-    setDistrictColors((prevColors) => {
-      return {
-        ...prevColors,
-        [district]: {
-          color: prevColors[district].fillColor,
-          fillColor: prevColors[district].fillColor,
-          fillOpacity: 0.8,
-        },
-      };
-    });
+    else if (showSMD && currentDataView === ViewDataOptions.SMD) {
+      setSmdDistrictColors((prevColors) => {
+        return {
+          ...prevColors,
+          [district]: {
+            color: prevColors[district].fillColor,
+            fillColor: prevColors[district].fillColor,
+            fillOpacity: 0.8,
+          },
+        };
+      });
+    }
+    else if (showMMD && currentDataView === ViewDataOptions.MMD) {
+      setMmdDistrictColors((prevColors) => {
+        return {
+          ...prevColors,
+          [district]: {
+            color: prevColors[district].fillColor,
+            fillColor: prevColors[district].fillColor,
+            fillOpacity: 0.8,
+          },
+        };
+      });
+    }
   }
 
-  const onChangeLeftHoverOverDistrict = (district_number) => {
-    if (activeLayer !== ActiveLayers.Districts) {
-      return;
+  const onChangeLeftHoverOverDistrict = (currentDataView, district_number) => {
+    if (showCurrentDistrictPlan && currentDataView === ViewDataOptions.Current) {
+      setCongressionalDistrictColors((prevColors) => {
+        return {
+          ...prevColors,
+          [district_number]: {
+            color: "black",
+            fillColor: prevColors[district_number].fillColor,
+            fillOpacity: 0.6,
+          },
+        };
+      });
     }
-    setDistrictColors((prevColors) => {
-      return {
-        ...prevColors,
-        [district_number]: {
-          color: "black",
-          fillColor: prevColors[district_number].fillColor,
-          fillOpacity: 0.6,
-        },
-      };
-    });
+    else if (showSMD && currentDataView === ViewDataOptions.SMD) {
+      setSmdDistrictColors((prevColors) => {
+        return {
+          ...prevColors,
+          [district_number]: {
+            color: "black",
+            fillColor: prevColors[district_number].fillColor,
+            fillOpacity: 0.6,
+          },
+        };
+      });
+    }
+    else if (showMMD && currentDataView === ViewDataOptions.MMD) {
+      setMmdDistrictColors((prevColors) => {
+        return {
+          ...prevColors,
+          [district_number]: {
+            color: "black",
+            fillColor: prevColors[district_number].fillColor,
+            fillOpacity: 0.6,
+          },
+        };
+      });
+    }
   };
 
   return (
     <>
       <div className="map-wrapper">
-          <LeftDataPanel
+          {!isRightAnalysisPanelExpanded && <LeftDataPanel
           districtData={congressionalDistricts}
+          smdData={smdDistricts}
+          mmdData={mmdDistricts}
           precinctData={precincts}
-          activeLayer={activeLayer}
           onSelectFeature={onSelectFeature}
-          districtColors={districtColors}
+          congressionalDistrictColors={congressionalDistrictColors}
+          smdDistrictColors={smdDistrictColors}
+          mmdDistrictColors={mmdDistrictColors}
           onChangeBorderForHoverOverDistrict={onChangeBorderForHoverOverDistrict}
           onChangeLeftHoverOverDistrict={onChangeLeftHoverOverDistrict}
           selectedDataColumn={selectedDataColumn}
           setSelectedDataColumn={setSelectedDataColumn}
-          />
+          setIsLeftDataPanelExpanded={setIsLeftDataPanelExpanded}
+          choroplethBoundarySelection={choroplethBoundarySelection}
+          setChoroplethBoundarySelection={setChoroplethBoundarySelection}
+          />}
         <div className="map-container">
+          {!isLeftDataPanelExpanded && !isRightAnalysisPanelExpanded && <MapFilter showCurrent={showCurrentDistrictPlan} setShowCurrent={setShowCurrentDistrictPlan} showSMD={showSMD} setShowSMD={setShowSMD} showMMD={showMMD} setShowMMD={setShowMMD} showPrecincts={showPrecincts} setShowPrecincts={setShowPrecincts} />}
           <MapContainer
             center={mapCenter} //center on texas coords
             zoom={mapZoom}
@@ -270,46 +430,34 @@ export const StateMap = ({ state }) => {
               attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a>'
             />
 
-            <div
-              className="custom-layer-controls"
-              style={{ display: "flex", flexDirection: "column" }}
-            >
-              <button
-                onClick={() => setActiveLayer(ActiveLayers.Districts)}
-                style={{
-                  margin: "5px",
-                  padding: "10px",
-                  backgroundColor:
-                    activeLayer === ActiveLayers.Districts ? "#007bff" : "#ccc",
-                  color: "#fff",
-                }}
-              >
-                Districts
-              </button>
-              <button
-                onClick={() => setActiveLayer(ActiveLayers.Precincts)}
-                style={{
-                  margin: "5px",
-                  padding: "10px",
-                  backgroundColor:
-                    activeLayer === ActiveLayers.Precincts ? "#007bff" : "#ccc",
-                  color: "#fff",
-                }}
-              >
-                Precincts
-              </button>
-            </div>
-
-            {activeLayer === ActiveLayers.Districts && congressionalDistricts && (
+            {showCurrentDistrictPlan && congressionalDistricts && (
               <GeoJSON
-                ref={geoJsonRefDistricts} // Set reference to GeoJSON layer
+                ref={geoJsonRefCurrentDistricts} // Set reference to GeoJSON layer
                 data={congressionalDistricts}
-                style={styleDistricts}
+                style={(feature) => styleDistricts(BoundaryChoroplethOptions.Current, congressionalDistrictColors, feature)}
                 onEachFeature={showDistrictData}
               />
             )}
 
-            {activeLayer === ActiveLayers.Precincts && precincts && (
+            {showSMD && smdDistricts && (
+              <GeoJSON
+                ref={geoJsonRefSmdDistricts} // Set reference to GeoJSON layer
+                data={smdDistricts}
+                style={(feature) => styleDistricts(BoundaryChoroplethOptions.SMD, smdDistrictColors, feature)}
+                onEachFeature={showDistrictData}
+              />
+            )}
+
+            {showMMD && mmdDistricts && (
+              <GeoJSON
+              ref={geoJsonRefMmdDistricts} // Set reference to GeoJSON layer
+              data={mmdDistricts}
+              style={(feature) => styleDistricts(BoundaryChoroplethOptions.MMD, mmdDistrictColors, feature)}
+              onEachFeature={showDistrictData}
+              />
+            )}
+
+            {showPrecincts && precincts && (
               <GeoJSON
                 data={precincts}
                 ref={geoJsonRefPrecincts}
@@ -321,6 +469,7 @@ export const StateMap = ({ state }) => {
             <ZoomControl position="bottomright" />
           </MapContainer>
         </div>
+        {!isLeftDataPanelExpanded && <RightAnalysisPanel setIsRightAnalysisPanelExpanded={setIsRightAnalysisPanelExpanded}/>}
       </div>
     </>
   )

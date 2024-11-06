@@ -37,8 +37,8 @@ export const getDistrictDataPopupContent = (feature) => {
           (feature.properties[CurrentDistrictPlansFeatureProperties.pacific] / feature.properties[CurrentDistrictPlansFeatureProperties.population]) *
           100
         ).toFixed(2)}%</p>
-        <p><strong>Native:</strong> ${(
-          (feature.properties[CurrentDistrictPlansFeatureProperties.native] / feature.properties[CurrentDistrictPlansFeatureProperties.population]) *
+        <p><strong>Indigenous:</strong> ${(
+          (feature.properties[CurrentDistrictPlansFeatureProperties.indigenous] / feature.properties[CurrentDistrictPlansFeatureProperties.population]) *
           100
         ).toFixed(2)}%</p>
         <p><strong>Other:</strong> ${(
@@ -84,8 +84,8 @@ export const getPrecinctDataPopupContent = (feature) => {
       (feature.properties[PrecinctsFeatureProperties.pacific] / feature.properties[PrecinctsFeatureProperties.population]) *
       100
     ).toFixed(2)}%</p>
-    <p><strong>Native:</strong> ${(
-      (feature.properties[PrecinctsFeatureProperties.native] / feature.properties[PrecinctsFeatureProperties.population]) *
+    <p><strong>Indigenous:</strong> ${(
+      (feature.properties[PrecinctsFeatureProperties.indigenous] / feature.properties[PrecinctsFeatureProperties.population]) *
       100
     ).toFixed(2)}%</p>
     <p><strong>Other:</strong> ${(

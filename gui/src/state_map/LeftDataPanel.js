@@ -1,23 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
-import { AnalysisScreen } from "../mmd_vs_smd/AnalysisScreen";
 import Icon from "../utils/Icon";
 import "../App.css";
 import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties } from "../utils/MongoDocumentProperties";
-import { ActiveLayers } from "../utils/Constants"
+import { ViewDataOptions, BoundaryChoroplethOptions } from "../utils/Constants"
 
-export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelectFeature, districtColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn }) => {
+export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, onSelectFeature, congressionalDistrictColors, smdDistrictColors, mmdDistrictColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded, choroplethBoundarySelection, setChoroplethBoundarySelection }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
     const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
     const [displayAnalysisScreen, setDisplayAnalysisScreen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [currentDataView, setCurrentDataView] = useState(ViewDataOptions.Current);
 
     useEffect(() => {
-        if (districtData !== null && precinctData !== null) {
-            if (activeLayer === ActiveLayers.Districts) {
+        if (districtData !== null && precinctData !== null && smdData !== null && mmdData !== null) {
+            if (currentDataView === ViewDataOptions.Current) {
+                const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
+                setColumnNames(keys);
+                setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
+            }
+            else if (currentDataView === ViewDataOptions.SMD) {
+                const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
+                setColumnNames(keys);
+                setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
+            }
+            else if (currentDataView === ViewDataOptions.MMD) {
                 const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
                 setColumnNames(keys);
                 setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
@@ -28,11 +38,12 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
                 setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
             }
         }
-    }, [districtData, precinctData, activeLayer]);
+    }, [districtData, precinctData, currentDataView]);
 
     const togglePanel = () => {
         setDisplayAnalysisScreen(false);
         setIsExpanded(!isExpanded);
+        setIsLeftDataPanelExpanded(!isExpanded);
     }
 
     const togglePin = (column) => {
@@ -47,16 +58,20 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
     }
 
     const handleHoverOverRowOfData = (feature) => {
-        onChangeBorderForHoverOverDistrict(feature.properties.district)
+        if (currentDataView !== ViewDataOptions.Precincts) {
+            onChangeBorderForHoverOverDistrict(currentDataView, feature.properties.district)
+        }
     }
 
     const handleLeaveHoverOverData = (feature) => {
-        onChangeLeftHoverOverDistrict(feature.properties.district)
+        if (currentDataView !== ViewDataOptions.Precincts) {
+            onChangeLeftHoverOverDistrict(currentDataView, feature.properties.district)
+        }
     }
 
     useEffect(() => {
         if (selectedFeature) {
-            onSelectFeature(selectedFeature);
+            onSelectFeature(currentDataView, selectedFeature);
         }
     }, [selectedFeature, onSelectFeature]);
 
@@ -86,42 +101,61 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
             paddingBottom: "35px"
         }}>
             <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">{displayAnalysisScreen ? "MMD vs. SMD" : activeLayer === ActiveLayers.Districts ? "Congressional Districts" : "Precincts"}</h2>
+                <h2 className="left_data_panel_title">{currentDataView === ViewDataOptions.Current ? "Current District Plan" : currentDataView}</h2>
                 <button className="left_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
             </div>
 
-            {displayAnalysisScreen && (
-                <AnalysisScreen data={districtData}/>
-            )}
-
             {!displayAnalysisScreen && (
-                <>
-                            <div style={{ marginBottom: "20px" }}>
-            <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
-            <select
-                id="race-select"
-                value={selectedDataColumn}
-                onChange={(e) => setSelectedDataColumn(e.target.value)}
-                style={{marginLeft: "10px", fontSize:"15px", padding: "1px"}}
-            >   
-                <option value="">Default</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.republican}`}>Republican</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.democrat}`}>Democrat</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.white}`}>White</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.black}`}>Black</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.hispanic}`}>Hispanic</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.asian}`}>Asian</option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.pacific}`}>Pacific </option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.native}`}>Native </option>
-                <option value={`${CurrentDistrictPlansFeatureProperties.other}`}>Other</option>
-            </select>
-            <button className="evaluate_mmd_vs_smd" onClick={onAnalysisScreenButtonClick}>Evaluate MMD vs. SMD</button>
+            <>
+            <div style={{ marginBottom: "20px" }}>
+                <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
+                <select
+                    id="race-select"
+                    value={choroplethBoundarySelection}
+                    onChange={(e) => setChoroplethBoundarySelection(e.target.value)}
+                    style={{marginLeft: "10px", fontSize: "15px", padding: "1px", marginRight: "10px"}}
+                >
+                    <option value={`${BoundaryChoroplethOptions.Current}`}>Current</option>
+                    <option value={`${BoundaryChoroplethOptions.SMD}`}>SMD</option>
+                    <option value={`${BoundaryChoroplethOptions.MMD}`}>MMD</option>
+                    <option value={`${BoundaryChoroplethOptions.Precincts}`}>Precincts</option>
+                </select>
+                <select
+                    id="race-select"
+                    value={selectedDataColumn}
+                    onChange={(e) => setSelectedDataColumn(e.target.value)}
+                    style={{fontSize:"15px", padding: "1px", marginRight: "10px"}}
+                >   
+                    <option value="">Default</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.republican}`}>Republican</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.democrat}`}>Democrat</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.white}`}>White</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.black}`}>Black</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.hispanic}`}>Hispanic</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.asian}`}>Asian</option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.pacific}`}>Pacific </option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.indigenous}`}>Indigenous </option>
+                    <option value={`${CurrentDistrictPlansFeatureProperties.other}`}>Other</option>
+                </select>
             </div>
-
+            <div style={{marginBottom: "20px"}}>
+                <label className="dropdown_for_choropleth">View Data</label>
+                <select
+                    id="race-select"
+                    value={currentDataView}
+                    onChange={(e) => setCurrentDataView(e.target.value)}
+                    style={{marginLeft: "10px", fontSize:"15px", padding: "1px", marginRight: "10px"}}
+                >   
+                    <option value={`${ViewDataOptions.Current}`}>Current</option>
+                    <option value={`${ViewDataOptions.SMD}`}>SMD</option>
+                    <option value={`${ViewDataOptions.MMD}`}>MMD</option>
+                    <option value={`${ViewDataOptions.Precincts}`}>Precincts</option>
+                </select>
+            </div>
             {
-                activeLayer === ActiveLayers.Precincts &&
+                currentDataView === ViewDataOptions.Precincts &&
                 (
                     <div className="search_for_precinct_name">
                         <input
@@ -156,7 +190,7 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
                             </tr>
                         </thead>
                         <tbody>
-                            {districtData && precinctData && (activeLayer === ActiveLayers.Districts ? districtData.features : precinctData.features.filter((feature) => {
+                            {districtData && precinctData && smdData && mmdData && (currentDataView === ViewDataOptions.Current ? districtData.features : currentDataView === ViewDataOptions.SMD ? smdData.features : currentDataView === ViewDataOptions.MMD ? mmdData.features : precinctData.features.filter((feature) => {
                                 // Get the precinct name and check if it includes the search query
                                 if (feature.properties[PrecinctsFeatureProperties.precinct]) {
                                     const precinctName = feature.properties[PrecinctsFeatureProperties.precinct].toLowerCase();
@@ -177,10 +211,10 @@ export const LeftDataPanel = ({ districtData, precinctData, activeLayer, onSelec
                                             return (
                                                 <td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
                                                     {
-                                                        activeLayer === ActiveLayers.Districts &&
+                                                        currentDataView !== ViewDataOptions.Precincts &&
                                                         (
                                                             <span>
-                                                                    <Icon name="roundedSquare" size={1.2} color={districtColors[feature.properties.district].fillColor} borderWidth={"1px"} borderColor={"black"} />
+                                                                    <Icon name="roundedSquare" size={1.2} color={currentDataView === ViewDataOptions.Current ? congressionalDistrictColors[feature.properties.district].fillColor : currentDataView === ViewDataOptions.SMD ? smdDistrictColors[feature.properties.district].fillColor : mmdDistrictColors[feature.properties.district].fillColor} borderWidth={"1px"} borderColor={"black"} />
                                                             </span>
                                                         )
                                                     }

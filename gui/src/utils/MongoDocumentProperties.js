@@ -18,7 +18,7 @@ export const CurrentDistrictPlansProperties = {
     asian: "asian",
     pacific: "pacific",
     other: "other",
-    native: "native"
+    indigenous: "indigenous"
   }
 
   export const PrecinctsProperties = {
@@ -39,5 +39,5 @@ export const CurrentDistrictPlansProperties = {
     asian: "asian",
     pacific: "pacific",
     other: "other",
-    native: "native"
+    indigenous: "indigenous"
   }

@@ -1,9 +1,12 @@
 package com.cse416.server.geojson.precincts;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import com.cse416.server.geojson.Geometry;
 
 public class Feature {
 	private String type;
+	@Field("properties")
 	private Properties properties;
 	private Geometry geometry;
 	public String getType() {
