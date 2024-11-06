@@ -22,8 +22,6 @@ export const StateMap = ({ state }) => {
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [selectedDataColumn, setSelectedDataColumn] = useState("");
 
-  const [colorDistrictsToggleOn, setColorDistrictsToggleOn] = useState(true);
-
   const [showCurrentDistrictPlan, setShowCurrentDistrictPlan] = useState(true);
   const [showPrecincts, setShowPrecincts] = useState(false);
   const [showSMD, setShowSMD] = useState(false);
@@ -235,17 +233,18 @@ export const StateMap = ({ state }) => {
         mapRef.current.fitBounds(bounds);
       }
     }
-  }, [selectedFeature, setStyleForPrecinctSelection, selectedDataViewOption]);
+  }, [selectedFeature, selectedDataViewOption]);
 
-  const styleDistricts = (districtColors, feature) => {
+  const styleDistricts = (boundary, districtColors, feature) => {
+    const district = feature.properties.district;
+
     if (selectedDataColumn === "") {
-      const district = feature.properties.district;
 
       return {
-        color: colorDistrictsToggleOn ? districtColors[district].color : districtColors[district].fillColor, // border color for each district
-        fillColor: colorDistrictsToggleOn ? districtColors[district].fillColor : "white", // unique color for the district
-        weight: 2,
-        fillOpacity: districtColors[district].fillOpacity,
+        color: choroplethBoundarySelection === boundary ? districtColors[district].color : districtColors[district].fillColor, // border color for each district
+        fillColor: districtColors[district].fillColor, // unique color for the district
+        weight: choroplethBoundarySelection === boundary ? 2 : 4,
+        fillOpacity: choroplethBoundarySelection === boundary ? districtColors[district].fillOpacity : 0.2,
       };
     } else {
       const totalPop = feature.properties.population;
@@ -262,10 +261,10 @@ export const StateMap = ({ state }) => {
       }
 
       return {
-        color: "black",
-        fillColor: fillColor,
-        weight: 1,
-        fillOpacity: 0.7,
+        color: choroplethBoundarySelection === boundary ? "black" : districtColors[district].fillColor,
+        fillColor: choroplethBoundarySelection === boundary ? fillColor : districtColors[district].fillColor,
+        weight: choroplethBoundarySelection === boundary ? 1 : 3,
+        fillOpacity: choroplethBoundarySelection === boundary ? 0.7 : 0.2,
       };
     }
   };
@@ -308,7 +307,7 @@ export const StateMap = ({ state }) => {
 
     return {
       color: "black",
-      fillColor: fillColor,
+      fillColor: choroplethBoundarySelection === BoundaryChoroplethOptions.Precincts ? fillColor : "white",
       weight: 0.7
     };
   }
@@ -400,8 +399,6 @@ export const StateMap = ({ state }) => {
     <>
       <div className="map-wrapper">
           {!isRightAnalysisPanelExpanded && <LeftDataPanel
-          colorDistrictsToggleOn={colorDistrictsToggleOn}
-          setColorDistrictsToggleOn={setColorDistrictsToggleOn}
           districtData={congressionalDistricts}
           smdData={smdDistricts}
           mmdData={mmdDistricts}
@@ -437,7 +434,7 @@ export const StateMap = ({ state }) => {
               <GeoJSON
                 ref={geoJsonRefCurrentDistricts} // Set reference to GeoJSON layer
                 data={congressionalDistricts}
-                style={(feature) => styleDistricts(congressionalDistrictColors, feature)}
+                style={(feature) => styleDistricts(BoundaryChoroplethOptions.Current, congressionalDistrictColors, feature)}
                 onEachFeature={showDistrictData}
               />
             )}
@@ -446,7 +443,7 @@ export const StateMap = ({ state }) => {
               <GeoJSON
                 ref={geoJsonRefSmdDistricts} // Set reference to GeoJSON layer
                 data={smdDistricts}
-                style={(feature) => styleDistricts(smdDistrictColors, feature)}
+                style={(feature) => styleDistricts(BoundaryChoroplethOptions.SMD, smdDistrictColors, feature)}
                 onEachFeature={showDistrictData}
               />
             )}
@@ -455,7 +452,7 @@ export const StateMap = ({ state }) => {
               <GeoJSON
               ref={geoJsonRefMmdDistricts} // Set reference to GeoJSON layer
               data={mmdDistricts}
-              style={(feature) => styleDistricts(mmdDistrictColors, feature)}
+              style={(feature) => styleDistricts(BoundaryChoroplethOptions.MMD, mmdDistrictColors, feature)}
               onEachFeature={showDistrictData}
               />
             )}
