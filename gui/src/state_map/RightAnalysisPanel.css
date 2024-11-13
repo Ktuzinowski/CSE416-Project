@@ -4,7 +4,7 @@
     position: relative;
     margin: 0;
     padding: 0;
-    top: 5.5%; /* Push it down to start just below the navbar */
+    top: 0; /* Push it down to start just below the navbar */
     left: 0;
     transition: width 0.3 ease;
     display: flex;

@@ -233,7 +233,7 @@ export const StateMap = ({ state }) => {
         mapRef.current.fitBounds(bounds);
       }
     }
-  }, [selectedFeature, selectedDataViewOption]);
+  }, [selectedFeature, selectedDataViewOption, setStyleForPrecinctSelection]);
 
   const styleDistricts = (boundary, districtColors, feature) => {
     const district = feature.properties.district;
@@ -242,7 +242,7 @@ export const StateMap = ({ state }) => {
 
       return {
         color: choroplethBoundarySelection === boundary ? districtColors[district].color : districtColors[district].fillColor, // border color for each district
-        fillColor: districtColors[district].fillColor, // unique color for the district
+        fillColor: districtColors[district].fillColor, // unique c
         weight: choroplethBoundarySelection === boundary ? 2 : 4,
         fillOpacity: choroplethBoundarySelection === boundary ? districtColors[district].fillOpacity : 0.2,
       };
