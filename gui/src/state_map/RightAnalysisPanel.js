@@ -3,8 +3,7 @@ import "../App.css"
 import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
-import { RightAnalysisPanelOptions, EnsembleDropdownOptions, SearchDropdownOptions, SummaryDropdownOptions } from "../utils/Constants";
-import { RightAnalysisDropdown } from "./components/RightAnalysisDropdown";
+import { RightAnalysisPanelOptions, RightAnalysisEnsembleOptions, RightAnalysisSearchOptions, RightAnalysisSummaryOptions } from "../utils/Constants";
 
 export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -36,30 +35,35 @@ export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
                     <div className="dropdown-button">
                         <button>Ensemble</button>
                         <div className="dropdown-menu">
-                            <p>Option 1</p>
-                            <p>Option 2</p>
-                            <p>Option 3</p>
-                        </div>
-                    </div>
-                    <div className="dropdown-button">
-                        <button>Summary</button>
-                        <div className="dropdown-menu">
-                            <p>Option A</p>
-                            <p>Option B</p>
-                            <p>Option C</p>
+                            {Object.keys(RightAnalysisEnsembleOptions).map((ensembleOption) => {
+                                return (
+                                    <p key={ensembleOption}>{ensembleOption}</p>
+                                )
+                            })}
                         </div>
                     </div>
                     <div className="dropdown-button">
                         <button>Search</button>
                         <div className="dropdown-menu">
-                            <p>Option X</p>
-                            <p>Option Y</p>
-                            <p>Option Z</p>
+                            {Object.keys(RightAnalysisSearchOptions).map((ensembleOption) => {
+                                return (
+                                    <p key={ensembleOption}>{ensembleOption}</p>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    <div className="dropdown-button">
+                        <button>Summary</button>
+                        <div className="dropdown-menu">
+                            {Object.keys(RightAnalysisSummaryOptions).map((ensembleOption) => {
+                                return (
+                                    <p key={ensembleOption}>{ensembleOption}</p>
+                                )
+                            })}
                         </div>
                     </div>
                     <div className="dropdown-button">
                         <button>Compare</button>
-                        {/* No dropdown for "Compare" */}
                     </div>
                 </div>
             {/* <div className="left_data_panel_current_selection">

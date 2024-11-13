@@ -112,17 +112,17 @@ export const RightAnalysisPanelOptions = {
   Compare: "compare"
 }
 
-export const EnsembleDropdownOptions = {
+export const RightAnalysisEnsembleOptions = {
   SMD: "SMD",
   MMD: "MMD"
 }
 
-export const SearchDropdownOptions = {
+export const RightAnalysisSearchOptions = {
   SMD: "SMD",
   MMD: "MMD"
 }
 
-export const SummaryDropdownOptions = {
+export const RightAnalysisSummaryOptions = {
   Current: "Current",
   SMD: "SMD",
   MMD: "MMD"
