@@ -631,33 +631,34 @@ select.navigation_select_links:hover {
   margin-top: 40px;
 }
 
+.options_for_right_analysis_panel:hover .dropdown-menu {
+  display: block;
+}
+
 .dropdown-button {
   position: relative;
   display: inline-block;
 }
 
 .dropdown-button button {
-  padding: 5px 14px;
+  padding: 5px 10px;
   font-size: 1rem;
   color: #000000;
   background-color: white;
   border-radius: 5px;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .dropdown-menu {
   display: none;
   position: absolute;
   top: 30px;
-  left: 0;
   background-color: #ffffff;
   border: 1px solid black;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  min-width: 170px;
-  padding: 10px 0;
+  width: 100%;
 }
 
 .dropdown-menu p {

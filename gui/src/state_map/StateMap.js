@@ -43,7 +43,7 @@ export const StateMap = ({ state }) => {
   const mapRef = useRef();
 
   useEffect(() => {
-    const loadCurrentDistrictPlans = async () => {
+    const loadCurrentDistrictPlans = async (state) => {
       try {
         const currentDistrictPlans = await getCurrentDistrictPlans(state);
 
@@ -121,7 +121,7 @@ export const StateMap = ({ state }) => {
     // Ensure follows this order since they increasingly select
     // colors from the array of colors COLORS
     const loadAllDistrictPlans = async () => {
-      const lengthOfFeaturesForCurrentDistrictPlan = await loadCurrentDistrictPlans();
+      const lengthOfFeaturesForCurrentDistrictPlan = await loadCurrentDistrictPlans(state);
       const lengthOfFeaturesForSmdDistrictPlan = await loadSmdDistrictPlans(lengthOfFeaturesForCurrentDistrictPlan);
       await loadMmdDistrictPlans(lengthOfFeaturesForSmdDistrictPlan + lengthOfFeaturesForCurrentDistrictPlan);
     }

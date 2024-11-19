@@ -1,0 +1,94 @@
+{
+    "type": "FeatureCollection",
+    "name": "utah",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+        }
+    },
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "district": 2,
+                "population": 818155.0,
+                "republican": 205109,
+                "democrat": 143368,
+                "white": 609819.0,
+                "black": 13222.0,
+                "asian": 21988.0,
+                "hispanic": 152915.0,
+                "pacific": 14979.0,
+                "indigenous": 11450.0,
+                "other": 75341.0,
+                "incumbent": "Republican",
+                "representative": "Celeste Maloy"
+            },
+            "geometry": "ObjectId(the only geometry I have)"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "district": 1,
+                "population": 817556.0,
+                "republican": 216472,
+                "democrat": 142602,
+                "white": 670182.0,
+                "black": 9920.0,
+                "asian": 17750.0,
+                "hispanic": 107647.0,
+                "pacific": 3896.0,
+                "indigenous": 6814.0,
+                "other": 45883.0,
+                "incumbent": "Republican",
+                "representative": "Blake Moore"
+            },
+            "geometry": "ObjectId(the only geometry I have)"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "district": 3,
+                "population": 818575.0,
+                "republican": 225446,
+                "democrat": 149221,
+                "white": 659292.0,
+                "black": 6285.0,
+                "asian": 19168.0,
+                "hispanic": 101211.0,
+                "pacific": 6650.0,
+                "indigenous": 16235.0,
+                "other": 41141.0,
+                "incumbent": "Republican",
+                "representative": "Mike Kennedy"
+            },
+            "geometry": "ObjectId(the only geometry I have)"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "district": 4,
+                "population": 817330.0,
+                "republican": 218113,
+                "democrat": 125091,
+                "white": 634120.0,
+                "black": 10631.0,
+                "asian": 21532.0,
+                "hispanic": 131139.0,
+                "pacific": 11405.0,
+                "indigenous": 7145.0,
+                "other": 57755.0,
+                "incumbent": "Republican",
+                "representative": "Burgess Owens"
+            },
+            "geometry": "ObjectId(the only geometry I have)"
+        }
+    ],
+    "center": [
+        39.52098,
+        -111.093731
+    ],
+    "minZoom": 3,
+    "zoom": 7
+}

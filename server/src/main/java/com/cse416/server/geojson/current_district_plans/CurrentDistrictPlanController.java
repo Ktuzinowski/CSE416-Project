@@ -13,7 +13,7 @@ public class CurrentDistrictPlanController {
 	public CurrentDistrictPlanService currentDistrictPlanService;
 	
 	@GetMapping("/current_district_plans")
-	public FeatureCollection getPrecinctData(@RequestParam("state") String state) {
+	public FeatureCollection getCurrentDistrictPlan(@RequestParam("state") String state) {
 		FeatureCollection currentDistrictPlanData = currentDistrictPlanService.getStateByName(state);
 		return currentDistrictPlanData;
 	}

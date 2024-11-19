@@ -108,13 +108,13 @@ export const BoundaryChoroplethOptions = {
 export const RightAnalysisPanelOptions = {
   Ensemble: "ensemble",
   Search: "search",
-  Summary: "summary",
-  Compare: "compare"
+  Summary: "summary"
 }
 
 export const RightAnalysisEnsembleOptions = {
   SMD: "SMD",
-  MMD: "MMD"
+  MMD: "MMD",
+  Compare: "compare"
 }
 
 export const RightAnalysisSearchOptions = {
@@ -125,5 +125,6 @@ export const RightAnalysisSearchOptions = {
 export const RightAnalysisSummaryOptions = {
   Current: "Current",
   SMD: "SMD",
-  MMD: "MMD"
+  MMD: "MMD",
+  Compare: "compare"
 }

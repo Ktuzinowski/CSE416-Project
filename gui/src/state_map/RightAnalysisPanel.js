@@ -34,16 +34,16 @@ export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
             <div className="options_for_right_analysis_panel">
                     <div className="dropdown-button">
                         <button>Ensemble</button>
-                        <div className="dropdown-menu">
+                    </div>
+                    <div className="dropdown-menu">
                             {Object.keys(RightAnalysisEnsembleOptions).map((ensembleOption) => {
                                 return (
                                     <p key={ensembleOption}>{ensembleOption}</p>
                                 )
                             })}
-                        </div>
                     </div>
                     <div className="dropdown-button">
-                        <button>Search</button>
+                        <button>Search for District Plan</button>
                         <div className="dropdown-menu">
                             {Object.keys(RightAnalysisSearchOptions).map((ensembleOption) => {
                                 return (
@@ -61,9 +61,6 @@ export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
                                 )
                             })}
                         </div>
-                    </div>
-                    <div className="dropdown-button">
-                        <button>Compare</button>
                     </div>
                 </div>
             {/* <div className="left_data_panel_current_selection">
