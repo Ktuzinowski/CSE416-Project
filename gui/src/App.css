@@ -230,7 +230,25 @@ select.navigation_select_links:hover {
   transition: transform 0.3s ease; /* Apply transition to the transform */
 }
 
+.right_data_expand_button {
+  position: fixed; /* Fixes button position relative to the viewport */
+  top: 8.5%; /* Push it down to start just below the navbar */
+  right: 5%; /* Adjust to control horizontal position */
+  border-radius: 50%;
+  padding: 4px;
+  cursor: pointer;
+  background-color: #ffffff;
+  border: 1px solid #cccccc; /* Thin border for contrast */
+  transition: transform 0.3s ease; /* Apply transition to the transform */
+  z-index: 4000; /* Ensure it is above the panel */
+}
+
 .left_data_expand_button:hover {
+  transform: scale(1.1);
+  background-color: #c5c5d3; /* Darker blue on hover */
+}
+
+.right_data_expand_button:hover {
   transform: scale(1.1);
   background-color: #c5c5d3; /* Darker blue on hover */
 }
@@ -593,4 +611,67 @@ select.navigation_select_links:hover {
   width: 100%;
   height: 3px;
   background-color: #4B7AA0; /* Color of the underline */
+}
+
+/* RIGHT ANALYSIS PANEL CSS */
+.options_for_right_analysis_panel {
+  position: relative;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  padding: 10px;
+  height: 20px;
+  display: flex;
+  gap: 15px;
+  padding: 10px;
+  height: 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.options_for_right_analysis_panel:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-button {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-button button {
+  padding: 5px 10px;
+  font-size: 1rem;
+  color: #000000;
+  background-color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 30px;
+  background-color: #ffffff;
+  border: 1px solid black;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  width: 100%;
+}
+
+.dropdown-menu p {
+  padding: 5px 10px;
+  color: #000000;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-menu p:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-button:hover .dropdown-menu {
+  display: block;
 }

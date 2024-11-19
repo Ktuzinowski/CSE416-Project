@@ -104,3 +104,27 @@ export const BoundaryChoroplethOptions = {
   MMD: "MMD",
   Precincts: "Precincts"
 }
+
+export const RightAnalysisPanelOptions = {
+  Ensemble: "ensemble",
+  Search: "search",
+  Summary: "summary"
+}
+
+export const RightAnalysisEnsembleOptions = {
+  SMD: "SMD",
+  MMD: "MMD",
+  Compare: "compare"
+}
+
+export const RightAnalysisSearchOptions = {
+  SMD: "SMD",
+  MMD: "MMD"
+}
+
+export const RightAnalysisSummaryOptions = {
+  Current: "Current",
+  SMD: "SMD",
+  MMD: "MMD",
+  Compare: "compare"
+}

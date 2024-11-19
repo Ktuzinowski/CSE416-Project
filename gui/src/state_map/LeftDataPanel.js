@@ -112,7 +112,6 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
             <div style={{ marginBottom: "20px" }}>
                 <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
                 <select
-                    id="race-select"
                     value={choroplethBoundarySelection}
                     onChange={(e) => setChoroplethBoundarySelection(e.target.value)}
                     style={{marginLeft: "10px", fontSize: "15px", padding: "1px", marginRight: "10px"}}
@@ -123,7 +122,6 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
                     <option value={`${BoundaryChoroplethOptions.Precincts}`}>Precincts</option>
                 </select>
                 <select
-                    id="race-select"
                     value={selectedDataColumn}
                     onChange={(e) => setSelectedDataColumn(e.target.value)}
                     style={{fontSize:"15px", padding: "1px", marginRight: "10px"}}
@@ -143,7 +141,6 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
             <div style={{marginBottom: "20px"}}>
                 <label className="dropdown_for_choropleth">View Data</label>
                 <select
-                    id="race-select"
                     value={currentDataView}
                     onChange={(e) => setCurrentDataView(e.target.value)}
                     style={{marginLeft: "10px", fontSize:"15px", padding: "1px", marginRight: "10px"}}
