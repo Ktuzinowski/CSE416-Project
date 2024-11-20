@@ -1,0 +1,46 @@
+{
+    "voteShare": {
+        "democrat": 0.4,
+        "republican": 0.6
+    },
+    "smd": {
+        "opportunityRepresentatives": {
+            "errorBars": {
+                "lower": 0.2,
+                "upper": 0.8
+            },
+            "avgOpportunityRepresentatives": 0.5
+        },
+        "republicanDemocraticSplit": {
+            "errorBars": {
+                "lower": 0.2,
+                "upper": 0.9
+            },
+            "avgRepublicanDemocraticSplit": 0.6
+        },
+        "avgSeatShare": {
+            "democrat": 0.25,
+            "republican": 0.75
+        }
+    },
+    "mmd": {
+        "opportunityRepresentatives": {
+            "errorBars": {
+                "lower": 0.2,
+                "upper": 0.8
+            },
+            "avgOpportunityRepresentatives": 0.5
+        },
+        "republicanDemocraticSplit": {
+            "errorBars": {
+                "lower": 0.2,
+                "upper": 0.9
+            },
+            "avgRepublicanDemocraticSplit": 0.6
+        },
+        "avgSeatShare": {
+            "democrat": 0.5,
+            "republican": 0.5
+        }
+    }
+}
