@@ -1,0 +1,26 @@
+{
+    "nummberOfDistricts": 1,
+    "numberOfOpportunityDistricts": 0,
+    "thresholdForOpportunityDistrictCalculation": 0.25,
+    "numberOfSafeDistricts": 0,
+    "election": "Presidential 2020",
+    "layout": "4",
+    "districtSummaries": [
+        {
+            "district": 1,
+            "population": 817556,
+            "republican": 216472,
+            "democrat": 142602,
+            "white": 670182,
+            "black": 9920,
+            "asian": 17750,
+            "hispanic": 107647,
+            "pacific": 3896,
+            "native": 6814,
+            "other": 45883,
+            "representatives": ["Blake Moore", "Charles Barkely", "Donald Trump", "Biden"],
+            "incumbent": "Republican",
+            "republicanDemocraticSplit": 0.5
+        }
+    ]
+}

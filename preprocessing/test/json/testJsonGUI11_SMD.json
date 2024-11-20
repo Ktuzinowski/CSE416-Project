@@ -1,0 +1,73 @@
+{
+    "nummberOfDistricts": 4,
+    "numberOfOpportunityDistricts": 2,
+    "thresholdForOpportunityDistrictCalculation": 0.25,
+    "numberOfSafeDistricts": 3,
+    "election": "Presidential 2020",
+    "districtSummaries": [
+        {
+            "district": 1,
+            "population": 817556,
+            "republican": 216472,
+            "democrat": 142602,
+            "white": 670182,
+            "black": 9920,
+            "asian": 17750,
+            "hispanic": 107647,
+            "pacific": 3896,
+            "native": 6814,
+            "other": 45883,
+            "representative": "Blake Moore",
+            "incumbent": "Republican",
+            "republicanDemocraticSplit": 0.5
+        },
+        {
+            "district": 2,
+            "population": 817556,
+            "republican": 216472,
+            "democrat": 142602,
+            "white": 670182,
+            "black": 9920,
+            "asian": 17750,
+            "hispanic": 107647,
+            "pacific": 3896,
+            "native": 6814,
+            "other": 45883,
+            "representative": "Blake Moore",
+            "incumbent": "Republican",
+            "republicanDemocraticSplit": 0.5
+        },
+        {
+            "district": 3,
+            "population": 817556,
+            "republican": 216472,
+            "democrat": 142602,
+            "white": 670182,
+            "black": 9920,
+            "asian": 17750,
+            "hispanic": 107647,
+            "pacific": 3896,
+            "native": 6814,
+            "other": 45883,
+            "representative": "Blake Moore",
+            "incumbent": "Republican",
+            "republicanDemocraticSplit": 0.5
+        },
+        {
+            "district": 4,
+            "population": 817556,
+            "republican": 216472,
+            "democrat": 142602,
+            "white": 670182,
+            "black": 9920,
+            "asian": 17750,
+            "hispanic": 107647,
+            "pacific": 3896,
+            "native": 6814,
+            "other": 45883,
+            "representative": "Blake Moore",
+            "incumbent": "Republican",
+            "republicanDemocraticSplit": 0.5
+        }
+    ]
+}

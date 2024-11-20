@@ -1,0 +1,16 @@
+{
+    "state": "utah",
+    "layout": "4",
+    "numberOfDistrictPlans": 2000,
+    "avgMinorityRepresentativesPerPlan": 3,
+    "avgEqualPopulationMeasure": 210000,
+    "avgRepublicanDemocraticSplit": 0.75,
+    "avgOpportunityDistricts": 0.01,
+    "wastedVotesRepublican": 190000,
+    "wastedVotesDemocratic": 400000,
+    "avgCompactnessScore": 0.8,
+    "avgResponsivenessScore": 0.9,
+    "avgNumberOfRepublicanRepresentatives": 3.78,
+    "avgNumberOfDemocraticRepresentatives": 0.23,
+    "avgNumberOfSafeDistricts": 3
+}
