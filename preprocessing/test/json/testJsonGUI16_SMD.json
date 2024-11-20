@@ -1,0 +1,48 @@
+{
+    "test_smd_data": {
+        "state": "utah",
+        "district_type": "SMD",
+        "total_representatives": 4,
+        "comparison_basis": "Democrats",
+        "ensembles": [
+            {
+                "district": 1,
+                "representatives": 1,
+                "min": 0.1,
+                "q1": 0.125,
+                "median": 0.15,
+                "q3": 0.175,
+                "max": 0.2
+            },
+            {
+                "district": 2,
+                "representatives": 1,
+                "min": 0.101,
+                "q1": 0.123,
+                "median": 0.14,
+                "q3": 0.169,
+                "max": 0.193
+            },
+            {
+                "district": 3,
+                "representatives": 1,
+                "min": 0.112,
+                "q1": 0.127,
+                "median": 0.154,
+                "q3": 0.179,
+                "max": 0.21
+            },
+            {
+                "district": 4,
+                "representatives": 1,
+                "min": 0.106,
+                "q1": 0.128,
+                "median": 0.153,
+                "q3": 0.178,
+                "max": 0.208
+            }
+        ],
+        "function": "SMD_box_and_whisker_plot(test_smd_data, Democrat Percentage, Districts, Population Percentage)"
+    }
+    
+}
