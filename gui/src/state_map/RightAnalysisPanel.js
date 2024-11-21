@@ -10,7 +10,6 @@ export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
     const [ensembleSelected, setEnsembleSelected] = useState(false);
     const [summarySelected, setSummarySelected] = useState(false);
     const [searchSelected, setSearchSelected] = useState(false);
-    const [compareSelected, setCompareSelected] = useState(false);
 
     const togglePanel = () => {
         setIsRightAnalysisPanelExpanded(!isExpanded);
@@ -18,11 +17,16 @@ export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
     }
     
     // Function to reset all selections and set the selected option
-    const selectOption = (option) => {
+    const handleHoverOverOption = (option) => {
         setEnsembleSelected(option === RightAnalysisPanelOptions.Ensemble);
         setSummarySelected(option === RightAnalysisPanelOptions.Summary);
         setSearchSelected(option === RightAnalysisPanelOptions.Search);
-        setCompareSelected(option === RightAnalysisPanelOptions.Compare);
+    }
+
+    const handleLeavingOptions = () => {
+        setEnsembleSelected(false);
+        setSummarySelected(false);
+        setSearchSelected(false);
     }
     
     return (
@@ -31,38 +35,47 @@ export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
             maxWidth: isExpanded ? "100%" : "fit-content", // Fit the content naturally
             minWidth: "450px", // Set a minimum width for the panel
         }}>
-            <div className="options_for_right_analysis_panel">
-                    <div className="dropdown-button">
-                        <button>Ensemble</button>
-                    </div>
-                    <div className="dropdown-menu">
-                            {Object.keys(RightAnalysisEnsembleOptions).map((ensembleOption) => {
-                                return (
-                                    <p key={ensembleOption}>{ensembleOption}</p>
-                                )
-                            })}
-                    </div>
-                    <div className="dropdown-button">
-                        <button>Search for District Plan</button>
-                        <div className="dropdown-menu">
-                            {Object.keys(RightAnalysisSearchOptions).map((ensembleOption) => {
-                                return (
-                                    <p key={ensembleOption}>{ensembleOption}</p>
-                                )
-                            })}
+            <div className="check_stuff_leaves" onMouseLeave={handleLeavingOptions}>
+                <div className="options_for_right_analysis_panel">
+                        <div className="dropdown-button" onMouseEnter={() => handleHoverOverOption(RightAnalysisPanelOptions.Ensemble)}>
+                            <button>Ensemble</button>
                         </div>
-                    </div>
-                    <div className="dropdown-button">
-                        <button>Summary</button>
-                        <div className="dropdown-menu">
-                            {Object.keys(RightAnalysisSummaryOptions).map((ensembleOption) => {
-                                return (
-                                    <p key={ensembleOption}>{ensembleOption}</p>
-                                )
-                            })}
+                        <div className="dropdown-button" onMouseEnter={() => handleHoverOverOption(RightAnalysisPanelOptions.Search)}>
+                            <button>Search for District Plan</button>
                         </div>
-                    </div>
+                        <div className="dropdown-button" onMouseEnter={() => handleHoverOverOption(RightAnalysisPanelOptions.Summary)}>
+                            <button>Summary</button>
+                        </div>
                 </div>
+                {(ensembleSelected || summarySelected || searchSelected) && (
+                    <div className="dropdown-menu">
+                        {
+                            ensembleSelected &&
+                            Object.keys(RightAnalysisEnsembleOptions).map((ensembleOption) => {
+                                return (
+                                    <p key={ensembleOption}>{ensembleOption}</p>
+                                )
+                            })
+                        }
+                        {
+                            searchSelected &&
+                            Object.keys(RightAnalysisSearchOptions).map((ensembleOption) => {
+                                return (
+                                    <p key={ensembleOption}>{ensembleOption}</p>
+                                )
+                            })
+                        }
+                        {
+                            summarySelected &&
+                            Object.keys(RightAnalysisSummaryOptions).map((ensembleOption) => {
+                                return (
+                                    <p key={ensembleOption}>{ensembleOption}</p>
+                                )
+                            })
+                        }
+                    </div>
+                )}
+            </div>
             {/* <div className="left_data_panel_current_selection">
                 <button className="right_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />

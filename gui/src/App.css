@@ -651,14 +651,16 @@ select.navigation_select_links:hover {
 }
 
 .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 30px;
-  background-color: #ffffff;
-  border: 1px solid black;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-  width: 100%;
+  position: absolute; /* or fixed for full-screen modal-like behavior */
+  top: 76px; /* Center vertically */
+  left: 5px; /* Center horizontally */
+  background-color: white; /* Ensure visibility */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Ensure it's on top */
+  padding: 5px;
+  width: 430px; /* Adjust based on design */
 }
 
 .dropdown-menu p {
@@ -666,6 +668,7 @@ select.navigation_select_links:hover {
   color: #000000;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  border-radius: 5px;
 }
 
 .dropdown-menu p:hover {
