@@ -38,10 +38,7 @@ export const BoxAndWhiskerPlotSMD = ({ state }) => {
     const plotData = [...boxData, enactedData]
 
     return (
-        <div>
-            <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">SMD Ensemble Utah</h2>
-            </div>
+        <>
             <label className="dropdown_for_choropleth">Basis of Comparison</label>
             <select
                 value={valueForDropdownBOC}
@@ -57,20 +54,20 @@ export const BoxAndWhiskerPlotSMD = ({ state }) => {
                 })}
             </select>
             <Plot
-            data={plotData}
-            layout={{
-                yaxis: { title: "Democrat Percentage" },
-                showlegend: true,
-                legend: {
-                    orientation: "h",
+                data={plotData}
+                layout={{
+                    yaxis: { title: "Democrat Percentage" },
                     showlegend: true,
-                    bordercolor: "#ccc", // Set the border color to black
-                    borderwidth: 2, // Set the border width
-                    bgcolor: "white" // Optional: Set the background color for the legend
-                }
-            }}
-            style={{ width: "100%", height: "100%"}}
+                    legend: {
+                        orientation: "h",
+                        showlegend: true,
+                        bordercolor: "#ccc", // Set the border color to black
+                        borderwidth: 2, // Set the border width
+                        bgcolor: "white" // Optional: Set the background color for the legend
+                    }
+                }}
+                style={{ width: "100%", height: "100%"}}
             />
-        </div>
+        </>
     )
 }

@@ -64,22 +64,6 @@ export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) =
                             <button>Summary</button>
                         </div>
                 </div>
-                {
-                    ensembleSelected && (
-                        (() => {
-                            console.log("working in here!", ensembleOptionSelected);
-                            if (ensembleOptionSelected === RightAnalysisEnsembleOptions.SMD) {
-                                return <EnsembleSummarySMD state={state}/>
-                            }
-                            else if (ensembleOptionSelected === RightAnalysisEnsembleOptions.MMD) {
-                                return <EnsembleSummaryMMD state={state}/>
-                            }
-                            else {
-                                return <EnsembleSummaryCompare state={state}/>
-                            }
-                        })()
-                    )
-                }
                 {(hoverOverEnsemble || hoverOverSummary || hoverOverSearch) && (
                     <div className="dropdown-menu">
                         {
@@ -120,6 +104,20 @@ export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) =
                         }
                     </div>
                 )}
+            </div>
+            <div style={{width: "100%", height: "100%"}}>
+                {
+                        ensembleSelected && (
+                            (() => {
+                                if (ensembleOptionSelected === RightAnalysisEnsembleOptions.SMD) {
+                                    return <EnsembleSummarySMD state={state} onMouseEnter={handleLeavingOptions}/>
+                                }
+                                else {
+                                    return <EnsembleSummaryMMD state={state} onMouseEnter={handleLeavingOptions}/>
+                                }
+                            })()
+                        )
+                }
             </div>
             {/* <div className="left_data_panel_current_selection">
                 <button className="right_data_expand_button" onClick={togglePanel}>

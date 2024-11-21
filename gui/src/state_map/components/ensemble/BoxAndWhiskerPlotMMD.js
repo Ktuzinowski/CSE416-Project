@@ -38,10 +38,7 @@ export const BoxAndWhiskerPlotMMD = ({ state }) => {
     }));
 
     return (
-        <div>
-            <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">MMD Ensemble Utah</h2>
-            </div>
+        <>
             <label className="dropdown_for_choropleth">Basis of Comparison</label>
             <select
                 value={valueForDropdownBOC}
@@ -72,6 +69,6 @@ export const BoxAndWhiskerPlotMMD = ({ state }) => {
             }}
             style={{ width: "100%", height: "100%"}}
             />
-        </div>
+        </>
     )
 }
