@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class StateOutlineController {
 	
 	@Autowired
-	public StateOutlineService districtOutlineService;
+	public StateOutlineService stateOutlineService;
 	
 	@GetMapping("/state_outlines")
-	public FeatureCollection getDistrictOutlines() {
+	public FeatureCollection getStateOutlines() {
 		// Return GeoJSON data to the client
-		List<Feature> features = districtOutlineService.getAllDistrictOutlines();
+		List<Feature> features = stateOutlineService.getAllStateOutlines();
 		
 		FeatureCollection featureCollection = new FeatureCollection();
 		featureCollection.setType("FeatureCollection");
