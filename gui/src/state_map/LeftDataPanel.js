@@ -87,12 +87,7 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
             return filtered_column_names
         }
     }
-
-    const onAnalysisScreenButtonClick = () => {
-        setDisplayAnalysisScreen(true)
-        setIsExpanded(true)
-    }
-
+    
     return (
         <div className="container_left_data_panel" style={{
             width: isExpanded ? "100%" : "auto", // Auto-width when collapsed

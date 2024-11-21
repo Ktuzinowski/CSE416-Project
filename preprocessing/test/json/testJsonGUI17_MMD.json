@@ -1,21 +1,15 @@
 {
-    "test_mmd_data": {
-        "state": "utah",
-        "district_type": "MMD",
-        "total_representatives": 4,
-        "comparison_basis": "Democrats",
-        "ensembles": [
-            {
-                "district": 1,
-                "representatives": 4,
-                "min": 0.1,
-                "q1": 0.125,
-                "median": 0.15,
-                "q3": 0.175,
-                "max": 0.2
-            }
-        ],
-        "function": "MMD_box_and_whisker_plot(test_mmd_data, Democrat Percentage, Districts, Population Percentage)"
-    }
-    
+    "state": "utah",
+    "comparison_basis": "democrat",
+    "districts": [
+        {
+            "district": 1,
+            "representatives": 4,
+            "min": 0.1,
+            "q1": 0.125,
+            "median": 0.15,
+            "q3": 0.175,
+            "max": 0.2
+        }
+    ]
 }
