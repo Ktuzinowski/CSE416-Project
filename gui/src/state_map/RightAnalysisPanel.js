@@ -8,7 +8,7 @@ import { EnsembleSummarySMD } from "./components/ensemble/EnsembleSummarySMD";
 import { EnsembleSummaryMMD } from "./components/ensemble/EnsembleSummaryMMD";
 import { EnsembleSummaryCompare } from "./components/ensemble/EnsembleSummaryCompare";
 
-export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
+export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [hoverOverEnsemble, setHoverOverEnsemble] = useState(false);
     const [hoverOverSearch, setHoverOverSearch] = useState(false);
@@ -69,13 +69,13 @@ export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
                         (() => {
                             console.log("working in here!", ensembleOptionSelected);
                             if (ensembleOptionSelected === RightAnalysisEnsembleOptions.SMD) {
-                                return <EnsembleSummarySMD />
+                                return <EnsembleSummarySMD state={state}/>
                             }
                             else if (ensembleOptionSelected === RightAnalysisEnsembleOptions.MMD) {
-                                return <EnsembleSummaryMMD />
+                                return <EnsembleSummaryMMD state={state}/>
                             }
                             else {
-                                return <EnsembleSummaryCompare />
+                                return <EnsembleSummaryCompare state={state}/>
                             }
                         })()
                     )

@@ -113,8 +113,7 @@ export const RightAnalysisPanelOptions = {
 
 export const RightAnalysisEnsembleOptions = {
   SMD: "SMD",
-  MMD: "MMD",
-  Compare: "compare"
+  MMD: "MMD"
 }
 
 export const RightAnalysisSearchOptions = {
@@ -127,4 +126,88 @@ export const RightAnalysisSummaryOptions = {
   SMD: "SMD",
   MMD: "MMD",
   Compare: "compare"
+}
+
+export const BoxAndWhiskerPlotBasisOfComparison = {
+  Democrat: "democrat",
+  Republican: "republican",
+  White: "white",
+  Black: "black",
+  Hispanic: "hispanic",
+  Pacific: "pacific",
+  Indigenous: "indigenous",
+  Other: "other"
+}
+
+export const jsonDataForBoxAndWhisker = {
+  "state": "utah",
+  "comparison_basis": "democrat",
+  "districts": [
+      {
+          "district": 1,
+          "min": 0.1,
+          "q1": 0.125,
+          "median": 0.15,
+          "q3": 0.175,
+          "max": 0.2
+      },
+      {
+          "district": 2,
+          "min": 0.101,
+          "q1": 0.123,
+          "median": 0.14,
+          "q3": 0.169,
+          "max": 0.193
+      },
+      {
+          "district": 3,
+          "min": 0.112,
+          "q1": 0.127,
+          "median": 0.154,
+          "q3": 0.179,
+          "max": 0.21
+      },
+      {
+          "district": 4,
+          "min": 0.106,
+          "q1": 0.128,
+          "median": 0.153,
+          "q3": 0.178,
+          "max": 0.208
+      }
+  ],
+  "currentDistricts": [
+      {
+          "district": 1,
+          "value": 0.2
+      },
+      {
+          "district": 2,
+          "value": 0.05
+      },
+      {
+          "district": 3,
+          "value": 0.3
+      },
+      {
+          "district": 4,
+          "value": 0.05
+      }
+  ]
+}
+
+export const jsonDataForBoxAndWhiskerMMD = {
+  "state": "utah",
+  "comparison_basis": "democrat",
+  "districts": [
+      {
+          "district": 1,
+          "representatives": 4,
+          "min": 0.1,
+          "q1": 0.125,
+          "median": 0.15,
+          "q3": 0.175,
+          "max": 0.2
+      }
+  ]
 }

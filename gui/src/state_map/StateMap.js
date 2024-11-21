@@ -469,7 +469,7 @@ export const StateMap = ({ state }) => {
             <ZoomControl position="bottomright" />
           </MapContainer>
         </div>
-        {!isLeftDataPanelExpanded && <RightAnalysisPanel setIsRightAnalysisPanelExpanded={setIsRightAnalysisPanelExpanded}/>}
+        {!isLeftDataPanelExpanded && <RightAnalysisPanel setIsRightAnalysisPanelExpanded={setIsRightAnalysisPanelExpanded} state={state} />}
       </div>
     </>
   )

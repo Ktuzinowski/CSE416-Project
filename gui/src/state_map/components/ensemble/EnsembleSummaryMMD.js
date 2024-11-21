@@ -1,5 +1,6 @@
-export const EnsembleSummaryMMD = () => {
+import { BoxAndWhiskerPlotMMD } from "./BoxAndWhiskerPlotMMD"
+export const EnsembleSummaryMMD = ({ state }) => {
     return (
-        <h1>Ensemble Summary MMD</h1>
+        <BoxAndWhiskerPlotMMD state={state}/>
     )
 }

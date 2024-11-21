@@ -1,5 +1,6 @@
+import { BoxAndWhiskerPlotSMD } from "./BoxAndWhiskerPlotSMD"
 export const EnsembleSummarySMD = ({ state }) => {
     return (
-        <h1>Ensemble Summary SMD</h1>
+        <BoxAndWhiskerPlotSMD state={state} />
     )
 }
