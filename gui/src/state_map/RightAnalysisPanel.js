@@ -4,12 +4,23 @@ import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import { RightAnalysisPanelOptions, RightAnalysisEnsembleOptions, RightAnalysisSearchOptions, RightAnalysisSummaryOptions } from "../utils/Constants";
+import { EnsembleSummarySMD } from "./components/summary/EnsembleSummarySMD";
+import { EnsembleSummaryMMD } from "./components/summary/EnsembleSummaryMMD";
+import { EnsembleSummaryCompare } from "./components/summary/EnsembleSummaryCompare";
 
 export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [hoverOverEnsemble, setHoverOverEnsemble] = useState(false);
+    const [hoverOverSearch, setHoverOverSearch] = useState(false);
+    const [hoverOverSummary, setHoverOverSummary] = useState(false);
+    // State variables to keep track of the screen that is being selected
     const [ensembleSelected, setEnsembleSelected] = useState(false);
-    const [summarySelected, setSummarySelected] = useState(false);
     const [searchSelected, setSearchSelected] = useState(false);
+    const [summarySelected, setSummarySelected] = useState(false);
+    // Create state variables to keep track of the currently selected option
+    const [ensembleOptionSelected, setEnsembleOptionSelected] = useState(RightAnalysisEnsembleOptions.SMD);
+    const [searchOptionSelected, setSearchOptionSelected] = useState(RightAnalysisSearchOptions.SMD);
+    const [summaryOptionSelected, setSummaryOptionSelected] = useState(RightAnalysisSummaryOptions.SMD);
 
     const togglePanel = () => {
         setIsRightAnalysisPanelExpanded(!isExpanded);
@@ -18,15 +29,21 @@ export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
     
     // Function to reset all selections and set the selected option
     const handleHoverOverOption = (option) => {
+        setHoverOverEnsemble(option === RightAnalysisPanelOptions.Ensemble);
+        setHoverOverSearch(option === RightAnalysisPanelOptions.Search);
+        setHoverOverSummary(option === RightAnalysisPanelOptions.Summary);
+    }
+
+    const handleSelectOption = (option) => {
         setEnsembleSelected(option === RightAnalysisPanelOptions.Ensemble);
-        setSummarySelected(option === RightAnalysisPanelOptions.Summary);
         setSearchSelected(option === RightAnalysisPanelOptions.Search);
+        setSummarySelected(option === RightAnalysisPanelOptions.Summary);
     }
 
     const handleLeavingOptions = () => {
-        setEnsembleSelected(false);
-        setSummarySelected(false);
-        setSearchSelected(false);
+        setHoverOverEnsemble(false);
+        setHoverOverSearch(false);
+        setHoverOverSummary(false);
     }
     
     return (
@@ -47,29 +64,57 @@ export const RightAnalysisPanel = ({ setIsRightAnalysisPanelExpanded }) => {
                             <button>Summary</button>
                         </div>
                 </div>
-                {(ensembleSelected || summarySelected || searchSelected) && (
+                {
+                    ensembleSelected && (
+                        (() => {
+                            console.log("working in here!", ensembleOptionSelected);
+                            if (ensembleOptionSelected === RightAnalysisEnsembleOptions.SMD) {
+                                return <EnsembleSummarySMD />
+                            }
+                            else if (ensembleOptionSelected === RightAnalysisEnsembleOptions.MMD) {
+                                return <EnsembleSummaryMMD />
+                            }
+                            else {
+                                return <EnsembleSummaryCompare />
+                            }
+                        })()
+                    )
+                }
+                {(hoverOverEnsemble || hoverOverSummary || hoverOverSearch) && (
                     <div className="dropdown-menu">
                         {
-                            ensembleSelected &&
+                            hoverOverEnsemble &&
                             Object.keys(RightAnalysisEnsembleOptions).map((ensembleOption) => {
                                 return (
-                                    <p key={ensembleOption}>{ensembleOption}</p>
+                                    <p key={ensembleOption} onClick={() => {
+                                        setEnsembleOptionSelected(ensembleOption);
+                                        handleLeavingOptions();
+                                        handleSelectOption(RightAnalysisPanelOptions.Ensemble);
+                                    }}>{ensembleOption}</p>
                                 )
                             })
                         }
                         {
-                            searchSelected &&
-                            Object.keys(RightAnalysisSearchOptions).map((ensembleOption) => {
+                            hoverOverSearch &&
+                            Object.keys(RightAnalysisSearchOptions).map((searchOption) => {
                                 return (
-                                    <p key={ensembleOption}>{ensembleOption}</p>
+                                    <p key={searchOption} onClick={(searchOption) => {
+                                        setSearchOptionSelected(searchOption);
+                                        handleLeavingOptions();
+                                        handleSelectOption(RightAnalysisPanelOptions.Search);
+                                    }}>{searchOption}</p>
                                 )
                             })
                         }
                         {
-                            summarySelected &&
-                            Object.keys(RightAnalysisSummaryOptions).map((ensembleOption) => {
+                            hoverOverSummary &&
+                            Object.keys(RightAnalysisSummaryOptions).map((summaryOption) => {
                                 return (
-                                    <p key={ensembleOption}>{ensembleOption}</p>
+                                    <p key={summaryOption} onClick={(summaryOption) => {
+                                        setSummaryOptionSelected(summaryOption);
+                                        handleLeavingOptions();
+                                        handleSelectOption(RightAnalysisPanelOptions.Summary);
+                                    }}>{summaryOption}</p>
                                 )
                             })
                         }
