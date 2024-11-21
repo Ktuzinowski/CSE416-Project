@@ -14,7 +14,7 @@ export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) =
     const [hoverOverSearch, setHoverOverSearch] = useState(false);
     const [hoverOverSummary, setHoverOverSummary] = useState(false);
     // State variables to keep track of the screen that is being selected
-    const [ensembleSelected, setEnsembleSelected] = useState(false);
+    const [ensembleSelected, setEnsembleSelected] = useState(true);
     const [searchSelected, setSearchSelected] = useState(false);
     const [summarySelected, setSummarySelected] = useState(false);
     // Create state variables to keep track of the currently selected option
