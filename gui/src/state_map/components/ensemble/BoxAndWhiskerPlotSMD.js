@@ -7,32 +7,44 @@ export const BoxAndWhiskerPlotSMD = ({ state }) => {
     const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBasisOfComparison.Democrat);
     
     // Extract district data
-    const districts = jsonDataForBoxAndWhisker.districts;
+    const bins = jsonDataForBoxAndWhisker.bins;
     const currentDistricts = jsonDataForBoxAndWhisker.currentDistricts;
 
     // Prepare data for the box-and-whisker plot
-    const boxData = districts.map((district) => ({
+    const boxData = bins.map((bin) => ({
         type: "box",
-        name: `District ${district.district}`,
-        x: [`District ${district.district}`], // Assign the district name as the x-axis value
-        q1: [district.q1],
-        median: [district.median],
-        q3: [district.q3],
-        lowerfence: [district.min],
-        upperfence: [district.max],
+        name: `${bin.bin}`,
+        x: [`${bin.bin}`], // Assign the district name as the x-axis value
+        q1: [bin.q1],
+        median: [bin.median],
+        q3: [bin.q3],
+        lowerfence: [bin.min],
+        upperfence: [bin.max],
         boxpoints: false, // Hide individual points
-        showlegend: true // Exclude the box trace from the legend
+        showlegend: false, // Exclude the box trace from the legend
+        fillcolor: "white", // Fill color for the box
+        line: {
+            color: "black", // Border color for the box
+            width: 1.5 // Width of the border
+        }
     }));
 
     // Prepare data for the enacted district plans
     const enactedData = {
         type: "scatter",
         mode: "markers",
-        name: "Enacted Plan",
-        x: currentDistricts.map((district) => `District ${district.district}`),
-        y: currentDistricts.map((district) => district.value),
+        name: "Enacted District Plan",
+        x: [], // Placeholder for bin names
+        y: [], // Placeholder for district values
         marker: { color: "red", size: 8, symbol: "circle" },
     };
+
+    bins.forEach((bin) => {
+        const point = currentDistricts.find((district) => district.district === bin.bin);
+
+        enactedData.x.push(`${bin.bin}`);
+        enactedData.y.push(point.value);
+    });
 
     // Combine data
     const plotData = [...boxData, enactedData]
@@ -57,16 +69,24 @@ export const BoxAndWhiskerPlotSMD = ({ state }) => {
                 data={plotData}
                 layout={{
                     yaxis: { title: "Democrat Percentage" },
+                    xaxis: { title: "Bins" },
                     showlegend: true,
                     legend: {
                         orientation: "h",
                         showlegend: true,
                         bordercolor: "#ccc", // Set the border color to black
                         borderwidth: 2, // Set the border width
-                        bgcolor: "white" // Optional: Set the background color for the legend
+                        bgcolor: "white", // Optional: Set the background color for the legend
+                        y: -0.23, // Move the legend down; increase the value for more margin at the top
+                    },
+                    margin: {
+                        l: 70, // Left margin
+                        r: 50, // Right margin
+                        t: 10, // Top margin (reduce to remove extra space)
+                        b: 50 // Bottom margin
                     }
                 }}
-                style={{ width: "100%", height: "100%"}}
+                style={{ width: "600px", height: "500px"}}
             />
         </>
     )
