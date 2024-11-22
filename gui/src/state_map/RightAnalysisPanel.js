@@ -6,7 +6,6 @@ import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import { RightAnalysisPanelOptions, RightAnalysisEnsembleOptions, RightAnalysisSearchOptions, RightAnalysisSummaryOptions } from "../utils/Constants";
 import { EnsembleSummarySMD } from "./components/ensemble/EnsembleSummarySMD";
 import { EnsembleSummaryMMD } from "./components/ensemble/EnsembleSummaryMMD";
-import { EnsembleSummaryCompare } from "./components/ensemble/EnsembleSummaryCompare";
 
 export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);

@@ -211,3 +211,9 @@ export const jsonDataForBoxAndWhiskerMMD = {
       }
   ]
 }
+
+export const VisualizationEnsembleOptions = {
+  Summary: "Summary",
+  BarChart: "Bar Chart",
+  BoxAndWhisker: "Box and Whisker",
+}
