@@ -49,7 +49,7 @@ export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) =
         <div className="right_analysis_panel_container" style={{
             width: isExpanded ? "100%" : "auto", // Auto-width when collapsed
             maxWidth: isExpanded ? "100%" : "fit-content", // Fit the content naturally
-            minWidth: "450px", // Set a minimum width for the panel
+            minWidth: "550px", // Set a minimum width for the panel
         }}>
             <div className="check_stuff_leaves" onMouseLeave={handleLeavingOptions}>
                 <div className="options_for_right_analysis_panel">
