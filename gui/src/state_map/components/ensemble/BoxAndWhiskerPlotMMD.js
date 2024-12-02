@@ -4,7 +4,6 @@ import { BoxAndWhiskerPlotBasisOfComparison } from "../../../utils/Constants";
 
 export const BoxAndWhiskerPlotMMD = ({ state }) => {
     const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBasisOfComparison.Democrat);
-    const jsonDataForBoxAndWhiskerMMD = {}
     // Extract district data
     const districts = jsonDataForBoxAndWhiskerMMD.districts;
 
