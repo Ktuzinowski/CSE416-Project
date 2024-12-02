@@ -12,7 +12,8 @@ const REQUESTS = {
     States_Available: "states_available",
     State_Outlines: "state_outlines",
     Current_District_Plans: "current_district_plans",
-    Precincts: "precincts"
+    Precincts: "precincts",
+    SMD_BOX_AND_WHISKER: "box_and_whisker/smd"
 }
 
 const makeRequest = async (requestType, params = {}, config = {}) => {
@@ -64,6 +65,16 @@ export const getPrecincts = async (state) => {
         return data;
     } catch (error) {
         console.error(`Failed to fetch precincts for state ${state}:`, error.message);
+        throw error;
+    }
+}
+
+export const getSmdBoxAndWhiskerPlotData = async (state, boc) => {
+    try {
+        const data = await makeRequest(REQUESTS.SMD_BOX_AND_WHISKER, {state: state, boc: boc});
+        return data;
+    } catch (error) {
+        console.error(`Failed to fetch smd box and whisker data for state ${state} with boc ${boc}:`, error.message);
         throw error;
     }
 }

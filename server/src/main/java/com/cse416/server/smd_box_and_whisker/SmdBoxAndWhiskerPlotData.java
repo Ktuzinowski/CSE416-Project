@@ -5,7 +5,7 @@ import java.util.List;
 public class SmdBoxAndWhiskerPlotData {
 	private String state;
 	List<Bin> bins;
-	List<DistrictValue> currentDistricts;
+	List<DistrictValue> current_districts;
 	public String getState() {
 		return state;
 	}
@@ -18,10 +18,10 @@ public class SmdBoxAndWhiskerPlotData {
 	public void setBins(List<Bin> bins) {
 		this.bins = bins;
 	}
-	public List<DistrictValue> getCurrentDistricts() {
-		return currentDistricts;
+	public List<DistrictValue> getCurrent_districts() {
+		return current_districts;
 	}
-	public void setCurrentDistricts(List<DistrictValue> currentDistricts) {
-		this.currentDistricts = currentDistricts;
+	public void setCurrent_districts(List<DistrictValue> currentDistricts) {
+		this.current_districts = currentDistricts;
 	}
 }
