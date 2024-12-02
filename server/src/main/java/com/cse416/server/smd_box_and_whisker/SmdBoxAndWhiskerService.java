@@ -77,7 +77,7 @@ public class SmdBoxAndWhiskerService {
 		SmdBoxAndWhiskerPlotData smdBoxAndWhiskerPlotData = new SmdBoxAndWhiskerPlotData();
 		smdBoxAndWhiskerPlotData.setState(name);
 		smdBoxAndWhiskerPlotData.setBins(bins);
-		smdBoxAndWhiskerPlotData.setCurrentDistricts(smdBoxAndWhisker.getCurrent_districts());
+		smdBoxAndWhiskerPlotData.setCurrent_districts(smdBoxAndWhisker.getCurrent_districts());
 		return smdBoxAndWhiskerPlotData;
 	}
 	

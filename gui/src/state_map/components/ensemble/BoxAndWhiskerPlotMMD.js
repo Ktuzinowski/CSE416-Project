@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import Plot from "react-plotly.js"
 import { BoxAndWhiskerPlotBasisOfComparison } from "../../../utils/Constants";
-import { jsonDataForBoxAndWhiskerMMD } from "../../../utils/Constants";
 
 export const BoxAndWhiskerPlotMMD = ({ state }) => {
     const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBasisOfComparison.Democrat);
-    
+    const jsonDataForBoxAndWhiskerMMD = {}
     // Extract district data
     const districts = jsonDataForBoxAndWhiskerMMD.districts;
 

@@ -1,53 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js"
 import { BoxAndWhiskerPlotBasisOfComparison } from "../../../utils/Constants";
-import { jsonDataForBoxAndWhisker } from "../../../utils/Constants";
+import { getSmdBoxAndWhiskerPlotData } from "../../../axiosClient";
 
 export const BoxAndWhiskerPlotSMD = ({ state }) => {
     const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBasisOfComparison.Democrat);
-    
-    // Extract district data
-    const bins = jsonDataForBoxAndWhisker.bins;
-    const currentDistricts = jsonDataForBoxAndWhisker.currentDistricts;
+    const [plotData, setPlotData] = useState(null);
 
-    // Prepare data for the box-and-whisker plot
-    const boxData = bins.map((bin) => ({
-        type: "box",
-        name: `${bin.bin}`,
-        x: [`${bin.bin}`], // Assign the district name as the x-axis value
-        q1: [bin.q1],
-        median: [bin.median],
-        q3: [bin.q3],
-        lowerfence: [bin.min],
-        upperfence: [bin.max],
-        boxpoints: false, // Hide individual points
-        showlegend: false, // Exclude the box trace from the legend
-        fillcolor: "white", // Fill color for the box
-        line: {
-            color: "black", // Border color for the box
-            width: 1.5 // Width of the border
+    useEffect(() => {
+        const loadBoxAndWhiskerSMDPlotData = async (state, boc) => {
+            const data = await getSmdBoxAndWhiskerPlotData(state, boc);
+            console.log(data);
+            const bins = data.bins;
+            console.log(bins);
+            const currentDistricts = data.current_districts;
+
+            // Prepare data for the box-and-whisker plot
+            const boxData = bins.map((bin) => ({
+                type: "box",
+                name: `${bin.bin}`,
+                x: [`${bin.bin}`], // Assign the district name as the x-axis value
+                q1: [bin.q1],
+                median: [bin.median],
+                q3: [bin.q3],
+                lowerfence: [bin.min],
+                upperfence: [bin.max],
+                boxpoints: false, // Hide individual points
+                showlegend: false, // Exclude the box trace from the legend
+                fillcolor: "white", // Fill color for the box
+                line: {
+                    color: "black", // Border color for the box
+                    width: 1.5 // Width of the border
+                }
+            }));
+
+            // Prepare data for the enacted district plans
+            const enactedData = {
+                type: "scatter",
+                mode: "markers",
+                name: "Enacted District Plan",
+                x: [], // Placeholder for bin names
+                y: [], // Placeholder for district values
+                marker: { color: "red", size: 8, symbol: "circle" },
+            };
+
+            bins.forEach((bin) => {
+                const point = currentDistricts.find((district) => district.district === bin.bin);
+
+                enactedData.x.push(`${bin.bin}`);
+                enactedData.y.push(point.value);
+            });
+
+            // Combine data
+            const plotData = [...boxData, enactedData]
+
+            setPlotData(plotData);
         }
-    }));
 
-    // Prepare data for the enacted district plans
-    const enactedData = {
-        type: "scatter",
-        mode: "markers",
-        name: "Enacted District Plan",
-        x: [], // Placeholder for bin names
-        y: [], // Placeholder for district values
-        marker: { color: "red", size: 8, symbol: "circle" },
-    };
-
-    bins.forEach((bin) => {
-        const point = currentDistricts.find((district) => district.district === bin.bin);
-
-        enactedData.x.push(`${bin.bin}`);
-        enactedData.y.push(point.value);
-    });
-
-    // Combine data
-    const plotData = [...boxData, enactedData]
+        loadBoxAndWhiskerSMDPlotData(state, valueForDropdownBOC);
+    }, [state, valueForDropdownBOC])
 
     return (
         <>
@@ -68,7 +79,7 @@ export const BoxAndWhiskerPlotSMD = ({ state }) => {
             <Plot
                 data={plotData}
                 layout={{
-                    yaxis: { title: "Democrat Percentage" },
+                    yaxis: { title: `${valueForDropdownBOC} Percentage` },
                     xaxis: { title: "Bins" },
                     showlegend: true,
                     legend: {
