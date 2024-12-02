@@ -10,9 +10,7 @@ export const BoxAndWhiskerPlotSMD = ({ state }) => {
     useEffect(() => {
         const loadBoxAndWhiskerSMDPlotData = async (state, boc) => {
             const data = await getSmdBoxAndWhiskerPlotData(state, boc);
-            console.log(data);
             const bins = data.bins;
-            console.log(bins);
             const currentDistricts = data.current_districts;
 
             // Prepare data for the box-and-whisker plot
@@ -79,7 +77,7 @@ export const BoxAndWhiskerPlotSMD = ({ state }) => {
             <Plot
                 data={plotData}
                 layout={{
-                    yaxis: { title: `${valueForDropdownBOC} Percentage` },
+                    yaxis: { title: `${valueForDropdownBOC.charAt(0).toUpperCase() + valueForDropdownBOC.slice(1)} Percentage` },
                     xaxis: { title: "Bins" },
                     showlegend: true,
                     legend: {
