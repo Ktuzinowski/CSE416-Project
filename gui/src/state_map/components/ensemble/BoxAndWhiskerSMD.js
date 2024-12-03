@@ -3,7 +3,7 @@ import Plot from "react-plotly.js"
 import { BoxAndWhiskerPlotBasisOfComparison } from "../../../utils/Constants";
 import { getSmdBoxAndWhiskerPlotData } from "../../../axiosClient";
 
-export const BoxAndWhiskerPlotSMD = ({ state }) => {
+export const BoxAndWhiskerSMD = ({ state }) => {
     const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBasisOfComparison.Democrat);
     const [plotData, setPlotData] = useState(null);
 
