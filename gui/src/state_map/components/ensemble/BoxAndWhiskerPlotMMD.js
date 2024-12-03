@@ -1,39 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js"
 import { BoxAndWhiskerPlotBasisOfComparison } from "../../../utils/Constants";
+import { getMmdBoxAndWhiskerPlotData } from "../../../axiosClient";
 
 export const BoxAndWhiskerPlotMMD = ({ state }) => {
     const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBasisOfComparison.Democrat);
-    // Extract district data
-    const districts = jsonDataForBoxAndWhiskerMMD.districts;
+    const [plotData, setPlotData] = useState(null);
 
-    // Prepare data for the box-and-whisker plot
-    const boxData = districts.map((district) => ({
-        type: "box",
-        name: `District ${district.district}`,
-        x: [`District ${district.district}`], // Assign the district name as the x-axis value
-        q1: [district.q1],
-        median: [district.median],
-        q3: [district.q3],
-        lowerfence: [district.min],
-        upperfence: [district.max],
-        boxpoints: false, // Hide individual points
-        showlegend: true // Exclude the box trace from the legend
-    }));
+    useEffect(() => {
+        const loadBoxAndWhiskerMMDPlotData = async (state, boc) => {
+            const data = await getMmdBoxAndWhiskerPlotData(state, boc);
+            console.log(data);
+            setPlotData(data);
+        }
 
-    // Combine data
-    const plotData = [...boxData]
-
-    // Annotations for number of representatives
-    const annotations = districts.map((district) => ({
-        x: `District ${district.district}`,
-        y: -0.11, // Position below the x-axis
-        xref: "x",
-        yref: "paper",
-        text: `${district.representatives} reps`,
-        showarrow: false,
-        font: { size: 12, color: "black" },
-    }));
+        loadBoxAndWhiskerMMDPlotData(state, valueForDropdownBOC);
+    }, [state, valueForDropdownBOC])
 
     return (
         <>
@@ -55,7 +37,6 @@ export const BoxAndWhiskerPlotMMD = ({ state }) => {
             data={plotData}
             layout={{
                 yaxis: { title: "Democrat Percentage" },
-                annotations: annotations, // Add the annotations to the layout
                 showlegend: true,
                 legend: {
                     orientation: "h",
