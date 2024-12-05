@@ -43,6 +43,16 @@ public class SmdBoxAndWhiskerService {
             throw new IllegalArgumentException("No enum constant with value: " + str);
         }
     }
+    
+	public SmdBoxAndWhiskerPlotData getByStateAndBOC(String name, String boc) {
+		SmdBoxAndWhisker smdBoxAndWhisker =  smdBoxAndWhiskerRepository.findByState(name);
+		List<Bin> bins = this.getBinsForBOC(smdBoxAndWhisker, boc);
+		SmdBoxAndWhiskerPlotData smdBoxAndWhiskerPlotData = new SmdBoxAndWhiskerPlotData();
+		smdBoxAndWhiskerPlotData.setState(name);
+		smdBoxAndWhiskerPlotData.setBins(bins);
+		smdBoxAndWhiskerPlotData.setCurrent_districts(smdBoxAndWhisker.getCurrent_districts());
+		return smdBoxAndWhiskerPlotData;
+	}
 	
 	public List<Bin> getBinsForBOC(SmdBoxAndWhisker smdBoxAndWhisker, String boc) {
 		if (ComparisonGroup.DEMOCRAT.getValue().equalsIgnoreCase(boc)) {
@@ -70,15 +80,4 @@ public class SmdBoxAndWhiskerService {
 			return smdBoxAndWhisker.getComparisonBasis().getOther().getBins();
 		}
 	}
-	
-	public SmdBoxAndWhiskerPlotData getByStateAndBOC(String name, String boc) {
-		SmdBoxAndWhisker smdBoxAndWhisker =  smdBoxAndWhiskerRepository.findByState(name);
-		List<Bin> bins = this.getBinsForBOC(smdBoxAndWhisker, boc);
-		SmdBoxAndWhiskerPlotData smdBoxAndWhiskerPlotData = new SmdBoxAndWhiskerPlotData();
-		smdBoxAndWhiskerPlotData.setState(name);
-		smdBoxAndWhiskerPlotData.setBins(bins);
-		smdBoxAndWhiskerPlotData.setCurrent_districts(smdBoxAndWhisker.getCurrent_districts());
-		return smdBoxAndWhiskerPlotData;
-	}
-	
 }
