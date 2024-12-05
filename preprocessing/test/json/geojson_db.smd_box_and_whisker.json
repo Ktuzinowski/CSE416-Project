@@ -1,7 +1,4 @@
 [{
-  "_id": {
-    "$oid": "674df32c4bc68c3262897266"
-  },
   "state": "utah",
   "comparison_basis": {
     "democrat": {

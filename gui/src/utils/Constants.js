@@ -128,15 +128,12 @@ export const RightAnalysisSummaryOptions = {
   Compare: "compare"
 }
 
-export const BoxAndWhiskerPlotBasisOfComparison = {
+export const BoxAndWhiskerPlotBOC = {
   Democrat: "democrat",
   Republican: "republican",
   White: "white",
   Black: "black",
-  Hispanic: "hispanic",
-  Pacific: "pacific",
-  Indigenous: "indigenous",
-  Other: "other"
+  Hispanic: "hispanic"
 }
 
 export const VisualizationEnsembleOptions = {

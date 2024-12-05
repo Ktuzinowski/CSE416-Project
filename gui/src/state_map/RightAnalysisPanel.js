@@ -118,7 +118,7 @@ export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) =
                         )
                 }
             </div>
-            {/* <div className="left_data_panel_current_selection">
+            {/* <div className="right_data_panel_current_selection">
                 <button className="right_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>

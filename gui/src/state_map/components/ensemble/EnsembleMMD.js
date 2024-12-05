@@ -8,8 +8,8 @@ export const EnsembleMMD = ({ state }) => {
     const [currentVisualization, setCurrentVisualization] = useState(VisualizationEnsembleOptions.Summary);
     return (
         <div>
-            <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">MMD Ensemble Utah</h2>
+            <div className="right_data_panel_current_selection">
+                <h2 className="right_data_panel_title">MMD Ensemble Utah</h2>
                 <select 
                     value={currentVisualization} 
                     onChange={(e) => setCurrentVisualization(e.target.value)}
