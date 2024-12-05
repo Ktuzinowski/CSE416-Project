@@ -15,10 +15,7 @@ public class SmdBoxAndWhiskerService {
         REPUBLICAN("republican"),
         WHITE("white"),
         BLACK("black"),
-        HISPANIC("hispanic"),
-        PACIFIC("pacific"),
-        INDIGENOUS("indigenous"),
-        OTHER("other");
+        HISPANIC("hispanic");
 
         // Field to store the string value
         private final String value;
@@ -44,40 +41,27 @@ public class SmdBoxAndWhiskerService {
         }
     }
     
-	public SmdBoxAndWhiskerPlotData getByStateAndBOC(String name, String boc) {
+	public BOC getByStateAndBOC(String name, String boc) {
 		SmdBoxAndWhisker smdBoxAndWhisker =  smdBoxAndWhiskerRepository.findByState(name);
-		List<Bin> bins = this.getBinsForBOC(smdBoxAndWhisker, boc);
-		SmdBoxAndWhiskerPlotData smdBoxAndWhiskerPlotData = new SmdBoxAndWhiskerPlotData();
-		smdBoxAndWhiskerPlotData.setState(name);
-		smdBoxAndWhiskerPlotData.setBins(bins);
-		smdBoxAndWhiskerPlotData.setCurrent_districts(smdBoxAndWhisker.getCurrent_districts());
-		return smdBoxAndWhiskerPlotData;
+		System.out.println(smdBoxAndWhisker.getComparisonBasis().getDemocrat().getCurrent_districts());
+		return this.getBOC(smdBoxAndWhisker, boc);
 	}
 	
-	public List<Bin> getBinsForBOC(SmdBoxAndWhisker smdBoxAndWhisker, String boc) {
+	public BOC getBOC(SmdBoxAndWhisker smdBoxAndWhisker, String boc) {
 		if (ComparisonGroup.DEMOCRAT.getValue().equalsIgnoreCase(boc)) {
-			return smdBoxAndWhisker.getComparisonBasis().getDemocrat().getBins();
+			return smdBoxAndWhisker.getComparisonBasis().getDemocrat();
 		}
 		else if (ComparisonGroup.REPUBLICAN.getValue().equalsIgnoreCase(boc)) {
-			return smdBoxAndWhisker.getComparisonBasis().getRepublican().getBins();
+			return smdBoxAndWhisker.getComparisonBasis().getRepublican();
 		}
 		else if (ComparisonGroup.WHITE.getValue().equalsIgnoreCase(boc)) {
-			return smdBoxAndWhisker.getComparisonBasis().getWhite().getBins();
+			return smdBoxAndWhisker.getComparisonBasis().getWhite();
 		}
 		else if (ComparisonGroup.BLACK.getValue().equalsIgnoreCase(boc)) {
-			return smdBoxAndWhisker.getComparisonBasis().getBlack().getBins();
-		}
-		else if (ComparisonGroup.HISPANIC.getValue().equalsIgnoreCase(boc)) {
-			return smdBoxAndWhisker.getComparisonBasis().getHispanic().getBins();
-		}
-		else if (ComparisonGroup.PACIFIC.getValue().equalsIgnoreCase(boc)) {
-			return smdBoxAndWhisker.getComparisonBasis().getPacific().getBins();
-		}
-		else if (ComparisonGroup.INDIGENOUS.getValue().equalsIgnoreCase(boc)) {
-			return smdBoxAndWhisker.getComparisonBasis().getIndigenous().getBins();
+			return smdBoxAndWhisker.getComparisonBasis().getBlack();
 		}
 		else {
-			return smdBoxAndWhisker.getComparisonBasis().getOther().getBins();
+			return smdBoxAndWhisker.getComparisonBasis().getHispanic();
 		}
 	}
 }
