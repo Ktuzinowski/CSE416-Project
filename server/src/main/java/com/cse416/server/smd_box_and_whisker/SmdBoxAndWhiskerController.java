@@ -12,7 +12,6 @@ public class SmdBoxAndWhiskerController {
 	@Autowired
 	public SmdBoxAndWhiskerService service;
 	
-	
 	@GetMapping("/box_and_whisker/smd")
 	public BOC getSmdBoxAndWhiskerData(@RequestParam("state") String state, @RequestParam("boc") String boc) {
 		BOC boxAndWhiskerData = service.getByStateAndBOC(state, boc);

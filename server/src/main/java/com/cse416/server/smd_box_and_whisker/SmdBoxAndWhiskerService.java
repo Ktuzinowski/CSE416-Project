@@ -27,11 +27,11 @@ public class SmdBoxAndWhiskerService {
     }
     
 	public BOC getByStateAndBOC(String name, String boc) {
-		SmdBoxAndWhisker smdBoxAndWhisker =  smdBoxAndWhiskerRepository.findByState(name);
+		SmdBoxAndWhiskerData smdBoxAndWhisker =  smdBoxAndWhiskerRepository.findByState(name);
 		return this.getBOC(smdBoxAndWhisker, boc);
 	}
 	
-	public BOC getBOC(SmdBoxAndWhisker smdBoxAndWhisker, String boc) {
+	public BOC getBOC(SmdBoxAndWhiskerData smdBoxAndWhisker, String boc) {
 		if (ComparisonGroup.DEMOCRAT.getValue().equalsIgnoreCase(boc)) {
 			return smdBoxAndWhisker.getComparisonBasis().getDemocrat();
 		}
