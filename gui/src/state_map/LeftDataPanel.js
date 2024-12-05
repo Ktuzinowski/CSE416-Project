@@ -105,7 +105,7 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
             {!displayAnalysisScreen && (
             <>
             <div style={{ marginBottom: "20px" }}>
-                <label className="dropdown_for_choropleth" htmlFor="race-select"> Choropleth Map</label>
+                <label className="dropdown_styling" htmlFor="race-select"> Choropleth Map</label>
                 <select
                     value={choroplethBoundarySelection}
                     onChange={(e) => setChoroplethBoundarySelection(e.target.value)}
@@ -134,7 +134,7 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
                 </select>
             </div>
             <div style={{marginBottom: "20px"}}>
-                <label className="dropdown_for_choropleth">View Data</label>
+                <label className="dropdown_styling">View Data</label>
                 <select
                     value={currentDataView}
                     onChange={(e) => setCurrentDataView(e.target.value)}

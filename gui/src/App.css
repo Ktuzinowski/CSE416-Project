@@ -210,7 +210,19 @@ select.navigation_select_links:hover {
   padding-right: 10px;
 }
 
+.right_data_panel_current_selection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .left_data_panel_title {
+  text-align: center;
+}
+
+.right_data_panel_title {
   text-align: center;
 }
 
@@ -425,11 +437,20 @@ select.navigation_select_links:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
 }
 
-.dropdown_for_choropleth {
+.dropdown_styling {
   font-size: 17px;
   font-weight: bold;
   padding-left: 10px;
 }
+
+.dropdown_select_styling {
+  margin-left: 10px;
+  margin-top: -20px;
+  font-size: 15px;
+  padding: 1px;
+  margin-right: 10px;
+}
+
 .evaluate_mmd_vs_smd {
   padding: 8px 15px; /* Adjusted padding for a balanced look */
   font-size: 17px;

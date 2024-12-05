@@ -9,8 +9,8 @@ export const EnsembleSMD = ({ state }) => {
 
     return (
         <div>
-            <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">SMD Ensemble Utah</h2>
+            <div className="right_data_panel_current_selection">
+                <h2 className="right_data_panel_title">SMD Ensemble Utah</h2>
                 <select 
                 value={currentVisualization}
                 onChange={(e) => setCurrentVisualization(e.target.value)}

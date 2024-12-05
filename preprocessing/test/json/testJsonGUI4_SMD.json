@@ -1,15 +1,15 @@
 {
     "state": "utah",
-    "numberOfDistrictPlans": 2000,
-    "avgMinorityRepresentativesPerPlan": 3,
-    "avgEqualPopulationMeasure": 210000,
-    "avgRepublicanDemocraticSplit": 0.75,
-    "avgOpportunityDistricts": 0.01,
-    "wastedVotesRepublican": 190000,
-    "wastedVotesDemocratic": 400000,
-    "avgCompactnessScore": 0.8,
-    "avgResponsivenessScore": 0.9,
-    "avgNumberOfRepublicanRepresentatives": 3.78,
-    "avgNumberOfDemocraticRepresentatives": 0.23,
-    "avgNumberOfSafeDistricts": 5
+    "number_of_district_plans": 2000,
+    "average_minority_representatives_per_plan": 3,
+    "average_equal_population_measure": 210000,
+    "average_republican/democratic_split": 0.75,
+    "average_opportunity_districts": 0.01,
+    "average_wasted_votes_republican": 190000,
+    "average_wasted_votes_democratic": 400000,
+    "average_compactness_score": 0.8,
+    "average_responsiveness_score": 0.9,
+    "average_number_of_republican_representatives": 3.78,
+    "average_number_of_democratic_representatives": 0.23,
+    "average_number_of_safe_districts": 3
 }

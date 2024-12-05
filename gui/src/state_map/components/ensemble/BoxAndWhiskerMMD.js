@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js"
-import { BoxAndWhiskerPlotBasisOfComparison } from "../../../utils/Constants";
+import { BoxAndWhiskerPlotBOC } from "../../../utils/Constants";
 import { getMmdBoxAndWhiskerPlotData } from "../../../axiosClient";
 
 export const BoxAndWhiskerMMD = ({ state }) => {
-    const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBasisOfComparison.Democrat);
+    const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBOC.Democrat);
     const [plotData, setPlotData] = useState(null);
 
     useEffect(() => {
@@ -87,21 +87,22 @@ export const BoxAndWhiskerMMD = ({ state }) => {
                 })
             });
         });
+        shapes.pop(); // remove last line
     
         return { traces, annotations, shapes };
     };
 
     return (
         <>
-            <label className="dropdown_for_choropleth">Basis of Comparison</label>
+            <label className="dropdown_styling">Basis of Comparison</label>
             <select
                 value={valueForDropdownBOC}
                 onChange={(e) => setValueForDropdownBOC(e.target.value)}
-                style={{marginLeft: "10px", marginTop: "-20px", fontSize: "15px", padding: "1px", marginRight: "10px"}}
+                className="dropdown_select_styling"
             >
-                {Object.keys(BoxAndWhiskerPlotBasisOfComparison).map((boc) => {
+                {Object.keys(BoxAndWhiskerPlotBOC).map((boc) => {
                     return (
-                        <option key={boc} value={BoxAndWhiskerPlotBasisOfComparison[boc]}>
+                        <option key={boc} value={BoxAndWhiskerPlotBOC[boc]}>
                             {boc}
                         </option>
                     )

@@ -171,6 +171,12 @@ export const StateMap = ({ state }) => {
     };
   },[selectedDataColumn]);
 
+  useEffect(() => {
+    if (mapRef.current && mapCenter && mapZoom) {
+      mapRef.current.setView(mapCenter, mapZoom);
+    }
+  }, [mapCenter, mapZoom]);
+
   // Zoom to selected feature
   useEffect(() => {
     if (selectedDataViewOption === ViewDataOptions.Current && selectedFeature && geoJsonRefCurrentDistricts.current && mapRef.current) {
@@ -268,12 +274,6 @@ export const StateMap = ({ state }) => {
       };
     }
   };
-
-  useEffect(() => {
-    if (mapRef.current && mapCenter && mapZoom) {
-      mapRef.current.setView(mapCenter, mapZoom);
-    }
-  }, [mapCenter, mapZoom]);
 
   const showDistrictData = (feature, layer) => {
     const popupContent = getDistrictDataPopupContent(feature);

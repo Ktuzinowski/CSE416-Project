@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Plot from "react-plotly.js"
-import { BoxAndWhiskerPlotBasisOfComparison } from "../../../utils/Constants";
+import Plot from "react-plotly.js";
+import { BoxAndWhiskerPlotBOC } from "../../../utils/Constants";
 import { getSmdBoxAndWhiskerPlotData } from "../../../axiosClient";
 
 export const BoxAndWhiskerSMD = ({ state }) => {
-    const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBasisOfComparison.Democrat);
+    const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBOC.Democrat);
     const [plotData, setPlotData] = useState(null);
 
     useEffect(() => {
-        const loadBoxAndWhiskerSMDPlotData = async (state, boc) => {
+        const loadData = async (state, boc) => {
             const data = await getSmdBoxAndWhiskerPlotData(state, boc);
             const bins = data.bins;
             const currentDistricts = data.current_districts;
@@ -55,20 +55,20 @@ export const BoxAndWhiskerSMD = ({ state }) => {
             setPlotData(plotData);
         }
 
-        loadBoxAndWhiskerSMDPlotData(state, valueForDropdownBOC);
+        loadData(state, valueForDropdownBOC);
     }, [state, valueForDropdownBOC])
 
     return (
         <>
-            <label className="dropdown_for_choropleth">Basis of Comparison</label>
+            <label className="dropdown_styling">Basis of Comparison</label>
             <select
                 value={valueForDropdownBOC}
                 onChange={(e) => setValueForDropdownBOC(e.target.value)}
-                style={{marginLeft: "10px", marginTop: "-20px", fontSize: "15px", padding: "1px", marginRight: "10px"}}
+                className="dropdown_select_styling"
             >
-                {Object.keys(BoxAndWhiskerPlotBasisOfComparison).map((boc) => {
+                {Object.keys(BoxAndWhiskerPlotBOC).map((boc) => {
                     return (
-                        <option key={boc} value={BoxAndWhiskerPlotBasisOfComparison[boc]}>
+                        <option key={boc} value={BoxAndWhiskerPlotBOC[boc]}>
                             {boc}
                         </option>
                     )
