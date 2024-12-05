@@ -87,6 +87,7 @@ export const BoxAndWhiskerMMD = ({ state }) => {
                 })
             });
         });
+        shapes.pop(); // remove last line
     
         return { traces, annotations, shapes };
     };
