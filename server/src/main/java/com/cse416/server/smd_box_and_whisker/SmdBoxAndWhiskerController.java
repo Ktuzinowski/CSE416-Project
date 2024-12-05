@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SmdBoxAndWhiskerController {
 	@Autowired
-	public SmdBoxAndWhiskerService smdBoxAndWhiskerService;
+	public SmdBoxAndWhiskerService service;
 	
 	
 	@GetMapping("/box_and_whisker/smd")
 	public BOC getSmdBoxAndWhiskerData(@RequestParam("state") String state, @RequestParam("boc") String boc) {
-		BOC boxAndWhiskerData = smdBoxAndWhiskerService.getByStateAndBOC(state, boc);
+		BOC boxAndWhiskerData = service.getByStateAndBOC(state, boc);
 		return boxAndWhiskerData;
 	}
 }
