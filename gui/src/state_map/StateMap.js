@@ -275,7 +275,7 @@ export const StateMap = ({ state }) => {
         color: choroplethBoundarySelection === boundary ? "black" : districtColors[district].fillColor,
         fillColor: choroplethBoundarySelection === boundary ? fillColor : districtColors[district].fillColor,
         weight: choroplethBoundarySelection === boundary ? 1 : 3,
-        fillOpacity: choroplethBoundarySelection === boundary ? 0.7 : 0.2,
+        fillOpacity: choroplethBoundarySelection === boundary ? 0.8 : 0.2,
       };
     }
   };
@@ -405,6 +405,7 @@ export const StateMap = ({ state }) => {
     }
   };
 
+
   return (
     <>
       <div className="map-wrapper">
@@ -476,8 +477,11 @@ export const StateMap = ({ state }) => {
               />
             )}
 
+          
             <ZoomControl position="bottomright" />
           </MapContainer>
+
+          
         </div>
         {!isLeftDataPanelExpanded && <RightAnalysisPanel setIsRightAnalysisPanelExpanded={setIsRightAnalysisPanelExpanded} state={state} />}
       </div>
