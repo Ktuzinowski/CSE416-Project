@@ -45,6 +45,7 @@ export const StateMap = ({ state }) => {
   useEffect(() => {
     const loadCurrentDistrictPlans = async (state) => {
       try {
+        
         const currentDistrictPlans = await getCurrentDistrictPlans(state);
 
         setMapCenter(currentDistrictPlans[CurrentDistrictPlansProperties.center]);
@@ -140,6 +141,7 @@ export const StateMap = ({ state }) => {
   }, [state]);
 
   const setStyleForPrecinctSelection = useCallback((feature) => {
+    
     let totalPop = feature.properties[PrecinctsFeatureProperties.population];
     const racePop = feature.properties[selectedDataColumn];
     if (selectedDataColumn === PrecinctsFeatureProperties.republican || selectedDataColumn === PrecinctsFeatureProperties.democrat) {
@@ -234,6 +236,7 @@ export const StateMap = ({ state }) => {
             selectedFeature.properties.precinct
         );
       if (layer) {
+       
         const bounds = layer.getBounds();
         layer.setStyle(setStyleForPrecinctSelection(layer.feature))
         mapRef.current.fitBounds(bounds);
@@ -259,6 +262,8 @@ export const StateMap = ({ state }) => {
 
       //fill teh colors based on the racial demogprahic percentage
       let fillColor = colorScale(percent).hex();
+
+
 
       if (selectedDataColumn === CurrentDistrictPlansFeatureProperties.republican) {
         fillColor = colorScaleRed(percent).hex();
@@ -294,11 +299,15 @@ export const StateMap = ({ state }) => {
     }
     const percent = totalPop > 0 ? (racePop / totalPop) * 100 : 0;
 
+
     //fill teh colors based on the racial demogprahic percentage
     let fillColor = colorScale(percent).hex();
+   
+    
 
     if (selectedDataColumn === "") {
       fillColor = "white";
+      
     } else if (selectedDataColumn === PrecinctsFeatureProperties.republican) {
       fillColor = colorScaleRed(percent).hex();
     } else if (selectedDataColumn === PrecinctsFeatureProperties.democrat) {
@@ -308,7 +317,8 @@ export const StateMap = ({ state }) => {
     return {
       color: "black",
       fillColor: choroplethBoundarySelection === BoundaryChoroplethOptions.Precincts ? fillColor : "white",
-      weight: 0.7
+      fillOpacity: 0.8,
+      weight: 0.8
     };
   }
 
