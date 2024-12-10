@@ -13,6 +13,7 @@
     "chart.js": "^4.4.4",
     "chroma-js": "^3.1.1",
     "d3": "^7.9.0",
+    "eslint-config-airbnb": "^19.0.4",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^3.6.0",
     "plotly.js": "^2.35.2",

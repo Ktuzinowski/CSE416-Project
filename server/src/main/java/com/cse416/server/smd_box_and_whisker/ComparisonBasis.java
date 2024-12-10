@@ -6,9 +6,6 @@ public class ComparisonBasis {
     private BOC white;
     private BOC black;
     private BOC hispanic;
-    private BOC pacific;
-    private BOC indigenous;
-    private BOC other;
 	public BOC getDemocrat() {
 		return democrat;
 	}
@@ -38,23 +35,5 @@ public class ComparisonBasis {
 	}
 	public void setHispanic(BOC hispanic) {
 		this.hispanic = hispanic;
-	}
-	public BOC getPacific() {
-		return pacific;
-	}
-	public void setPacific(BOC pacific) {
-		this.pacific = pacific;
-	}
-	public BOC getIndigenous() {
-		return indigenous;
-	}
-	public void setIndigenous(BOC indigenous) {
-		this.indigenous = indigenous;
-	}
-	public BOC getOther() {
-		return other;
-	}
-	public void setOther(BOC other) {
-		this.other = other;
 	}
 }

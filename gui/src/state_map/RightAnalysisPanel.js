@@ -4,8 +4,8 @@ import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import { RightAnalysisPanelOptions, RightAnalysisEnsembleOptions, RightAnalysisSearchOptions, RightAnalysisSummaryOptions } from "../utils/Constants";
-import { EnsembleSummarySMD } from "./components/ensemble/EnsembleSummarySMD";
-import { EnsembleSummaryMMD } from "./components/ensemble/EnsembleSummaryMMD";
+import { EnsembleSMD } from "./components/ensemble/EnsembleSMD";
+import { EnsembleMMD } from "./components/ensemble/EnsembleMMD";
 
 export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -109,16 +109,16 @@ export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) =
                         ensembleSelected && (
                             (() => {
                                 if (ensembleOptionSelected === RightAnalysisEnsembleOptions.SMD) {
-                                    return <EnsembleSummarySMD state={state} onMouseEnter={handleLeavingOptions}/>
+                                    return <EnsembleSMD state={state} onMouseEnter={handleLeavingOptions}/>
                                 }
                                 else {
-                                    return <EnsembleSummaryMMD state={state} onMouseEnter={handleLeavingOptions}/>
+                                    return <EnsembleMMD state={state} onMouseEnter={handleLeavingOptions}/>
                                 }
                             })()
                         )
                 }
             </div>
-            {/* <div className="left_data_panel_current_selection">
+            {/* <div className="right_data_panel_current_selection">
                 <button className="right_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
