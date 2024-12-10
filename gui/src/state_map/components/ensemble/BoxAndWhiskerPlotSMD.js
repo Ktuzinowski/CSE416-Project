@@ -47,6 +47,7 @@ export const BoxAndWhiskerPlotSMD = ({ state }) => {
 
                 enactedData.x.push(`${bin.bin}`);
                 enactedData.y.push(point.value);
+                
             });
 
             // Combine data
