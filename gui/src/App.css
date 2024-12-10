@@ -699,3 +699,38 @@ select.navigation_select_links:hover {
 .dropdown-button:hover .dropdown-menu {
   display: block;
 }
+
+/* legend stuff */
+
+.legend {
+  /* position: absolute; */
+  top: 10px;
+  right: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+ margin-top: 10px;
+}
+
+.legend h4 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.legend-bar {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.legend-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+}
+
+
+/*end of legend stuff*/

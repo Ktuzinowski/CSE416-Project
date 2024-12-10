@@ -4,7 +4,8 @@ import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import Icon from "../utils/Icon";
 import "../App.css";
 import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties } from "../utils/MongoDocumentProperties";
-import { ViewDataOptions, BoundaryChoroplethOptions } from "../utils/Constants"
+import { COLORS, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom, BoundaryChoroplethOptions, ViewDataOptions} from "../utils/Constants";
+
 
 export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, onSelectFeature, congressionalDistrictColors, smdDistrictColors, mmdDistrictColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded, choroplethBoundarySelection, setChoroplethBoundarySelection }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -87,6 +88,51 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
             return filtered_column_names
         }
     }
+
+    //LEGEND STUFF
+    const Legend = ({ selectedColumn }) => {
+        const getColorScale = () => {
+          if (selectedColumn === CurrentDistrictPlansFeatureProperties.democrat) {
+            return colorScaleBlue;
+          } else if (selectedColumn === CurrentDistrictPlansFeatureProperties.republican) {
+            return colorScaleRed;
+          } else {
+            return colorScale;
+          }
+        };
+      
+        const currentColorScale = getColorScale();
+      
+        const gradientColors = [];
+        for (let i = 0; i <= 100; i += 10) {
+          gradientColors.push(currentColorScale(i).hex());
+        }
+      
+        return (
+          <div className="legend">
+            <h4>Population Percentage</h4>
+            <div className="legend-bar">
+              {gradientColors.map((color, index) => (
+                <span
+                  key={index}
+                  style={{
+                    background: color,
+                    flex: 1,
+                    height: "15px",
+                  }}
+                ></span>
+              ))}
+            </div>
+            <div className="legend-labels">
+              {[...Array(11).keys()].map((value) => (
+                <span key={value}>{value * 10}%</span>
+              ))}
+            </div>
+          </div>
+        );
+      };
+
+  //END OF LEGEND STUFF
     
     return (
         <div className="container_left_data_panel" style={{
@@ -145,7 +191,11 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
                     <option value={`${ViewDataOptions.MMD}`}>MMD</option>
                     <option value={`${ViewDataOptions.Precincts}`}>Precincts</option>
                 </select>
+
+                <Legend selectedColumn={selectedDataColumn} />
             </div>
+
+            
             {
                 currentDataView === ViewDataOptions.Precincts &&
                 (
