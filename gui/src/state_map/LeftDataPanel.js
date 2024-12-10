@@ -275,10 +275,14 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
                                             )
                                         }
                                         return (
-                                            <td key={idx} style={{textAlign: "right"}}>
-                                                {feature.properties[key] ? feature.properties[key].toString() : ""}
+                                            <td key={idx} style={{ textAlign: "right" }}>
+                                                {feature.properties[key]
+                                                    ? typeof feature.properties[key] === "number"
+                                                        ? feature.properties[key].toLocaleString()
+                                                        : feature.properties[key].toString()
+                                                    : ""}
                                             </td>
-                                        )
+                                        );
                                     })}
                                 </tr>
                                )
