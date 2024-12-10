@@ -703,7 +703,7 @@ select.navigation_select_links:hover {
 /* legend stuff */
 
 .legend {
-  /* position: absolute; */
+  
   top: 10px;
   right: 10px;
   background: white;
@@ -712,7 +712,11 @@ select.navigation_select_links:hover {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   font-family: Arial, sans-serif;
   font-size: 12px;
- margin-top: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
+  position: relative; 
+  max-width: 350px; 
+  overflow-y: auto;
 }
 
 .legend h4 {
