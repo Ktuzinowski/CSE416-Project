@@ -89,50 +89,62 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
         }
     }
 
-    //LEGEND STUFF
-    const Legend = ({ selectedColumn }) => {
-        const getColorScale = () => {
-          if (selectedColumn === CurrentDistrictPlansFeatureProperties.democrat) {
+    // LEGEND STUFF
+const Legend = ({ selectedColumn }) => {
+    const getColorScale = () => {
+        if (selectedColumn === CurrentDistrictPlansFeatureProperties.democrat) {
             return colorScaleBlue;
-          } else if (selectedColumn === CurrentDistrictPlansFeatureProperties.republican) {
+        } else if (selectedColumn === CurrentDistrictPlansFeatureProperties.republican) {
             return colorScaleRed;
-          } else {
+        } else if (
+            selectedColumn === CurrentDistrictPlansFeatureProperties.white ||
+            selectedColumn === CurrentDistrictPlansFeatureProperties.black ||
+            selectedColumn === CurrentDistrictPlansFeatureProperties.hispanic ||
+            selectedColumn === CurrentDistrictPlansFeatureProperties.asian ||
+            selectedColumn === CurrentDistrictPlansFeatureProperties.pacific ||
+            selectedColumn === CurrentDistrictPlansFeatureProperties.indigenous ||
+            selectedColumn === CurrentDistrictPlansFeatureProperties.other
+        ) {
             return colorScale;
-          }
-        };
-      
-        const currentColorScale = getColorScale();
-      
-        const gradientColors = [];
-        for (let i = 0; i <= 100; i += 10) {
-          gradientColors.push(currentColorScale(i).hex());
         }
-      
-        return (
-          <div className="legend">
+        return null; // No color scale if it's not one of the race or party columns
+    };
+
+    const currentColorScale = getColorScale();
+
+    if (!currentColorScale) {
+        return null; // Don't render legend if selectedColumn is not related to race or party
+    }
+
+    const gradientColors = [];
+    for (let i = 0; i <= 100; i += 10) {
+        gradientColors.push(currentColorScale(i).hex());
+    }
+
+    return (
+        <div className="legend">
             <h4>Population Percentage</h4>
             <div className="legend-bar">
-              {gradientColors.map((color, index) => (
-                <span
-                  key={index}
-                  style={{
-                    background: color,
-                    flex: 1,
-                    height: "15px",
-                  }}
-                ></span>
-              ))}
+                {gradientColors.map((color, index) => (
+                    <span
+                        key={index}
+                        style={{
+                            background: color,
+                            flex: 1,
+                            height: "15px",
+                        }}
+                    ></span>
+                ))}
             </div>
             <div className="legend-labels">
-              {[...Array(11).keys()].map((value) => (
-                <span key={value}>{value * 10}%</span>
-              ))}
+                {[...Array(11).keys()].map((value) => (
+                    <span key={value}>{value * 10}%</span>
+                ))}
             </div>
-          </div>
-        );
-      };
-
-  //END OF LEGEND STUFF
+        </div>
+    );
+};
+// END OF LEGEND STUFF
     
     return (
         <div className="container_left_data_panel" style={{
@@ -192,7 +204,9 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
                     <option value={`${ViewDataOptions.Precincts}`}>Precincts</option>
                 </select>
 
-                <Legend selectedColumn={selectedDataColumn} />
+                {selectedDataColumn && (
+                    <Legend selectedColumn={selectedDataColumn} />
+                )}
             </div>
 
             
