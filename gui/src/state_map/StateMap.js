@@ -8,6 +8,8 @@ import { CurrentDistrictPlansProperties, CurrentDistrictPlansFeatureProperties, 
 import { getDistrictDataPopupContent, getPrecinctDataPopupContent } from "./PopupStyling";
 import { MapFilter } from "./MapFilter";
 import { RightAnalysisPanel } from "./RightAnalysisPanel"
+import L from "leaflet"
+import * as turf from "@turf/turf";
 
 export const StateMap = ({ state }) => {
   const [congressionalDistricts, setCongressionalDistricts] = useState(null);
@@ -34,13 +36,14 @@ export const StateMap = ({ state }) => {
 
   const [choroplethBoundarySelection, setChoroplethBoundarySelection] = useState(BoundaryChoroplethOptions.Current);
 
-  const [selectedDataViewOption, setSelectedDataViewOption] = useState(null);
+  const [selectedDataViewOption, setSelectedDataViewOption] = useState(ViewDataOptions.Current);
 
   const geoJsonRefCurrentDistricts = useRef();
   const geoJsonRefSmdDistricts = useRef();
   const geoJsonRefMmdDistricts = useRef();
   const geoJsonRefPrecincts = useRef();
   const mapRef = useRef();
+  const labelLayerRef = useRef(null);
 
   useEffect(() => {
     const loadCurrentDistrictPlans = async (state) => {
@@ -248,7 +251,6 @@ export const StateMap = ({ state }) => {
     const district = feature.properties.district;
 
     if (selectedDataColumn === "") {
-
       return {
         color: choroplethBoundarySelection === boundary ? districtColors[district].color : districtColors[district].fillColor, // border color for each district
         fillColor: districtColors[district].fillColor, // unique c
@@ -405,6 +407,42 @@ export const StateMap = ({ state }) => {
     }
   };
 
+  const addDistrictLabels = (map, geojsonData) => {
+    const markers = [];
+    geojsonData.features.forEach((feature) => {
+      const district = feature.properties.district;
+  
+      // Calculate the centroid of the district
+      const centroid = turf.centroid(feature.geometry).geometry.coordinates;
+  
+      // Create a div icon for the label
+      const labelIcon = L.divIcon({
+        className: "district-label", // Define custom styles in CSS
+        html: `<div>${district} ${district === 1 ? "Representative" : "Representatives"}</div>`,
+        iconSize: null, // Adjust size in CSS
+      });
+  
+      // Add a marker at the centroid
+      markers.push(L.marker([centroid[1] + 0.2, centroid[0] - 0.6], { icon: labelIcon }).addTo(map));
+    });
+    return markers;
+  };
+
+  // Add labels once the GeoJSON layer is added to the map
+  useEffect(() => {
+    if (mapRef.current && mmdDistricts) {
+      const map = mapRef.current;
+  
+      if (!showMMD && labelLayerRef.current) {
+        labelLayerRef.current.forEach((marker) => map.removeLayer(marker));
+        labelLayerRef.current = null;
+      } else if (showMMD && !labelLayerRef.current) {
+        const labels = addDistrictLabels(map, mmdDistricts);
+        labelLayerRef.current = labels; // Store the added markers
+      }
+    }
+  }, [showMMD, mmdDistricts]);
+
 
   return (
     <>
@@ -415,6 +453,8 @@ export const StateMap = ({ state }) => {
           mmdData={mmdDistricts}
           precinctData={precincts}
           onSelectFeature={onSelectFeature}
+          selectedDataViewOption={selectedDataViewOption}
+          setSelectedDataViewOption={setSelectedDataViewOption}
           congressionalDistrictColors={congressionalDistrictColors}
           smdDistrictColors={smdDistrictColors}
           mmdDistrictColors={mmdDistrictColors}

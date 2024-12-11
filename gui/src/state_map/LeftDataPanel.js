@@ -7,39 +7,36 @@ import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties } fro
 import { COLORS, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom, BoundaryChoroplethOptions, ViewDataOptions} from "../utils/Constants";
 
 
-export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, onSelectFeature, congressionalDistrictColors, smdDistrictColors, mmdDistrictColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded, choroplethBoundarySelection, setChoroplethBoundarySelection }) => {
+export const LeftDataPanel = ({ setSelectedDataViewOption, selectedDataViewOption, districtData, smdData, mmdData, precinctData, onSelectFeature, congressionalDistrictColors, smdDistrictColors, mmdDistrictColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded, choroplethBoundarySelection, setChoroplethBoundarySelection }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
     const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
     const [displayAnalysisScreen, setDisplayAnalysisScreen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [currentDataView, setCurrentDataView] = useState(ViewDataOptions.Current);
 
     useEffect(() => {
-        if (districtData !== null && precinctData !== null && smdData !== null && mmdData !== null) {
-            if (currentDataView === ViewDataOptions.Current) {
-                const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
-                setColumnNames(keys);
-                setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
-            }
-            else if (currentDataView === ViewDataOptions.SMD) {
-                const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
-                setColumnNames(keys);
-                setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
-            }
-            else if (currentDataView === ViewDataOptions.MMD) {
-                const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
-                setColumnNames(keys);
-                setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
-            }
-            else {
-                const keys = ["index", ...Object.keys(PrecinctsFeatureProperties)]
-                setColumnNames(keys);
-                setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
-            }
+        if (selectedDataViewOption === ViewDataOptions.Current && districtData !== null) {
+            const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
+            setColumnNames(keys);
+            setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
         }
-    }, [districtData, precinctData, currentDataView]);
+        else if (selectedDataViewOption === ViewDataOptions.SMD && smdData !== null) {
+            const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
+            setColumnNames(keys);
+            setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
+        }
+        else if (selectedDataViewOption === ViewDataOptions.MMD && mmdData !== null) {
+            const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
+            setColumnNames(keys);
+            setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
+        }
+        else {
+            const keys = ["index", ...Object.keys(PrecinctsFeatureProperties)]
+            setColumnNames(keys);
+            setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
+        }
+    }, [districtData, precinctData, selectedDataViewOption, selectedDataViewOption]);
 
     const togglePanel = () => {
         setDisplayAnalysisScreen(false);
@@ -59,20 +56,20 @@ export const LeftDataPanel = ({ districtData, smdData, mmdData, precinctData, on
     }
 
     const handleHoverOverRowOfData = (feature) => {
-        if (currentDataView !== ViewDataOptions.Precincts) {
-            onChangeBorderForHoverOverDistrict(currentDataView, feature.properties.district)
+        if (selectedDataViewOption !== ViewDataOptions.Precincts) {
+            onChangeBorderForHoverOverDistrict(selectedDataViewOption, feature.properties.district)
         }
     }
 
     const handleLeaveHoverOverData = (feature) => {
-        if (currentDataView !== ViewDataOptions.Precincts) {
-            onChangeLeftHoverOverDistrict(currentDataView, feature.properties.district)
+        if (selectedDataViewOption !== ViewDataOptions.Precincts) {
+            onChangeLeftHoverOverDistrict(selectedDataViewOption, feature.properties.district)
         }
     }
 
     useEffect(() => {
         if (selectedFeature) {
-            onSelectFeature(currentDataView, selectedFeature);
+            onSelectFeature(selectedDataViewOption, selectedFeature);
         }
     }, [selectedFeature, onSelectFeature]);
 
@@ -154,7 +151,7 @@ const Legend = ({ selectedColumn }) => {
             paddingBottom: "35px"
         }}>
             <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">{currentDataView === ViewDataOptions.Current ? "Current District Plan" : currentDataView}</h2>
+                <h2 className="left_data_panel_title">{selectedDataViewOption === ViewDataOptions.Current ? "Current District Plan" : selectedDataViewOption}</h2>
                 <button className="left_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
@@ -194,8 +191,8 @@ const Legend = ({ selectedColumn }) => {
             <div style={{marginBottom: "20px"}}>
                 <label className="dropdown_styling">View Data</label>
                 <select
-                    value={currentDataView}
-                    onChange={(e) => setCurrentDataView(e.target.value)}
+                    value={selectedDataViewOption}
+                    onChange={(e) => setSelectedDataViewOption(e.target.value)}
                     style={{marginLeft: "10px", fontSize:"15px", padding: "1px", marginRight: "10px"}}
                 >   
                     <option value={`${ViewDataOptions.Current}`}>Current</option>
@@ -211,7 +208,7 @@ const Legend = ({ selectedColumn }) => {
 
             
             {
-                currentDataView === ViewDataOptions.Precincts &&
+                selectedDataViewOption === ViewDataOptions.Precincts &&
                 (
                     <div className="search_for_precinct_name">
                         <input
@@ -246,7 +243,7 @@ const Legend = ({ selectedColumn }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {districtData && precinctData && smdData && mmdData && (currentDataView === ViewDataOptions.Current ? districtData.features : currentDataView === ViewDataOptions.SMD ? smdData.features : currentDataView === ViewDataOptions.MMD ? mmdData.features : precinctData.features.filter((feature) => {
+                            {districtData && precinctData && smdData && mmdData && (selectedDataViewOption === ViewDataOptions.Current ? districtData.features : selectedDataViewOption === ViewDataOptions.SMD ? smdData.features : selectedDataViewOption === ViewDataOptions.MMD ? mmdData.features : precinctData.features.filter((feature) => {
                                 // Get the precinct name and check if it includes the search query
                                 if (feature.properties[PrecinctsFeatureProperties.precinct]) {
                                     const precinctName = feature.properties[PrecinctsFeatureProperties.precinct].toLowerCase();
@@ -267,10 +264,10 @@ const Legend = ({ selectedColumn }) => {
                                             return (
                                                 <td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
                                                     {
-                                                        currentDataView !== ViewDataOptions.Precincts &&
+                                                        selectedDataViewOption !== ViewDataOptions.Precincts &&
                                                         (
                                                             <span>
-                                                                    <Icon name="roundedSquare" size={1.2} color={currentDataView === ViewDataOptions.Current ? congressionalDistrictColors[feature.properties.district].fillColor : currentDataView === ViewDataOptions.SMD ? smdDistrictColors[feature.properties.district].fillColor : mmdDistrictColors[feature.properties.district].fillColor} borderWidth={"1px"} borderColor={"black"} />
+                                                                    <Icon name="roundedSquare" size={1.2} color={selectedDataViewOption === ViewDataOptions.Current ? congressionalDistrictColors[feature.properties.district].fillColor : selectedDataViewOption === ViewDataOptions.SMD ? smdDistrictColors[feature.properties.district].fillColor : mmdDistrictColors[feature.properties.district].fillColor} borderWidth={"1px"} borderColor={"black"} />
                                                             </span>
                                                         )
                                                     }
