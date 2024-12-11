@@ -14,7 +14,9 @@ const REQUESTS = {
     CURRENT_DISTRICT_PLANS: "current_district_plans",
     PRECINCTS: "precincts",
     SMD_BOX_AND_WHISKER: "box_and_whisker/smd",
-    MMD_BOX_AND_WHISKER: "box_and_whisker/mmd"
+    MMD_BOX_AND_WHISKER: "box_and_whisker/mmd",
+    SMD_ENSEMBLE_SUMMARY: "ensemble/summary/smd",
+    MMD_ENSEMBLE_SUMMARY: "ensemble/summary/mmd"
 }
 
 const makeRequest = async (requestType, params = {}, config = {}) => {
@@ -86,6 +88,26 @@ export const getMmdBoxAndWhiskerPlotData = async (state, boc) => {
         return data;
     } catch (error) {
         console.error(`Failed to fetch mmd box and whisker data for state ${state} with boc ${boc}:`, error.message);
+        throw error;
+    }
+}
+
+export const getSmdEnsembleSummaryData = async (state) => {
+    try {
+        const data = await makeRequest(REQUESTS.SMD_ENSEMBLE_SUMMARY, {state: state});
+        return data;
+    } catch (error) {
+        console.error(`Failed to fetch smd summary data for state ${state}:`, error.message);
+        throw error;
+    }
+}
+
+export const getMmdEnsembleSummaryData = async (state) => {
+    try {
+        const data = await makeRequest(REQUESTS.MMD_ENSEMBLE_SUMMARY, {state: state});
+        return data;
+    } catch (error) {
+        console.error(`Failed to fetch mmd summary data for state ${state}:`, error.message);
         throw error;
     }
 }

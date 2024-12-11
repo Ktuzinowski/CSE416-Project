@@ -1,4 +1,4 @@
-package com.cse416.server.smd_ensemble_summary;
+package com.cse416.server.mmd_ensemble_summary;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-public class SmdEnsembleSummaryController {
+public class MmdEnsembleSummaryController {
 	@Autowired
-	public SmdEnsembleSummaryService service;
+	public MmdEnsembleSummaryService service;
 	
-	@GetMapping("/ensemble/summary/smd")
-	public SmdEnsembleSummary getSmdEnsembleSummaryData(@RequestParam("state") String state) {
-		SmdEnsembleSummary summaryData = service.getByState(state);
+	@GetMapping("/ensemble/summary/mmd")
+	public MmdEnsembleSummary getMmdEnsembleSummaryData(@RequestParam("state") String state) {
+		MmdEnsembleSummary summaryData = service.getByState(state);
 		return summaryData;
 	}
 }
