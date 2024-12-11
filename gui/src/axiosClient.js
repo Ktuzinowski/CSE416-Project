@@ -9,10 +9,10 @@ const axiosClient = axios.create({
 });
 
 const REQUESTS = {
-    States_Available: "states_available",
-    State_Outlines: "state_outlines",
-    Current_District_Plans: "current_district_plans",
-    Precincts: "precincts",
+    STATES_AVAILABLE: "states_available",
+    STATE_OUTLINES: "state_outlines",
+    CURRENT_DISTRICT_PLANS: "current_district_plans",
+    PRECINCTS: "precincts",
     SMD_BOX_AND_WHISKER: "box_and_whisker/smd",
     MMD_BOX_AND_WHISKER: "box_and_whisker/mmd"
 }
@@ -32,7 +32,7 @@ const makeRequest = async (requestType, params = {}, config = {}) => {
 
 export const getStateOutlines = async () => {
     try {
-        const data = await makeRequest(REQUESTS.State_Outlines);
+        const data = await makeRequest(REQUESTS.STATE_OUTLINES);
         return data;
     } catch (error) {
         console.error("Failed to fetch state outlines:", error.message);
@@ -42,7 +42,7 @@ export const getStateOutlines = async () => {
 
 export const getStatesAvailable = async () => {
     try {
-        const data = await makeRequest(REQUESTS.States_Available);
+        const data = await makeRequest(REQUESTS.STATES_AVAILABLE);
         return data.map((stateDocument) => stateDocument.state);
     } catch (error) {
         console.error("Failed to fetch states available:", error.message);
@@ -52,7 +52,7 @@ export const getStatesAvailable = async () => {
 
 export const getCurrentDistrictPlans = async (state) => {
     try {
-        const data = await makeRequest(REQUESTS.Current_District_Plans, {state: state});
+        const data = await makeRequest(REQUESTS.CURRENT_DISTRICT_PLANS, {state: state});
         return data;
     } catch (error) {
         console.error(`Failed to fetch current district plans for state ${state}:`, error.message);
@@ -62,7 +62,7 @@ export const getCurrentDistrictPlans = async (state) => {
 
 export const getPrecincts = async (state) => {
     try {
-        const data = await makeRequest(REQUESTS.Precincts, {state: state});
+        const data = await makeRequest(REQUESTS.PRECINCTS, {state: state});
         return data;
     } catch (error) {
         console.error(`Failed to fetch precincts for state ${state}:`, error.message);
