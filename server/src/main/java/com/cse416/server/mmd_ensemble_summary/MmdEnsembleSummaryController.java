@@ -1,4 +1,4 @@
-package com.cse416.server.smd_box_and_whisker;
+package com.cse416.server.mmd_ensemble_summary;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-public class SmdBoxAndWhiskerController {
+public class MmdEnsembleSummaryController {
 	@Autowired
-	public SmdBoxAndWhiskerService service;
+	public MmdEnsembleSummaryService service;
 	
-	@GetMapping("/box_and_whisker/smd")
-	public BOC getSmdBoxAndWhiskerData(@RequestParam("state") String state, @RequestParam("boc") String boc) {
-		BOC boxAndWhiskerData = service.getByStateAndBOC(state, boc);
-		return boxAndWhiskerData;
+	@GetMapping("/ensemble/summary/mmd")
+	public MmdEnsembleSummary getMmdEnsembleSummaryData(@RequestParam("state") String state) {
+		MmdEnsembleSummary summaryData = service.getByState(state);
+		return summaryData;
 	}
 }

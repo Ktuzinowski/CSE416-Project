@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "smd_box_and_whisker")
-public class SmdBoxAndWhisker {
+public class SmdBoxAndWhiskerData {
 	@Id
 	private String id;
 	private String state;
