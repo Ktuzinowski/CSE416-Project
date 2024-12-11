@@ -49,12 +49,12 @@ export const COLORS = [
 
 //choropleth color scale
 export const colorScale = chroma
-.scale(["#e6ffe6", "#00cc00", "#004d00"]) // Light green to dark green
+.scale(["#FFFFFF", "#a0fc7e", "#7afa4b", "#086e01"]) // Light green to dark green
 .domain([0, 100]);
 
 // Choropleth color scale with shades of red
 export const colorScaleRed = chroma
-.scale(["#ffe6e6", "#ff4d4d", "#990000"]) // Light red to dark red
+.scale(["#FFFFFF", "#f57e6e", "#f54c36", "#781306"]) // Light red to dark red
 .domain([0, 100]);
 
 // Choropleth color scale with shades of blue
