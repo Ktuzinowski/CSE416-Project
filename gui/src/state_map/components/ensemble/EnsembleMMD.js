@@ -9,7 +9,7 @@ export const EnsembleMMD = ({ state }) => {
     return (
         <div>
             <div className="right_data_panel_current_selection">
-                <h2 className="right_data_panel_title">MMD Ensemble Utah</h2>
+                <h2 className="right_data_panel_title">{`MMD Ensemble ${state.charAt(0).toUpperCase() + state.slice(1)}`}</h2>
                 <select 
                     value={currentVisualization} 
                     onChange={(e) => setCurrentVisualization(e.target.value)}
