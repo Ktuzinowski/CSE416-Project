@@ -7,7 +7,8 @@ export const SummarySMD = ({ state }) => {
         const loadSummaryData = async (state) => {
             const data = await getSmdEnsembleSummaryData(state);
             setSummaryData(data);
-            console.log(data);
+            console.log('hello')
+            console.log(summaryData);
         };
         loadSummaryData(state);
     }, [state])
