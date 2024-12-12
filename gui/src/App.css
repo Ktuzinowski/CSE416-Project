@@ -739,6 +739,19 @@ select.navigation_select_links:hover {
 
 /*end of legend stuff*/
 
+/*summary data stuff */
+
+.summarySMDHeader{
+  margin-left: 15px;
+}
+
+.summaryData{
+  margin-left: 15px;
+  font-size: 18px;
+}
+
+/*end of summary data stuff*/
+
 /* district label for mmd */
 .district-label div {
   background-color: white;
