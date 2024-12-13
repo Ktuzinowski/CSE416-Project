@@ -143,8 +143,24 @@ export const VisualizationEnsembleOptions = {
 }
 
 export const OpportunityRepresentativeJSON = {
-  "1": 1,
-  "2": 4,
-  "3": 3,
-  "4": 2
+  "0": 5000,
+  "1": 0,
+  "2": 0,
+  "3": 0,
+  "4": 0
+}
+
+export const RangeOfSplitsJSON = {
+  "0-4": 3000,
+  "1-3": 1000,
+  "2-2": 800,
+  "3-1": 200,
+  "4-0": 0
+}
+
+export const enactedSMDPlan = {
+  "NumOppRep": 0,
+  "RepDemSplit": "4-0",
+
+
 }

@@ -750,6 +750,11 @@ select.navigation_select_links:hover {
   font-size: 16px;
 }
 
+.barChartHeader{
+  font-size: 19px;
+  margin-left: 10px;
+}
+
 /*end of summary data stuff*/
 
 /* district label for mmd */
