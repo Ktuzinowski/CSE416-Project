@@ -755,6 +755,12 @@ select.navigation_select_links:hover {
   margin-left: 10px;
 }
 
+.supp{
+  margin-left: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
 /*end of summary data stuff*/
 
 /* district label for mmd */

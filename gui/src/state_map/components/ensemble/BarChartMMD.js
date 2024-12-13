@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { OpportunityRepresentativeJSON, RangeOfSplitsJSON } from "../../../utils/Constants";
+import { OpportunityRepresentativeJSON, RangeOfSplitsMMDJSON, supplementMMD} from "../../../utils/Constants";
 import { getMmdEnsembleSummaryData } from "../../../axiosClient";
 
 export const BarChartMMD = ({ state }) => {
@@ -113,7 +113,7 @@ export const BarChartMMD = ({ state }) => {
 
         createBarChart(
             rangeOfSplitsChartRef.current,
-            RangeOfSplitsJSON,
+            RangeOfSplitsMMDJSON,
             500,
             300,
             "Republican-Democratic Split",
@@ -127,6 +127,19 @@ export const BarChartMMD = ({ state }) => {
             <div ref={opportunityChartRef} />
             <h1 className="barChartHeader">Frequency of Republican-Democratic Splits</h1>
             <div ref={rangeOfSplitsChartRef} />
+
+            <div>
+            <p className="supp">Republican Seat Share: {supplementMMD.republican_seat_share}
+            <br />
+            Democratic Seat Share: {supplementMMD.democratic_seat_share} 
+            <br />
+            Republican Vote Share: {supplementMMD.republican_vote_share}%
+            <br />
+            Democratic Vote Share: {supplementMMD.democratic_vote_share}%
+            </p>
+            </div>
+            <br />
+            
         </>
     );
 };
