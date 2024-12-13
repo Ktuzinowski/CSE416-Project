@@ -124,8 +124,7 @@ export const RightAnalysisSearchOptions = {
 export const RightAnalysisSummaryOptions = {
   Current: "Current",
   SMD: "SMD",
-  MMD: "MMD",
-  Compare: "compare"
+  MMD: "MMD"
 }
 
 export const BoxAndWhiskerPlotBOC = {
@@ -140,6 +139,12 @@ export const VisualizationEnsembleOptions = {
   Summary: "Summary",
   BarChart: "Bar Chart",
   BoxAndWhisker: "Box and Whisker",
+}
+
+export const VisualizationSmdSummaryOptions = {
+  Summary: "Summary",
+  ElectionResults: "Election Results",
+  SeatVoteCurve: "Seat-Vote Share Plot"
 }
 
 export const OpportunityRepresentativeJSON = {
