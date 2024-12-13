@@ -747,7 +747,18 @@ select.navigation_select_links:hover {
 
 .summaryData{
   margin-left: 15px;
-  font-size: 18px;
+  font-size: 16px;
+}
+
+.barChartHeader{
+  font-size: 19px;
+  margin-left: 10px;
+}
+
+.supp{
+  margin-left: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
 }
 
 /*end of summary data stuff*/

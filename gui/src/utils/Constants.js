@@ -141,3 +141,50 @@ export const VisualizationEnsembleOptions = {
   BarChart: "Bar Chart",
   BoxAndWhisker: "Box and Whisker",
 }
+
+export const OpportunityRepresentativeJSON = {
+  "0": 5000,
+  "1": 0,
+  "2": 0,
+  "3": 0,
+  "4": 0
+}
+
+
+export const RangeOfSplitsJSON = {
+  "0-4": 0,
+  "1-3": 0,
+  "2-2": 800,
+  "3-1": 1200,
+  "4-0": 3000
+  }
+
+export const RangeOfSplitsMMDJSON = {
+  "0-4": 0,
+  "1-3": 0,
+  "2-2": 0,
+  "3-1": 5000,
+  "4-0": 0
+  }
+
+export const supplementSMD = {
+  "republican_seat_share": 0.875,
+  "democratic_seat_share": 0.125,
+  "republican_vote_share": 60.72,
+  "democratic_vote_share": 39.28
+
+}
+
+export const supplementMMD = {
+  "republican_seat_share": 0.75,
+  "democratic_seat_share": 0.25,
+  "republican_vote_share": 60.72,
+  "democratic_vote_share": 39.28
+}
+
+export const enactedSMDPlan = {
+  "NumOppRep": 0,
+  "RepDemSplit": "4-0",
+
+
+}
