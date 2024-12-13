@@ -141,3 +141,10 @@ export const VisualizationEnsembleOptions = {
   BarChart: "Bar Chart",
   BoxAndWhisker: "Box and Whisker",
 }
+
+export const OpportunityRepresentativeJSON = {
+  "1": 1,
+  "2": 4,
+  "3": 3,
+  "4": 2
+}
