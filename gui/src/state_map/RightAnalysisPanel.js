@@ -8,8 +8,13 @@ import { EnsembleSMD } from "./components/ensemble/EnsembleSMD";
 import { EnsembleMMD } from "./components/ensemble/EnsembleMMD";
 import { SearchSMD } from "./components/search/SearchSMD";
 import { SearchMMD } from "./components/search/SearchMMD";
+import { SummarySMD } from "./components/ensemble/SummarySMD";
+import { SummaryMMD } from "./components/ensemble/SummaryMMD";
+import { SmdDistrictPlanSummary } from "./components/summary/SmdDistrictPlanSummary";
+import { MmdDistrictPlanSummary } from "./components/summary/MmdDistrictPlanSummary";
+import { CurrentDistrictPlanSummary } from "./components/summary/CurrentDistrictPlanSummary";
 
-export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) => {
+export const RightAnalysisPanel = ({ currentSmdDistrict, setCurrentSmdDistrict, state, setIsRightAnalysisPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [hoverOverEnsemble, setHoverOverEnsemble] = useState(false);
     const [hoverOverSearch, setHoverOverSearch] = useState(false);
@@ -45,6 +50,13 @@ export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) =
         setHoverOverEnsemble(false);
         setHoverOverSearch(false);
         setHoverOverSummary(false);
+    }
+
+    const handleNewSmdDistrictSelection = () => {
+        setEnsembleSelected(false);
+        setSearchSelected(false);
+        setSummarySelected(true);
+        setSummaryOptionSelected(RightAnalysisSummaryOptions.SMD);
     }
     
     return (
@@ -137,9 +149,23 @@ export const RightAnalysisPanel = ({ state, setIsRightAnalysisPanelExpanded }) =
                 {
                     searchSelected && (
                         searchOptionSelected === RightAnalysisSearchOptions.SMD ? (
-                            <SearchSMD state={state} onMouseEnter={handleLeavingOptions} />
+                            <SearchSMD state={state} onMouseEnter={handleLeavingOptions} setCurrentSmdDistrict={setCurrentSmdDistrict} handleNewSmdDistrictSelection={handleNewSmdDistrictSelection} />
                         ) : (
                             <SearchMMD state={state} onMouseEnter={handleLeavingOptions} />
+                        )
+                    )
+                }
+                {
+                    summarySelected && (
+                        summaryOptionSelected === RightAnalysisSummaryOptions.SMD ? (
+                            <SmdDistrictPlanSummary name={currentSmdDistrict} onMouseEnter={handleLeavingOptions} />
+                        ) : 
+                        summaryOptionSelected === RightAnalysisSummaryOptions.Current ?
+                        (
+                            <CurrentDistrictPlanSummary state={state} />
+                        ) :
+                        (
+                            <MmdDistrictPlanSummary name={currentSmdDistrict} onMouseEnter={handleLeavingOptions} />
                         )
                     )
                 }

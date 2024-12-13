@@ -19,8 +19,15 @@ public class SmdDistrictPlanController {
 		return service.getDistrictPlanByName(name);
 	}
 	
-	@GetMapping("/smd_district_plans/summary")
+	@GetMapping("/smd_district_plans/summaries")
 	public List<FeatureCollectionSummary> getSmdDistrictPlanSummaries(@RequestParam("state") String state) {
 		return service.getSummariesByState(state);
+	}
+	
+	@GetMapping("/smd_district_plans/summary")
+	public FeatureCollectionSummary getSmdDistrictPanSummary(@RequestParam("name") String name) {
+		List<FeatureCollectionSummary> summaries = service.getSummariesByState(name);
+		// will return exact name here
+		return summaries.get(0);
 	}
 }

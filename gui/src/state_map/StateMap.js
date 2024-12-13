@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { getCurrentDistrictPlans, getPrecincts } from "../axiosClient";
+import { getCurrentDistrictPlans, getPrecincts, getSmdDistrictPlan } from "../axiosClient";
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css"
 import { LeftDataPanel } from "./LeftDataPanel";
@@ -37,6 +37,8 @@ export const StateMap = ({ state }) => {
   const [choroplethBoundarySelection, setChoroplethBoundarySelection] = useState(BoundaryChoroplethOptions.Current);
 
   const [selectedDataViewOption, setSelectedDataViewOption] = useState(ViewDataOptions.Current);
+
+  const [currentSmdDistrict, setCurrentSmdDistrict] = useState(null);
 
   const geoJsonRefCurrentDistricts = useRef();
   const geoJsonRefSmdDistricts = useRef();
@@ -78,8 +80,8 @@ export const StateMap = ({ state }) => {
 
     const loadSmdDistrictPlans = async (lengthOfPreviousDistricts) => {
       try {
-        const state_smd = `${state}_smd`
-        const smdDistrictPlans = await getCurrentDistrictPlans(state_smd);
+        const state_smd = `${state}_smd_0` // default SMD district
+        const smdDistrictPlans = await getSmdDistrictPlan(state_smd);
 
         setSmdDistricts(smdDistrictPlans);
         const colorsForDistricts = {}
@@ -94,6 +96,7 @@ export const StateMap = ({ state }) => {
         });
 
         setSmdDistrictColors(colorsForDistricts);
+        setCurrentSmdDistrict(state_smd); // default after loading in
       } catch (error) {
         console.error("Failed to load current plans:", error.message);
       }
@@ -142,6 +145,21 @@ export const StateMap = ({ state }) => {
 
     loadPrecincts();
   }, [state]);
+
+  useEffect(() => {
+    const loadSmdDistrictPlans = async (currentSmdDistrict) => {
+      try {
+        const smdDistrictPlans = await getSmdDistrictPlan(currentSmdDistrict);
+
+        setSmdDistricts(smdDistrictPlans);
+      } catch (error) {
+        console.error("Failed to load current plans:", error.message);
+      }
+    }
+    if (currentSmdDistrict) {
+      loadSmdDistrictPlans(currentSmdDistrict);
+    }
+  }, [currentSmdDistrict])
 
   const setStyleForPrecinctSelection = useCallback((feature) => {
     
@@ -523,7 +541,12 @@ export const StateMap = ({ state }) => {
 
           
         </div>
-        {!isLeftDataPanelExpanded && <RightAnalysisPanel setIsRightAnalysisPanelExpanded={setIsRightAnalysisPanelExpanded} state={state} />}
+        {!isLeftDataPanelExpanded && <RightAnalysisPanel 
+          setIsRightAnalysisPanelExpanded={setIsRightAnalysisPanelExpanded} 
+          state={state} 
+          currentSmdDistrict={currentSmdDistrict}
+          setCurrentSmdDistrict={setCurrentSmdDistrict}
+        />}
       </div>
     </>
   )

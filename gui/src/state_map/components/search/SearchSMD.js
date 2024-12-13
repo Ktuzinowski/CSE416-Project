@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { getSmdDistrictPlansSummaries } from "../../../axiosClient"
-export const SearchSMD = ({ state }) => {
+export const SearchSMD = ({ state, setCurrentSmdDistrict, handleNewSmdDistrictSelection }) => {
     const [summaries, setSummaries] = useState(null);
-    const [hoveredIndex, setHoveredIndex] = useState(null);
 
     useEffect(() => {
         const loadSummaryData = async (state) => {
             const data = await getSmdDistrictPlansSummaries(state);
             setSummaries(data);
-            console.log(data)
         }
         loadSummaryData(state);
     }, [state])
@@ -34,6 +32,11 @@ export const SearchSMD = ({ state }) => {
                 <div
                     key={index}
                     className="card"
+                    onClick={() => {
+                            setCurrentSmdDistrict(summary.name)
+                            handleNewSmdDistrictSelection()
+                        }
+                    }
                 >
                     <p>{summary.interesting_description}</p>
                 </div>
