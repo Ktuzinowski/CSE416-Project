@@ -23,17 +23,51 @@ export const SmdTableSummary = ({ name }) => {
     return (
         <div className="summaryData">
             <p style={{fontSize: "18px"}}><b>Category</b>: {summaryData.interesting_description}</p>
-            <p><b>Number of Districts</b>: {summaryData.number_of_districts.toLocaleString()}</p>
-            
-            <p><b>Opportunity District Threshold</b>: {summaryData.opportunity_district_threshold.toLocaleString()}</p>
-            <p><b>Opportunity Districts</b>: {summaryData.opportunity_districts.toLocaleString()}</p>
-            <p><b>Wasted Votes Democratic</b>: {summaryData.wasted_votes_democratic.toLocaleString()}</p>
-            <p><b>Wasted Votes Republican</b>: {summaryData.wasted_votes_republican.toLocaleString()}</p>
-            <p><b>Safe District Threshold</b>: {summaryData.safe_district_threshold.toLocaleString()}</p>
-            <p><b>Safe Districts Republican</b>: {summaryData.safe_districts_republican.toLocaleString()}</p>
-            <p><b>Safe Districts Democratic</b>: {summaryData.safe_districts_democratic.toLocaleString()}</p>
-            <p><b>Republican-Democratic Split</b>: {`${summaryData.republican_democratic_split*summaryData.number_of_districts}-${summaryData.number_of_districts - summaryData.republican_democratic_split * summaryData.number_of_districts}`}</p>
-            <p><b>Election Used</b>: {"2020 Presidential Election"}</p>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <tbody>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}><b>Number of Districts</b></td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.number_of_districts.toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}><b>Opportunity District Threshold</b></td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.opportunity_district_threshold.toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}><b>Opportunity Districts</b></td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.opportunity_districts.toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}><b>Wasted Votes Democratic</b></td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.wasted_votes_democratic.toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}><b>Wasted Votes Republican</b></td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.wasted_votes_republican.toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}><b>Safe District Threshold</b></td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.safe_district_threshold.toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}><b>Safe Districts Republican</b></td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.safe_districts_republican.toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}><b>Safe Districts Democratic</b></td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.safe_districts_democratic.toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}><b>Republican-Democratic Split</b></td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{`${summaryData.republican_democratic_split * summaryData.number_of_districts}-${summaryData.number_of_districts - summaryData.republican_democratic_split * summaryData.number_of_districts}`}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}><b>Election Used</b></td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>2020 Presidential Election</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    )
+    );
+    
 }
