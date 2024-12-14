@@ -30,4 +30,9 @@ public class SmdDistrictPlanController {
 		// will return exact name here
 		return summaries.get(0);
 	}
+	
+	@GetMapping("/smd_district_plans/election_data")
+	public FeatureCollectionWithoutGeometry getElectionDataForSmdDistrictPlan(@RequestParam("name") String name) {
+		return service.getDistrictsWithoutGeometry(name);
+	}
 }

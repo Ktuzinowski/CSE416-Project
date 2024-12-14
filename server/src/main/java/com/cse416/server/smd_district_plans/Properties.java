@@ -4,6 +4,8 @@ public class Properties {
 	private Integer district;
 	private String incumbent;
     private String representative;
+    private String loser;
+    private String loser_party;
     private Integer population;
     private Integer republican;
     private Integer democrat;
@@ -140,5 +142,17 @@ public class Properties {
 	}
 	public void setTotal_minority_population(Integer total_minority_population) {
 		this.total_minority_population = total_minority_population;
+	}
+	public String getLoser_party() {
+		return loser_party;
+	}
+	public void setLoser_party(String loser_party) {
+		this.loser_party = loser_party;
+	}
+	public String getLoser() {
+		return loser;
+	}
+	public void setLoser(String loser) {
+		this.loser = loser;
 	}
 }

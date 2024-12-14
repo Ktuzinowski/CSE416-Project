@@ -4,8 +4,7 @@ import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import { RightAnalysisPanelOptions, RightAnalysisEnsembleOptions, RightAnalysisSearchOptions, RightAnalysisSummaryOptions } from "../utils/Constants";
-import { EnsembleSMD } from "./components/ensemble/EnsembleSMD";
-import { EnsembleMMD } from "./components/ensemble/EnsembleMMD";
+import { Ensemble } from "./components/ensemble/Ensemble";
 import { SearchSMD } from "./components/search/SearchSMD";
 import { SearchMMD } from "./components/search/SearchMMD";
 import { SummarySMD } from "./components/ensemble/SummarySMD";
@@ -139,10 +138,8 @@ export const RightAnalysisPanel = ({ currentSmdDistrict, setCurrentSmdDistrict, 
             <div style={{width: "100%", height: "100%"}}>
                 {
                         ensembleSelected && (
-                            ensembleOptionSelected === RightAnalysisEnsembleOptions.SMD ? (
-                                <EnsembleSMD state={state} onMouseEnter={handleLeavingOptions}/>
-                            ) : (
-                                <EnsembleMMD state={state} onMouseEnter={handleLeavingOptions}/>
+                            (
+                                <Ensemble state={state} />
                             )
                         )
                 }
