@@ -21,8 +21,7 @@ export const SmdElectionResults = ({ name }) => {
   }
 
   return (
-    <div className="supp">
-    
+    <div className="supp" style={{marginTop: "-25px"}}>
       <p><b>Interesting Description:</b> {electionData.interesting_description}</p>
       <div className="grid-container">
         {electionData.features.map((feature, index) => (
