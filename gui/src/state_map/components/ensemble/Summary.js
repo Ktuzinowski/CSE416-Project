@@ -18,59 +18,79 @@ export const Summary = ({ state }) => {
         loadSummaryData(state);
     }, [state])
     
-    if(summaryData != null && mmdsummaryData != null){
+    if (summaryData != null && mmdsummaryData != null) {
         return (
-            <div style={{display: "flex", flexDirection: "row"}}>
-            <div>
-                <h1 className="summarySMDHeader">SMD</h1>
-        
-                <div className="summaryData">
-                <p><b>Number of Plans</b>: {summaryData.number_of_plans}</p>
-                <p><b>Minority Representatives</b>: {summaryData.minority_representatives}</p>
-                <p><b>Average Republican Reps</b>: {summaryData.average_republican_representatives.toFixed(2)}</p>
-                <p><b>Average Democratic Reps</b>: {summaryData.average_democratic_representatives.toFixed(2)}</p>
-                <p><b>Republican Seat Share</b>: {(summaryData.republican_seat_share * 100).toFixed(2)}%</p>
-                <p><b>Democratic Seat Share</b>: {(summaryData.democratic_seat_share * 100).toFixed(2)}%</p>
-                <p><b>Republican Vote Share</b>: {summaryData.republican_vote_share.toFixed(2)}%</p>
-                <p><b>Democratic Vote Share</b>: {summaryData.democratic_vote_share.toFixed(2)}%</p>
-                <p><b>Population Deviation</b>: {summaryData.population_deviation.toFixed(2)}%</p>
-                <p>
-                <b>Republican-Democratic Split</b>: 
-                {summaryData.average_republican_democratic_split[0].toFixed(2)}-
-                {summaryData.average_republican_democratic_split[1].toFixed(2)}
-                </p>
-
-                
-                </div>
-            </div>
-            
-            <div style={{marginRight: "10px"}}>
-                <h1 className="summarySMDHeader">MMD</h1>
-
-                <div className="summaryData">
-                <p><b>Number of Plans</b>: {mmdsummaryData.number_of_plans}</p>
-                <p><b>Minority Representatives</b>: {mmdsummaryData.minority_representatives}</p>
-
-                <p><b>Average Republican Reps</b>: {mmdsummaryData.average_republican_representatives}</p>
-                <p><b>Average Democratic Reps</b>: {mmdsummaryData.average_democratic_representatives}</p>
-                <p><b>Republican Seat Share</b>: {(mmdsummaryData.republican_seat_share * 100).toFixed(2)}%</p>
-                <p><b>Democratic Seat Share</b>: {(mmdsummaryData.democratic_seat_share * 100).toFixed(2)}%</p>
-                <p><b>Republican Vote Share</b>: {mmdsummaryData.republican_vote_share.toFixed(2)}%</p>
-                <p><b>Democratic Vote Share</b>: {mmdsummaryData.democratic_vote_share.toFixed(2)}%</p>
-                <p><b>Population Deviation</b>: {mmdsummaryData.population_deviation.toFixed(2)}%</p>
-                <p>
-                <b>Republican-Democratic Split</b>: 
-                {mmdsummaryData.average_republican_democratic_split[0].toFixed(2)}-
-                {mmdsummaryData.average_republican_democratic_split[1].toFixed(2)}
-                </p>
-
-                <p><b>MMD Layout</b>: {mmdsummaryData.mmd_layout}</p>
-                </div>
-            </div>
-    
-            </div>
-
-            
-        )
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                    <tr>
+                        <th style={{ border: "1px solid black", padding: "8px" }}>Category</th>
+                        <th style={{ border: "1px solid black", padding: "8px" }}>SMD</th>
+                        <th style={{ border: "1px solid black", padding: "8px" }}>MMD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Number of Plans</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.number_of_plans}</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.number_of_plans}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Minority Representatives</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.minority_representatives}</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.minority_representatives}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Average Republican Reps</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.average_republican_representatives.toFixed(2)}</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.average_republican_representatives.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Average Democratic Reps</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.average_democratic_representatives.toFixed(2)}</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.average_democratic_representatives.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Republican Seat Share</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{(summaryData.republican_seat_share * 100).toFixed(2)}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{(mmdsummaryData.republican_seat_share * 100).toFixed(2)}%</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Democratic Seat Share</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{(summaryData.democratic_seat_share * 100).toFixed(2)}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{(mmdsummaryData.democratic_seat_share * 100).toFixed(2)}%</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Republican Vote Share</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.republican_vote_share.toFixed(2)}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.republican_vote_share.toFixed(2)}%</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Democratic Vote Share</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.democratic_vote_share.toFixed(2)}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.democratic_vote_share.toFixed(2)}%</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Population Deviation</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.population_deviation.toFixed(2)}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.population_deviation.toFixed(2)}%</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Republican-Democratic Split</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>
+                            {summaryData.average_republican_democratic_split[0].toFixed(2)} - {summaryData.average_republican_democratic_split[1].toFixed(2)}
+                        </td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>
+                            {mmdsummaryData.average_republican_democratic_split[0].toFixed(2)} - {mmdsummaryData.average_republican_democratic_split[1].toFixed(2)}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>MMD Layout</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>N/A</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.mmd_layout}</td>
+                    </tr>
+                </tbody>
+            </table>
+        );
     }
+    
 }
