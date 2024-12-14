@@ -138,12 +138,20 @@ export const BarChart = ({ state }) => {
       </div>
 
       <div className="supp">
-        <p>SMD Republican Seat Share: {(smdSummaryData.republican_seat_share * 100).toFixed(2)}%</p>
-        <p>SMD Democratic Seat Share: {(smdSummaryData.democratic_seat_share * 100).toFixed(2)}%</p>
-        <p>MMD Republican Seat Share: {(mmdSummaryData.republican_seat_share * 100).toFixed(2)}%</p>
-        <p>MMD Democratic Seat Share: {(mmdSummaryData.democratic_seat_share * 100).toFixed(2)}%</p>
-        <p>Republican Vote Share: {(smdSummaryData.republican_vote_share * 100).toFixed(2)}%</p>
-        <p>Democratic Vote Share: {(smdSummaryData.democratic_vote_share * 100).toFixed(2)}%</p>
+        <div style={{display: "flex", flexDirection: "row"}}>
+            <div style={{display: "flex", flexDirection: "column", marginRight: "25px"}}>
+                <p><b>SMD Republican Seat Share</b>: {smdSummaryData.average_republican_representatives.toFixed(2)} ({(smdSummaryData.republican_seat_share * 100).toFixed(2)}%)</p>
+                <p><b>SMD Democratic Seat Share</b>: {smdSummaryData.average_democratic_representatives.toFixed(2)} ({(smdSummaryData.democratic_seat_share * 100).toFixed(2)}%)</p>
+            </div>
+            <div style={{display: "flex", flexDirection: "column"}}>
+                <p><b>MMD Republican Seat Share</b>: {mmdSummaryData.average_republican_representatives.toFixed(2)} ({(mmdSummaryData.republican_seat_share * 100).toFixed(2)}%)</p>
+                <p><b>MMD Democratic Seat Share</b>: {mmdSummaryData.average_democratic_representatives.toFixed(2)} ({(mmdSummaryData.democratic_seat_share * 100).toFixed(2)}%)</p>
+            </div>
+        </div>
+        <div style={{marginTop: "-5px"}}>
+            <p><b>Republican Vote Share</b>: {(smdSummaryData.republican_vote_share).toFixed(2)}%</p>
+            <p><b>Democratic Vote Share</b>: {(smdSummaryData.democratic_vote_share).toFixed(2)}%</p>
+        </div>
       </div>
     </>
   );

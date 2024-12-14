@@ -39,6 +39,7 @@ export const StateMap = ({ state }) => {
   const [selectedDataViewOption, setSelectedDataViewOption] = useState(ViewDataOptions.Current);
 
   const [currentSmdDistrict, setCurrentSmdDistrict] = useState(null);
+  const [selectedSmdDistrict, setSelectedSmdDistrict] = useState(false);
 
   const geoJsonRefCurrentDistricts = useRef();
   const geoJsonRefSmdDistricts = useRef();
@@ -436,7 +437,7 @@ export const StateMap = ({ state }) => {
       // Create a div icon for the label
       const labelIcon = L.divIcon({
         className: "district-label", // Define custom styles in CSS
-        html: `<div>${district} ${district === 1 ? "Representative" : "Representatives"}</div>`,
+        html: `<div>${district} ${"4 Representatives"}</div>`,
         iconSize: null, // Adjust size in CSS
       });
   
@@ -466,6 +467,9 @@ export const StateMap = ({ state }) => {
     <>
       <div className="map-wrapper">
           {!isRightAnalysisPanelExpanded && <LeftDataPanel
+          selectedSmdDistrict={selectedSmdDistrict}
+          setSelectedSmdDistrict={setSelectedSmdDistrict}
+          currentSmdDistrict={currentSmdDistrict}
           districtData={congressionalDistricts}
           smdData={smdDistricts}
           mmdData={mmdDistricts}
@@ -546,6 +550,7 @@ export const StateMap = ({ state }) => {
           state={state} 
           currentSmdDistrict={currentSmdDistrict}
           setCurrentSmdDistrict={setCurrentSmdDistrict}
+          setSelectedSmdDistrict={setSelectedSmdDistrict}
         />}
       </div>
     </>

@@ -20,7 +20,8 @@ const REQUESTS = {
     SMD_DISTRICT_PLAN: "smd_district_plans",
     SMD_DISTRICT_PLANS_SUMMARIES: "smd_district_plans/summaries",
     SMD_DISTRICT_PLAN_SUMMARY: "smd_district_plans/summary",
-    SMD_DISTRICT_PLAN_ELECTIONS: "smd_district_plans/election_data"
+    SMD_DISTRICT_PLAN_ELECTIONS: "smd_district_plans/election_data",
+    SMD_SEAT_VOTE_CURVE: "smd_district_plans/seat_vote_curve"
 }
 
 const makeRequest = async (requestType, params = {}, config = {}) => {
@@ -152,6 +153,16 @@ export const getSmdDistrictPlanElections = async (name) => {
         return data;
     } catch (error) {
         console.error(`Failed to fetch smd district plan elections data for name ${name}`, error.message);
+        throw error;
+    }
+}
+
+export const getSmdDistrictPlanSeatVoteCurve = async (name) => {
+    try {
+        const data = await makeRequest(REQUESTS.SMD_SEAT_VOTE_CURVE, {name: name});
+        return data;
+    } catch (error) {
+        console.error(`Failed to fetch smd district plan seat vote curve data for name ${name}`, error.message);
         throw error;
     }
 }

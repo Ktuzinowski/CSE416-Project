@@ -11,7 +11,7 @@ import { SmdDistrictPlanSummary } from "./components/summary/SmdDistrictPlanSumm
 import { MmdDistrictPlanSummary } from "./components/summary/MmdDistrictPlanSummary";
 import { CurrentDistrictPlanSummary } from "./components/summary/CurrentDistrictPlanSummary";
 
-export const RightAnalysisPanel = ({ currentSmdDistrict, setCurrentSmdDistrict, state, setIsRightAnalysisPanelExpanded }) => {
+export const RightAnalysisPanel = ({ setSelectedSmdDistrict, currentSmdDistrict, setCurrentSmdDistrict, state, setIsRightAnalysisPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [hoverOverEnsemble, setHoverOverEnsemble] = useState(false);
     const [hoverOverSearch, setHoverOverSearch] = useState(false);
@@ -53,6 +53,7 @@ export const RightAnalysisPanel = ({ currentSmdDistrict, setCurrentSmdDistrict, 
         setEnsembleSelected(false);
         setSearchSelected(false);
         setSummarySelected(true);
+        setSelectedSmdDistrict(true);
         setSummaryOptionSelected(RightAnalysisSummaryOptions.SMD);
     }
     
