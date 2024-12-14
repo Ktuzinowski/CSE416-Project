@@ -24,8 +24,10 @@ export const SmdDistrictPlanSummary = ({ name }) => {
                 </select>
             </div>
             <div>
-                <h2 className="dropdown_styling">{`ID: ${name}`}</h2>
-            </div>
+    <h2 className="dropdown_styling">
+        {`ID: ${name.replace(/_/g, " ").replace(/\b\w/, (char) => char.toUpperCase())}`}
+    </h2>
+</div>
             {
                 currentVisualization === VisualizationSmdSummaryOptions.Summary ? (
                     <SmdTableSummary name={name} />

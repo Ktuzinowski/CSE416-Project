@@ -24,6 +24,7 @@ export const SmdTableSummary = ({ name }) => {
         <div className="summaryData">
             <p><b>Description</b>: {summaryData.interesting_description}</p>
             <p><b>Number of Districts</b>: {summaryData.number_of_districts.toLocaleString()}</p>
+            
             <p><b>Opportunity District Threshold</b>: {summaryData.opportunity_district_threshold.toLocaleString()}</p>
             <p><b>Opportunity Districts</b>: {summaryData.opportunity_districts.toLocaleString()}</p>
             <p><b>Wasted Votes Democratic</b>: {summaryData.wasted_votes_democratic.toLocaleString()}</p>
