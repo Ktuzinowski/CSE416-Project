@@ -7,7 +7,7 @@ import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties } fro
 import { COLORS, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom, BoundaryChoroplethOptions, ViewDataOptions} from "../utils/Constants";
 
 
-export const LeftDataPanel = ({ setSelectedDataViewOption, selectedDataViewOption, districtData, smdData, mmdData, precinctData, onSelectFeature, congressionalDistrictColors, smdDistrictColors, mmdDistrictColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded, choroplethBoundarySelection, setChoroplethBoundarySelection }) => {
+export const LeftDataPanel = ({ selectedSmdDistrict, setSelectedSmdDistrict, currentSmdDistrict, setSelectedDataViewOption, selectedDataViewOption, districtData, smdData, mmdData, precinctData, onSelectFeature, congressionalDistrictColors, smdDistrictColors, mmdDistrictColors, onChangeBorderForHoverOverDistrict, onChangeLeftHoverOverDistrict, selectedDataColumn, setSelectedDataColumn, setIsLeftDataPanelExpanded, choroplethBoundarySelection, setChoroplethBoundarySelection }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [columnNames, setColumnNames] = useState(null);
     const [pinnedColumns, setPinnedColumns] = useState({}); // Track pinned columns
@@ -37,6 +37,13 @@ export const LeftDataPanel = ({ setSelectedDataViewOption, selectedDataViewOptio
             setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
         }
     }, [districtData, precinctData, selectedDataViewOption, selectedDataViewOption]);
+
+    useEffect(() => {
+        if (currentSmdDistrict && selectedSmdDistrict) {
+            setSelectedDataViewOption(ViewDataOptions.SMD);
+            setSelectedSmdDistrict(false);
+        }
+    }, [currentSmdDistrict, selectedSmdDistrict])
 
     const togglePanel = () => {
         setDisplayAnalysisScreen(false);
@@ -151,7 +158,7 @@ const Legend = ({ selectedColumn }) => {
             paddingBottom: "35px"
         }}>
             <div className="left_data_panel_current_selection">
-                <h2 className="left_data_panel_title">{selectedDataViewOption === ViewDataOptions.Current ? "Current District Plan" : selectedDataViewOption}</h2>
+                <h2 className="left_data_panel_title">{selectedDataViewOption === ViewDataOptions.Current ? "Current District Plan" : selectedDataViewOption === ViewDataOptions.SMD ? `${selectedDataViewOption}: ${currentSmdDistrict}` : selectedDataViewOption}</h2>
                 <button className="left_data_expand_button" onClick={togglePanel}>
                     <FontAwesomeIcon icon={isExpanded ? faCompressAlt : faExpandAlt} />
                 </button>
