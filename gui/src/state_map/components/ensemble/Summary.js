@@ -51,16 +51,16 @@ export const Summary = ({ state }) => {
                 <div className="summaryData">
                 <p><b>Number of Plans</b>: {mmdsummaryData.num_plans}</p>
                 <p><b>Minority Representatives</b>: {mmdsummaryData.minority_reps}</p>
-                <p><b>Average Republican Reps</b>: {MmdSummaryAverageReps.average_republican_representatives.toFixed(2)}</p>
-                <p><b>Average Democratic Reps</b>: {MmdSummaryAverageReps.average_democratic_representatives.toFixed(2)}</p>
+                <p><b>Average Republican Reps</b>: {mmdsummaryData.average_republican_representatives.toFixed(2)}</p>
+                <p><b>Average Democratic Reps</b>: {mmdsummaryData.average_democratic_representatives.toFixed(2)}</p>
                 <p><b>Republican Seat Share</b>: {mmdsummaryData.rep_share}%</p>
                 <p><b>Democratic Seat Share</b>: {mmdsummaryData.dem_share}%</p>
-                <p><b>Republican Vote Share</b>: {summaryData.republican_vote_share.toFixed(2)}%</p>
-                <p><b>Democratic Vote Share</b>: {summaryData.democratic_vote_share.toFixed(2)}%</p>
+                <p><b>Republican Vote Share</b>: {mmdsummaryData.republican_vote_share.toFixed(2)}%</p>
+                <p><b>Democratic Vote Share</b>: {mmdsummaryData.democratic_vote_share.toFixed(2)}%</p>
                 <p><b>Population Deviation</b>: {mmdsummaryData.pop_dev}%</p>
                 <p>
-                <b>Republican-Democratic Split</b>: {MmdSummaryAverageReps.average_republican_democratic_split[0].toFixed(2)}-
-                {MmdSummaryAverageReps.average_republican_democratic_split[1].toFixed(2)}
+                <b>Republican-Democratic Split</b>: {mmdsummaryData.average_republican_democratic_split[0].toFixed(2)}-
+                {mmdsummaryData.average_republican_democratic_split[1].toFixed(2)}
                 </p>
                 <p><b>MMD Layout</b>: {mmdsummaryData.mmd_layout}</p>
                 </div>

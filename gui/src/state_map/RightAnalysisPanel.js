@@ -87,7 +87,7 @@ export const RightAnalysisPanel = ({ currentSmdDistrict, setCurrentSmdDistrict, 
                                                     setEnsembleOptionSelected(ensembleOption);
                                                     handleLeavingOptions();
                                                     handleSelectOption(RightAnalysisPanelOptions.Ensemble);
-                                                }}>{ensembleOption}</p>
+                                                }}>{RightAnalysisEnsembleOptions[ensembleOption]}</p>
                                             )
                                         })}
                                     </div>
