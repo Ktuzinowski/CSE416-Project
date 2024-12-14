@@ -112,7 +112,7 @@ export const RightAnalysisPanelOptions = {
 }
 
 export const RightAnalysisEnsembleOptions = {
-  SMD_AND_MMD: "SMD_AND_MMD"
+  SMD_AND_MMD: "SMD/MMD"
 }
 
 export const RightAnalysisSearchOptions = {

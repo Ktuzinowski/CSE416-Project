@@ -22,6 +22,7 @@ public class SmdEnsembleSummary {
 	private double population_deviation;
 	private double republican_vote_share;
 	private double democratic_vote_share;
+	private Map<String, Double> range_of_opportunity_representatives;
 	public String getId() {
 		return id;
 	}
@@ -99,5 +100,11 @@ public class SmdEnsembleSummary {
 	}
 	public void setDemocratic_vote_share(double democratic_vote_share) {
 		this.democratic_vote_share = democratic_vote_share;
+	}
+	public Map<String, Double> getRange_of_opportunity_representatives() {
+		return range_of_opportunity_representatives;
+	}
+	public void setRange_of_opportunity_representatives(Map<String, Double> range_of_opportunity_representatives) {
+		this.range_of_opportunity_representatives = range_of_opportunity_representatives;
 	}
 }
