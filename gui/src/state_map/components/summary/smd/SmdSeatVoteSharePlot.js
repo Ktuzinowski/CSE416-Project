@@ -27,7 +27,12 @@ export const SmdSeatVoteSharePlot = ({ name }) => {
     } = voteSeatShareData;
 
     return (
-        <div>
+        <div style={{overflow: "hidden"}}>
+            <div className="summaryData" style={{display: "flex", flexDirection: "row", gap: "10px", marginTop: "-10px"}}>
+            <p><b>Partison Bias</b>: {voteSeatShareData.partisan_bias.toFixed(2)}</p>
+            <p><b>Symmetry</b>: {voteSeatShareData.symmetry.toFixed(2)}</p>
+            <p><b>Responsiveness</b>: {voteSeatShareData.responsiveness.toFixed(2)}</p>
+        </div>
             <Plot
                 data={[
                     {
@@ -46,29 +51,49 @@ export const SmdSeatVoteSharePlot = ({ name }) => {
                         line: { color: "blue" }, // Blue line
                         name: "Democratic",
                     },
-                    // Republican Points
+                    // SMD Republican Points
                     {
                         x: [voteSeatShareData.vote_share_republican, voteSeatShareData.vote_share_republican],
                         y: [
-                            voteSeatShareData.seat_share_republican_smd,
-                            voteSeatShareData.seat_share_republican_mmd,
+                            voteSeatShareData.seat_share_republican_smd
                         ],
                         type: "scatter",
                         mode: "markers",
                         marker: { color: "red", size: 10 },
-                        name: "Republican Ensemble Seat Share",
+                        name: "SMD Republican Seat Share",
                     },
-                    // Democratic Points
+                    // SMD Democratic Points
                     {
-                        x: [voteSeatShareData.vote_share_democratic, voteSeatShareData.vote_share_democratic],
+                        x: [voteSeatShareData.vote_share_democratic],
                         y: [
-                            voteSeatShareData.seat_share_democratic_smd,
-                            voteSeatShareData.seat_share_democratic_mmd,
+                            voteSeatShareData.seat_share_democratic_smd
                         ],
                         type: "scatter",
                         mode: "markers",
                         marker: { color: "blue", size: 10 },
-                        name: "Democratic Ensemble Seat Share",
+                        name: "SMD Democratic Seat Share",
+                    },
+                    // MMD Republican Points
+                    {
+                        x: [voteSeatShareData.vote_share_republican],
+                        y: [
+                            voteSeatShareData.seat_share_republican_mmd
+                        ],
+                        type: "scatter",
+                        mode: "markers",
+                        marker: { color: "orange", size: 10 },
+                        name: "SMD Republican Seat Share",
+                    },
+                    // MMD Democratic Points
+                    {
+                        x: [voteSeatShareData.vote_share_democratic],
+                        y: [
+                            voteSeatShareData.seat_share_democratic_mmd
+                        ],
+                        type: "scatter",
+                        mode: "markers",
+                        marker: { color: "purple", size: 10 },
+                        name: "SMD Republican Seat Share",
                     },
                 ]}
                 layout={{
@@ -81,16 +106,11 @@ export const SmdSeatVoteSharePlot = ({ name }) => {
                         l: 70, // Left margin
                         r: 50, // Right margin
                         t: 30, // Top margin (reduce to remove extra space)
-                        b: 50 // Bottom margin
+                        b: 0 // Bottom margin
                     }
                 }}
                 style={{ width: "100%", height: "500px" }} // Responsive sizing
             />
-            <div className="summaryData" style={{display: "flex", flexDirection: "row", gap: "10px", marginTop: "-5px"}}>
-            <p><b>Partison Bias</b>: {voteSeatShareData.partisan_bias.toFixed(2)}</p>
-            <p><b>Symmetry</b>: {voteSeatShareData.symmetry.toFixed(2)}</p>
-            <p><b>Responsiveness</b>: {voteSeatShareData.responsiveness.toFixed(2)}</p>
-        </div>
         </div>
     );
 };
