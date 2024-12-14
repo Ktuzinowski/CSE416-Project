@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js";
-import {
-  OpportunityRepresentativeJSON,
-  RangeOfSplitsJSON,
-  RangeOfSplitsMMDJSON,
-  supplementSMD,
-  supplementMMD,
-  BarChartOptions,
-} from "../../../utils/Constants";
+import {BarChartOptions} from "../../../utils/Constants";
 import { getSmdEnsembleSummaryData, getMmdEnsembleSummaryData } from "../../../axiosClient";
 
 export const BarChart = ({ state }) => {
@@ -42,29 +35,34 @@ export const BarChart = ({ state }) => {
 
     return (
       <Plot
-        data={[
-          {
-            x: chartData.labels,
-            y: chartData.values,
-            type: "bar",
-            marker: { color: "steelblue" },
-          },
-        ]}
-        layout={{
-          title: { text: title, font: { size: 14 } },
-          xaxis: { title: { text: xAxisLabel, font: { size: 12 } }, tickangle: -45, automargin: true },
-          yaxis: {
-            title: { text: yAxisLabel, font: { size: 12 } },
-            tickvals: [1000, 2000, 3000, 4000, 5000], // Custom tick values
-            range: [0, 5000], // Sets the y-axis range
-          },
-          margin: { t: 40, l: 50, r: 20, b: 60 },
-          responsive: true,
-        }}
-        style={{ width: "300px", height: "250px" }}
-      />
-    );
-  };
+      data={[
+        {
+          x: chartData.labels,
+          y: chartData.values,
+          type: "bar",
+          marker: { color: "steelblue" },
+        },
+      ]}
+      layout={{
+        title: { text: title, font: { size: 14 } },
+        xaxis: { 
+          title: { text: xAxisLabel, font: { size: 12 } }, 
+          tickangle: -45, 
+          automargin: true,
+          range: [0, 4], // Set X-axis range here
+        },
+        yaxis: {
+          title: { text: yAxisLabel, font: { size: 12 } },
+          tickvals: [1000, 2000, 3000, 4000, 5000], // Custom tick values
+          range: [0, 5000], // Sets the Y-axis range
+        },
+        margin: { t: 40, l: 50, r: 20, b: 60 },
+        responsive: true,
+      }}
+      style={{ width: "300px", height: "250px" }}
+    />
+  );
+};
 
   return (
     <>
