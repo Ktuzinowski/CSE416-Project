@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 public class SmdDistrictPlanService {
 	@Autowired
 	private SmdDistrictPlanRepository repository;
+	@Autowired
+	private SmdDistrictPlanRepositoryWithoutGeometry repository_no_geometry;
 	
 	public FeatureCollection getDistrictPlanByName(String name) {
 		return repository.findByName(name);
@@ -16,5 +18,9 @@ public class SmdDistrictPlanService {
 	
 	public List<FeatureCollectionSummary> getSummariesByState(String state) {
 		return repository.findByNameStartingWithIgnoreCase(state);
+	}
+	
+	public FeatureCollectionWithoutGeometry getDistrictsWithoutGeometry(String name) {
+		return repository_no_geometry.findByName(name);
 	}
 }
