@@ -189,6 +189,15 @@ export const supplementMMD = {
 export const enactedSMDPlan = {
   "NumOppRep": 0,
   "RepDemSplit": "4-0",
+}
 
+export const BarChartOptions = {
+  RangeOfOpportunityDistricts: "Range of Opportunity Districts",
+  RepublicanDemocraticSplit: "Republican-Democratic Split"
+}
 
+export const MmdSummaryAverageReps = {
+  average_republican_representatives: 3,
+  average_democratic_representatives: 1,
+  average_republican_democratic_split: [3, 1]
 }

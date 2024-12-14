@@ -7,8 +7,6 @@ import { RightAnalysisPanelOptions, RightAnalysisEnsembleOptions, RightAnalysisS
 import { Ensemble } from "./components/ensemble/Ensemble";
 import { SearchSMD } from "./components/search/SearchSMD";
 import { SearchMMD } from "./components/search/SearchMMD";
-import { SummarySMD } from "./components/ensemble/SummarySMD";
-import { SummaryMMD } from "./components/ensemble/SummaryMMD";
 import { SmdDistrictPlanSummary } from "./components/summary/SmdDistrictPlanSummary";
 import { MmdDistrictPlanSummary } from "./components/summary/MmdDistrictPlanSummary";
 import { CurrentDistrictPlanSummary } from "./components/summary/CurrentDistrictPlanSummary";

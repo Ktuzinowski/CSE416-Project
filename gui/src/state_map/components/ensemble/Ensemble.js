@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { SummarySMD } from "./SummarySMD";
-import { BarChartSMD } from "./BarChartSMD";
+import { Summary } from "./Summary";
 import { BoxAndWhiskerSMD } from "./BoxAndWhiskerSMD";
-import { SummaryMMD } from "./SummaryMMD";
-import { BarChartMMD } from "./BarChartMMD";
+import { BarChart } from "./BarChart";
 import { BoxAndWhiskerMMD } from "./BoxAndWhiskerMMD";
 import { VisualizationEnsembleOptions } from "../../../utils/Constants";
 
@@ -28,16 +26,13 @@ export const Ensemble = ({ state }) => {
                 </select>
             </div>
             {currentVisualization === VisualizationEnsembleOptions.Summary && (
-                <SummarySMD state={state} />
+                <Summary state={state} />
             )}
             {currentVisualization === VisualizationEnsembleOptions.BarChart && (
-                <BarChartSMD state={state} />
+                <BarChart state={state}/>
             )}
             {currentVisualization === VisualizationEnsembleOptions.BoxAndWhisker && (
                 <BoxAndWhiskerSMD state={state} />
-            )}
-            {currentVisualization === VisualizationEnsembleOptions.BarChart && (
-                <BarChartMMD state={state}/>
             )}
             {currentVisualization === VisualizationEnsembleOptions.BoxAndWhisker && (
                 <BoxAndWhiskerMMD state={state}/>
