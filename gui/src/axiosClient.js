@@ -12,6 +12,7 @@ const REQUESTS = {
     STATES_AVAILABLE: "states_available",
     STATE_OUTLINES: "state_outlines",
     CURRENT_DISTRICT_PLANS: "current_district_plans",
+    CURRENT_DISTRICT_PLAN_SUMMARY: "current_district_plans/summary",
     PRECINCTS: "precincts",
     SMD_BOX_AND_WHISKER: "box_and_whisker/smd",
     MMD_BOX_AND_WHISKER: "box_and_whisker/mmd",
@@ -63,6 +64,16 @@ export const getCurrentDistrictPlans = async (state) => {
         return data;
     } catch (error) {
         console.error(`Failed to fetch current district plans for state ${state}:`, error.message);
+        throw error;
+    }
+}
+
+export const getCurrentDistrictPlanSummary = async (state) => {
+    try {
+        const data = makeRequest(REQUESTS.CURRENT_DISTRICT_PLAN_SUMMARY, {state: state});
+        return data;
+    } catch (error) {
+        console.error(`Failed to fetch current district plan summary for state ${state}`, error.message);
         throw error;
     }
 }
