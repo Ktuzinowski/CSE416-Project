@@ -19,7 +19,8 @@ const REQUESTS = {
     MMD_ENSEMBLE_SUMMARY: "ensemble/summary/mmd",
     SMD_DISTRICT_PLAN: "smd_district_plans",
     SMD_DISTRICT_PLANS_SUMMARIES: "smd_district_plans/summaries",
-    SMD_DISTRICT_PLAN_SUMMARY: "smd_district_plans/summary"
+    SMD_DISTRICT_PLAN_SUMMARY: "smd_district_plans/summary",
+    
 }
 
 const makeRequest = async (requestType, params = {}, config = {}) => {
