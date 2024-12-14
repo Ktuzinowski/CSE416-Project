@@ -8,9 +8,15 @@ import org.springframework.stereotype.Service;
 public class CurrentDistrictPlanService {
 	@Autowired 
 	private CurrentDistrictPlanRepository currentDistrictPlanRepository;
+	@Autowired
+	private CurrentDistrictPlanSummaryRepository repositorySummary;
 	
 	@Cacheable(value = "current_district_plan", key="#name")
 	public FeatureCollection getStateByName(String name) {
 		return currentDistrictPlanRepository.findByName(name);
+	}
+	
+	public CurrentDistrictPlanSummary getStateSummaryData(String state) {
+		return repositorySummary.findByName(state);
 	}
 }

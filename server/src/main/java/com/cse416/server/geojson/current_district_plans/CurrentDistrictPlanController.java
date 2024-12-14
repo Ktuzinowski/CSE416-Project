@@ -17,4 +17,10 @@ public class CurrentDistrictPlanController {
 		FeatureCollection currentDistrictPlanData = currentDistrictPlanService.getStateByName(state);
 		return currentDistrictPlanData;
 	}
+	
+	@GetMapping("/current_district_plans/summary")
+	public CurrentDistrictPlanSummary getCurrentDistrictPlanSummary(@RequestParam("state") String state) {
+		CurrentDistrictPlanSummary currentDistrictPlanData = currentDistrictPlanService.getStateSummaryData(state);
+		return currentDistrictPlanData;
+	}
 }
