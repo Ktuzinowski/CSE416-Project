@@ -35,9 +35,4 @@ public class SmdDistrictPlanController {
 	public FeatureCollectionWithoutGeometry getElectionDataForSmdDistrictPlan(@RequestParam("name") String name) {
 		return service.getDistrictsWithoutGeometry(name);
 	}
-	
-	@GetMapping("/smd_district_plans/seat_vote_curve")
-	public SeatVoteCurveData getSeatVoteCurveDataForSmdDistrictPlan(@RequestParam("name") String name) {
-		
-	}
 }

@@ -437,7 +437,7 @@ export const StateMap = ({ state }) => {
       // Create a div icon for the label
       const labelIcon = L.divIcon({
         className: "district-label", // Define custom styles in CSS
-        html: `<div>${district} ${district === 1 ? "Representative" : "Representatives"}</div>`,
+        html: `<div>${district} ${"4 Representatives"}</div>`,
         iconSize: null, // Adjust size in CSS
       });
   
