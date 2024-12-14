@@ -137,22 +137,37 @@ export const BarChart = ({ state }) => {
         )}
       </div>
 
-      <div className="supp">
-        <div style={{display: "flex", flexDirection: "row"}}>
-            <div style={{display: "flex", flexDirection: "column", marginRight: "25px"}}>
-                <p><b>SMD Republican Seat Share</b>: {smdSummaryData.average_republican_representatives.toFixed(2)} ({(smdSummaryData.republican_seat_share * 100).toFixed(2)}%)</p>
-                <p><b>SMD Democratic Seat Share</b>: {smdSummaryData.average_democratic_representatives.toFixed(2)} ({(smdSummaryData.democratic_seat_share * 100).toFixed(2)}%)</p>
-            </div>
-            <div style={{display: "flex", flexDirection: "column"}}>
-                <p><b>MMD Republican Seat Share</b>: {mmdSummaryData.average_republican_representatives.toFixed(2)} ({(mmdSummaryData.republican_seat_share * 100).toFixed(2)}%)</p>
-                <p><b>MMD Democratic Seat Share</b>: {mmdSummaryData.average_democratic_representatives.toFixed(2)} ({(mmdSummaryData.democratic_seat_share * 100).toFixed(2)}%)</p>
-            </div>
-        </div>
-        <div style={{marginTop: "-5px"}}>
-            <p><b>Republican Vote Share</b>: {(smdSummaryData.republican_vote_share).toFixed(2)}%</p>
-            <p><b>Democratic Vote Share</b>: {(smdSummaryData.democratic_vote_share).toFixed(2)}%</p>
-        </div>
-      </div>
+      <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px" }}>
+                <thead>
+                    <tr>
+                        <th style={{ border: "1px solid black", padding: "8px" }}>Category</th>
+                        <th style={{ border: "1px solid black", padding: "8px" }}>SMD</th>
+                        <th style={{ border: "1px solid black", padding: "8px" }}>MMD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Republican Seat Share</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{smdSummaryData.average_republican_representatives.toFixed(2)} ({(smdSummaryData.republican_seat_share * 100).toFixed(2)}%)</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdSummaryData.average_republican_representatives.toFixed(2)} ({(mmdSummaryData.republican_seat_share * 100).toFixed(2)}%)</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Democratic Seat Share</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{smdSummaryData.average_democratic_representatives.toFixed(2)} ({(smdSummaryData.democratic_seat_share * 100).toFixed(2)}%)</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdSummaryData.average_democratic_representatives.toFixed(2)} ({(mmdSummaryData.democratic_seat_share * 100).toFixed(2)}%)</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Republican Vote Share</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{smdSummaryData.republican_vote_share.toFixed(2)}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdSummaryData.republican_vote_share.toFixed(2)}%</td>
+                    </tr>
+                    <tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Democratic Vote Share</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{smdSummaryData.democratic_vote_share.toFixed(2)}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdSummaryData.democratic_vote_share.toFixed(2)}%</td>
+                    </tr>
+                </tbody>
+            </table>
     </>
   );
 };
