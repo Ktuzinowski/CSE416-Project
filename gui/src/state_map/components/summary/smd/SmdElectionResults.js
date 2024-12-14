@@ -20,25 +20,39 @@ export const SmdElectionResults = ({ name }) => {
     return <p>Loading...</p>;
   }
 
+  const categories = [
+    { label: "Vote Totals", key: (feature) => (feature.properties.republican + feature.properties.democrat).toLocaleString() },
+    { label: "Republican", key: (feature) => feature.properties.republican.toLocaleString() },
+    { label: "Democratic", key: (feature) => feature.properties.democrat.toLocaleString() },
+    { label: "Representative", key: (feature) => feature.properties.representative },
+    { label: "Incumbent Party", key: (feature) => feature.properties.incumbent },
+    { label: "Loser", key: (feature) => feature.properties.loser },
+    { label: "Loser-Party", key: (feature) => feature.properties.loser_party },
+  ];
+
   return (
-    <div className="supp" style={{marginTop: "-25px"}}>
-      <p><b>Interesting Description:</b> {electionData.interesting_description}</p>
-      <div className="grid-container">
-        {electionData.features.map((feature, index) => (
-          <div key={index} className="card2">
-            <h3>District {index + 1}</h3>
-            <p>
-            <b>Vote Totals</b>: {(feature.properties.republican + feature.properties.democrat).toLocaleString()}
-            </p>     
-            <p><b>Republican</b>: {feature.properties.republican.toLocaleString()}</p>    
-            <p><b>Democratic</b>: {feature.properties.democrat.toLocaleString()}</p>      
-            <p><b>Representative</b>: {feature.properties.representative}</p>
-            <p><b>Incumbent Party</b>: {feature.properties.incumbent}</p>
-            <p><b>Loser</b>: {feature.properties.loser}</p>
-            <p><b>Loser-Party</b>: {feature.properties.loser_party}</p>
-          </div>
-        ))}
-      </div>
+    <div className="supp">
+      <p style={{fontSize: "18px"}}><b>Category:</b> {electionData.interesting_description}</p>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th style={{ border: "1px solid black", padding: "8px" }}>Category</th>
+            {electionData.features.map((_, index) => (
+              <th key={index} style={{ border: "1px solid black", padding: "8px" }}>District {index + 1}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {categories.map((category, index) => (
+            <tr key={index}>
+              <td style={{ border: "1px solid black", padding: "8px" }}>{category.label}</td>
+              {electionData.features.map((feature, featureIndex) => (
+                <td key={featureIndex} style={{ border: "1px solid black", padding: "8px" }}>{category.key(feature)}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
