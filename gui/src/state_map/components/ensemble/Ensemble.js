@@ -11,7 +11,7 @@ export const Ensemble = ({ state }) => {
     return (
         <div>
             <div className="right_data_panel_current_selection">
-                <h2 className="right_data_panel_title">{`SMD Ensemble ${state.charAt(0).toUpperCase() + state.slice(1)}`}</h2>
+                <h2 className="right_data_panel_title">{`Ensemble ${state.charAt(0).toUpperCase() + state.slice(1)}`}</h2>
                 <select 
                 value={currentVisualization}
                 onChange={(e) => setCurrentVisualization(e.target.value)}

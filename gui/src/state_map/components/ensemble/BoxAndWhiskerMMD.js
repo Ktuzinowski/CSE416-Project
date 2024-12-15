@@ -2,24 +2,25 @@ import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js"
 import { BoxAndWhiskerPlotBOC } from "../../../utils/Constants";
 import { getMmdBoxAndWhiskerPlotData } from "../../../axiosClient";
+import { processPlotDataMMD } from "./ProcessDataBoxAndWhisker";
 
 export const BoxAndWhiskerMMD = ({ state }) => {
     const [valueForDropdownBOC, setValueForDropdownBOC] = useState(BoxAndWhiskerPlotBOC.Democrat);
-    const [plotData, setPlotData] = useState(null);
+    const [plotDataMMD, setPlotDataMMD] = useState(null);
 
     useEffect(() => {
         const loadBoxAndWhiskerMMDPlotData = async (state, boc) => {
             const data = await getMmdBoxAndWhiskerPlotData(state, boc);
             console.log(data);
-            const processedData = processPlotData(data);
+            const processedData = processPlotDataMMD(data);
             console.log(processedData);
-            setPlotData(processedData);
+            setPlotDataMMD(processedData);
         }
 
         loadBoxAndWhiskerMMDPlotData(state, valueForDropdownBOC);
     }, [state, valueForDropdownBOC])
 
-    const processPlotData = (data) => {
+    const processPlotDataMMD = (data) => {
         const traces = [];
         const annotations = [];
         const shapes = [];
@@ -94,44 +95,7 @@ export const BoxAndWhiskerMMD = ({ state }) => {
 
     return (
         <>
-            <label className="dropdown_styling">Basis of Comparison</label>
-            <select
-                value={valueForDropdownBOC}
-                onChange={(e) => setValueForDropdownBOC(e.target.value)}
-                className="dropdown_select_styling"
-            >
-                {Object.keys(BoxAndWhiskerPlotBOC).map((boc) => {
-                    return (
-                        <option key={boc} value={BoxAndWhiskerPlotBOC[boc]}>
-                            {boc}
-                        </option>
-                    )
-                })}
-            </select>
-            <Plot
-            data={plotData?.traces || []}
-            layout={{
-                yaxis: { title: `${valueForDropdownBOC.charAt(0).toUpperCase() + valueForDropdownBOC.slice(1)} Percentage` },
-                xaxis: { title: "Bins" },
-                showlegend: true,
-                legend: {
-                    orientation: "h",
-                    bordercolor: "#ccc",
-                    borderwidth: 2,
-                    bgcolor: "white",
-                    y: -0.23,
-                },
-                annotations: plotData?.annotations || [],
-                shapes: plotData?.shapes || [], // Add shapes for dashed lines.
-                margin: {
-                    l: 70,
-                    r: 50,
-                    t: 10,
-                    b: 50,
-                }
-            }}
-            style={{ width: "600px", height: "500px" }}
-        />
+          
         </>
     )
 }

@@ -146,6 +146,12 @@ export const VisualizationSmdSummaryOptions = {
   SeatVoteCurve: "Seat-Vote Share Plot"
 }
 
+export const BoxAndWhiskerChartOptions = {
+  SMD: "SMD",
+  MMD: "MMD",
+  Compare: "Compare"
+}
+
 export const OpportunityRepresentativeJSON = {
   "0": 5000,
   "1": 0,

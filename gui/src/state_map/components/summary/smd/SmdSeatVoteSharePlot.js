@@ -82,7 +82,7 @@ export const SmdSeatVoteSharePlot = ({ name }) => {
                         type: "scatter",
                         mode: "markers",
                         marker: { color: "orange", size: 10 },
-                        name: "SMD Republican Seat Share",
+                        name: "MMD Republican Seat Share",
                     },
                     // MMD Democratic Points
                     {
@@ -93,7 +93,7 @@ export const SmdSeatVoteSharePlot = ({ name }) => {
                         type: "scatter",
                         mode: "markers",
                         marker: { color: "purple", size: 10 },
-                        name: "SMD Republican Seat Share",
+                        name: "MMD Democratic Seat Share",
                     },
                 ]}
                 layout={{
