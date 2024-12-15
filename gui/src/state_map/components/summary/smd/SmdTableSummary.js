@@ -23,7 +23,7 @@ export const SmdTableSummary = ({ name }) => {
     return (
         <div className="summaryData">
             <p style={{fontSize: "18px"}}><b>Category</b>: {summaryData.interesting_description}</p>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <table style={{ width: "95%", borderCollapse: "collapse" }}>
                 <tbody>
                     <tr>
                         <td style={{ border: "1px solid black", padding: "8px" }}><b>Number of Districts</b></td>

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Summary } from "./Summary";
-import { BoxAndWhiskerSMD } from "./BoxAndWhiskerSMD";
+import { BoxAndWhisker } from "./BoxAndWhisker";
 import { BarChart } from "./BarChart";
-import { BoxAndWhiskerMMD } from "./BoxAndWhiskerMMD";
 import { VisualizationEnsembleOptions } from "../../../utils/Constants";
 
 export const Ensemble = ({ state }) => {
@@ -32,10 +31,7 @@ export const Ensemble = ({ state }) => {
                 <BarChart state={state}/>
             )}
             {currentVisualization === VisualizationEnsembleOptions.BoxAndWhisker && (
-                <BoxAndWhiskerSMD state={state} />
-            )}
-            {currentVisualization === VisualizationEnsembleOptions.BoxAndWhisker && (
-                <BoxAndWhiskerMMD state={state}/>
+                <BoxAndWhisker state={state} />
             )}
         </div>
     )

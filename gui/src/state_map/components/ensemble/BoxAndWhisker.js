@@ -5,7 +5,7 @@ import { getSmdBoxAndWhiskerPlotData, getMmdBoxAndWhiskerPlotData } from "../../
 import { processPlotDataMMD, processPlotDataSMD } from "./ProcessDataBoxAndWhisker";
 import { BoxAndWhiskerChartOptions } from "../../../utils/Constants";
 
-export const BoxAndWhiskerSMD = ({ state }) => {
+export const BoxAndWhisker = ({ state }) => {
     const [valueForDropdownSmdBOC, setValueForDropdownSmdBOC] = useState(BoxAndWhiskerPlotBOC.Democrat);
     const [valueForDropdownMmdBOC, setValueForDropdownMmdBOC] = useState(BoxAndWhiskerPlotBOC.Democrat);
     const [currentChart, setCurrentChart] = useState(BoxAndWhiskerChartOptions.SMD);

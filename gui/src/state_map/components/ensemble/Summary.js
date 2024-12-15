@@ -20,7 +20,7 @@ export const Summary = ({ state }) => {
     
     if (summaryData != null && mmdsummaryData != null) {
         return (
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <table style={{ width: "95%", borderCollapse: "collapse", marginLeft: "15px" }}>
                 <thead>
                     <tr>
                         <th style={{ border: "1px solid black", padding: "8px" }}>Category</th>

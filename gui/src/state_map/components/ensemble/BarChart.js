@@ -137,7 +137,7 @@ export const BarChart = ({ state }) => {
         )}
       </div>
 
-      <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px" }}>
+      <table style={{ width: "95%", borderCollapse: "collapse", marginBottom: "20px", marginLeft: "20px" }} className="table_styling">
                 <thead>
                     <tr>
                         <th style={{ border: "1px solid black", padding: "8px" }}>Category</th>
