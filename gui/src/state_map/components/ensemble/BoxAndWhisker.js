@@ -2,15 +2,27 @@ import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js";
 import { BoxAndWhiskerPlotBOC } from "../../../utils/Constants";
 import { getSmdBoxAndWhiskerPlotData, getMmdBoxAndWhiskerPlotData } from "../../../axiosClient";
-import { processPlotDataMMD, processPlotDataSMD } from "./ProcessDataBoxAndWhisker";
+import { processPlotDataMMD, processPlotDataSMD, combinePlotData } from "./ProcessDataBoxAndWhisker";
 import { BoxAndWhiskerChartOptions } from "../../../utils/Constants";
 
 export const BoxAndWhisker = ({ state }) => {
     const [valueForDropdownSmdBOC, setValueForDropdownSmdBOC] = useState(BoxAndWhiskerPlotBOC.Democrat);
     const [valueForDropdownMmdBOC, setValueForDropdownMmdBOC] = useState(BoxAndWhiskerPlotBOC.Democrat);
+    const [valueForDropdownCompare, setValueForDropdownCompare] = useState(BoxAndWhiskerPlotBOC.Democrat);
     const [currentChart, setCurrentChart] = useState(BoxAndWhiskerChartOptions.SMD);
     const [plotDataSMD, setPlotDataSMD] = useState(null);
     const [plotDataMMD, setPlotDataMMD] = useState(null);
+    const [combinedPlotData, setCombinedPlotData] = useState(null);
+
+    useEffect(() => {
+        const loadBoxAndWhiskerComparePlotData = async (state, boc) => {
+            const dataSmd = await getSmdBoxAndWhiskerPlotData(state, boc);
+            const dataMmd = await getMmdBoxAndWhiskerPlotData(state, boc);
+            const compareData = combinePlotData(dataSmd, dataMmd);
+            setCombinedPlotData(compareData);
+        }
+        loadBoxAndWhiskerComparePlotData(state, valueForDropdownCompare);
+    }, [state, valueForDropdownCompare])
 
     useEffect(() => {
         const loadBoxAndWhiskerSMDPlotData = async (state, boc) => {
@@ -133,6 +145,49 @@ export const BoxAndWhisker = ({ state }) => {
                             style={{ width: "600px", height: "500px" }}
                         />
                 </div>
+                ))
+            }
+            {
+                (currentChart === BoxAndWhiskerChartOptions.Compare && (
+                    <div>
+                        <label className="dropdown_styling">Basis of Comparison</label>
+                            <select
+                                value={valueForDropdownCompare}
+                                onChange={(e) => setValueForDropdownCompare(e.target.value)}
+                                className="dropdown_select_styling"
+                            >
+                                {Object.keys(BoxAndWhiskerPlotBOC).map((boc) => {
+                                    return (
+                                        <option key={boc} value={BoxAndWhiskerPlotBOC[boc]}>
+                                            {boc}
+                                        </option>
+                                    )
+                                })}
+                            </select>
+                            <Plot
+                            data={combinedPlotData?.traces || []}
+                            layout={{
+                                yaxis: { title: `${valueForDropdownCompare.charAt(0).toUpperCase() + valueForDropdownCompare.slice(1)} Percentage` },
+                                xaxis: { title: "Bins" },
+                                showlegend: true,
+                                legend: {
+                                    orientation: "h",
+                                    bordercolor: "#ccc",
+                                    borderwidth: 2,
+                                    bgcolor: "white",
+                                    y: -0.23,
+                                },
+                                annotations: combinedPlotData?.annotations || [],
+                                shapes: combinedPlotData?.shapes || [], // Add shapes for dashed lines.
+                                margin: {
+                                    l: 70,
+                                    r: 50,
+                                    t: 10
+                                }
+                            }}
+                            style={{ width: "600px", height: "500px" }}
+                        />
+                    </div>
                 ))
             }
         </div>
