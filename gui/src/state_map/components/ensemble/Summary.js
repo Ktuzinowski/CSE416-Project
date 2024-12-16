@@ -40,12 +40,12 @@ export const Summary = ({ state }) => {
                         <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.minority_representatives}</td>
                     </tr>
                     <tr>
-                        <td style={{ border: "1px solid black", padding: "8px" }}>Average Republican Reps</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Average Republican Reps.</td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.average_republican_representatives.toFixed(2)}</td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.average_republican_representatives.toFixed(2)}</td>
                     </tr>
                     <tr>
-                        <td style={{ border: "1px solid black", padding: "8px" }}>Average Democratic Reps</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>Average Democratic Reps.</td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>{summaryData.average_democratic_representatives.toFixed(2)}</td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.average_democratic_representatives.toFixed(2)}</td>
                     </tr>
