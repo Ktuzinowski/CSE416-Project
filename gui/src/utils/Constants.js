@@ -129,8 +129,6 @@ export const RightAnalysisSummaryOptions = {
 export const BoxAndWhiskerPlotBOC = {
   Democrat: "democrat",
   Republican: "republican",
-  White: "white",
-  Black: "black",
   Hispanic: "hispanic"
 }
 

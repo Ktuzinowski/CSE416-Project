@@ -181,11 +181,11 @@ export const BoxAndWhisker = ({ state }) => {
                                 shapes: combinedPlotData?.shapes || [], // Add shapes for dashed lines.
                                 margin: {
                                     l: 70,
-                                    r: 50,
+                                    r: 20,
                                     t: 10
                                 }
                             }}
-                            style={{ width: "600px", height: "500px" }}
+                            style={{ width: "800px", height: "500px" }}
                         />
                     </div>
                 ))

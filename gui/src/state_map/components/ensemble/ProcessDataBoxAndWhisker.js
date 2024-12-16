@@ -201,7 +201,7 @@ export const combinePlotData = (smdData, mmdData) => {
                     lowerfence: [district.min],
                     upperfence: [district.max],
                     boxpoints: false,
-                    showlegend: districts[0] === district,
+                    showlegend: district.bin === 1,
                     legendgroup: "MMD",
                     fillcolor: "rgba(0, 255, 255, 0.3)",
                     line: { color: "black", width: 1.5 },
