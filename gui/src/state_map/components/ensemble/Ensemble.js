@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Summary } from "./Summary";
-import { BoxAndWhiskerSMD } from "./BoxAndWhiskerSMD";
+import { BoxAndWhisker } from "./BoxAndWhisker";
 import { BarChart } from "./BarChart";
-import { BoxAndWhiskerMMD } from "./BoxAndWhiskerMMD";
 import { VisualizationEnsembleOptions } from "../../../utils/Constants";
 
 export const Ensemble = ({ state }) => {
@@ -11,7 +10,7 @@ export const Ensemble = ({ state }) => {
     return (
         <div>
             <div className="right_data_panel_current_selection">
-                <h2 className="right_data_panel_title">{`SMD Ensemble ${state.charAt(0).toUpperCase() + state.slice(1)}`}</h2>
+                <h2 className="right_data_panel_title">{`Ensemble ${state.charAt(0).toUpperCase() + state.slice(1)}`}</h2>
                 <select 
                 value={currentVisualization}
                 onChange={(e) => setCurrentVisualization(e.target.value)}
@@ -32,10 +31,7 @@ export const Ensemble = ({ state }) => {
                 <BarChart state={state}/>
             )}
             {currentVisualization === VisualizationEnsembleOptions.BoxAndWhisker && (
-                <BoxAndWhiskerSMD state={state} />
-            )}
-            {currentVisualization === VisualizationEnsembleOptions.BoxAndWhisker && (
-                <BoxAndWhiskerMMD state={state}/>
+                <BoxAndWhisker state={state} />
             )}
         </div>
     )

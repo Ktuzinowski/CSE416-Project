@@ -26,7 +26,7 @@ export const CurrentDistrictPlanSummary = ({ state }) => {
 
     return (
         <div style={{margin: "10px"}}>
-            <h1>Current District Plan Summary</h1>
+            <h1>Current vs. Average MMD Plan</h1>
             <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px" }}>
                 <thead>
                     <tr>

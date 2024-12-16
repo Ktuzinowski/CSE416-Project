@@ -129,8 +129,6 @@ export const RightAnalysisSummaryOptions = {
 export const BoxAndWhiskerPlotBOC = {
   Democrat: "democrat",
   Republican: "republican",
-  White: "white",
-  Black: "black",
   Hispanic: "hispanic"
 }
 
@@ -144,6 +142,12 @@ export const VisualizationSmdSummaryOptions = {
   Summary: "Summary",
   ElectionResults: "Election Results",
   SeatVoteCurve: "Seat-Vote Share Plot"
+}
+
+export const BoxAndWhiskerChartOptions = {
+  SMD: "SMD",
+  MMD: "MMD",
+  Compare: "Compare"
 }
 
 export const OpportunityRepresentativeJSON = {

@@ -32,22 +32,22 @@ export const SmdElectionResults = ({ name }) => {
 
   return (
     <div className="supp">
-      <p style={{fontSize: "18px"}}><b>Category:</b> {electionData.interesting_description}</p>
+      <p style={{fontSize: "15px"}}><b>Category:</b> {electionData.interesting_description}</p>
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <tr>
-            <th style={{ border: "1px solid black", padding: "8px" }}>Category</th>
+            <th style={{ border: "1px solid black", padding: "2px" }}>Category</th>
             {electionData.features.map((_, index) => (
-              <th key={index} style={{ border: "1px solid black", padding: "8px" }}>District {index + 1}</th>
+              <th key={index} style={{ border: "1px solid black", padding: "2px" }}>District {index + 1}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {categories.map((category, index) => (
             <tr key={index}>
-              <td style={{ border: "1px solid black", padding: "8px" }}>{category.label}</td>
+              <td style={{ border: "1px solid black", padding: "2px" }}>{category.label}</td>
               {electionData.features.map((feature, featureIndex) => (
-                <td key={featureIndex} style={{ border: "1px solid black", padding: "8px" }}>{category.key(feature)}</td>
+                <td key={featureIndex} style={{ border: "1px solid black", padding: "2px" }}>{category.key(feature)}</td>
               ))}
             </tr>
           ))}
