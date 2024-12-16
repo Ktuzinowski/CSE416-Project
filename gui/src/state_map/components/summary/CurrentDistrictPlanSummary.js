@@ -63,12 +63,12 @@ export const CurrentDistrictPlanSummary = ({ state }) => {
                     </tr>
                     <tr>
                         <td style={{ border: "1px solid black", padding: "8px" }}>Republican Seat Share</td>
-                        <td style={{ border: "1px solid black", padding: "8px" }}>{`${currentDistrictPlanSummary.republican_democratic_split * 100}`}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{`${(currentDistrictPlanSummary.republican_democratic_split * 100).toFixed(2)}`}%</td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>{(mmdsummaryData.republican_seat_share * 100).toFixed(2)}%</td>
                     </tr>
                     <tr>
                         <td style={{ border: "1px solid black", padding: "8px" }}>Democratic Seat Share</td>
-                        <td style={{ border: "1px solid black", padding: "8px" }}>{`${100 - currentDistrictPlanSummary.republican_democratic_split * 100}`}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>{`${(100 - currentDistrictPlanSummary.republican_democratic_split * 100).toFixed(2)}`}%</td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>{(mmdsummaryData.democratic_seat_share * 100).toFixed(2)}%</td>
                     </tr>
                 </tbody>
