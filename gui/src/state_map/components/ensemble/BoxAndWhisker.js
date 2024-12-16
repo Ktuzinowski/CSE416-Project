@@ -168,7 +168,7 @@ export const BoxAndWhisker = ({ state }) => {
                             data={combinedPlotData?.traces || []}
                             layout={{
                                 yaxis: { title: `${valueForDropdownCompare.charAt(0).toUpperCase() + valueForDropdownCompare.slice(1)} Percentage` },
-                                xaxis: { title: "Bins" },
+                                xaxis: { title: "Districting Plan" },
                                 showlegend: true,
                                 legend: {
                                     orientation: "h",

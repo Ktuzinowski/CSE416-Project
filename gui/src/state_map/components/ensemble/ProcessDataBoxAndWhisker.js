@@ -126,125 +126,133 @@ export const combinePlotData = (smdData, mmdData) => {
     const binsSmd = smdData.bins;
     const currentDistricts = smdData.current_districts;
 
-    let maxY = -Infinity; // Track the maximum Y value for annotation positioning.
-    let minY = Infinity; // Track the minimum Y value for annotation positioning.
+    let maxYSMD = -Infinity;
+    let minYSMD = Infinity;
 
-    // Prepare the enacted district plans scatter plot data
+    // Combine x-axis labels for SMD and MMD
+    const smdLabels = binsSmd.map(bin => `SMD Bin ${bin.bin}`);
+    const mmdLabels = bins.flatMap(binData =>
+        Object.entries(binData).flatMap(([key, districts]) =>
+            districts.map(district => `MMD Bin ${district.bin}`)
+        )
+    );
+
+    const xLabels = [...smdLabels, ...mmdLabels];
+
+    // Prepare the enacted district plan scatter plot data
     const enactedData = {
         type: "scatter",
         mode: "markers",
         name: "Enacted District Plan",
-        x: [], // Placeholder for bin names
-        y: [], // Placeholder for district values
+        x: [],
+        y: [],
         marker: { color: "red", size: 8, symbol: "circle" },
     };
 
-    binsSmd.forEach((bin) => {
-        const point = currentDistricts.find((district) => district.district === bin.bin);
+    binsSmd.forEach(bin => {
+        const point = currentDistricts.find(district => district.district === bin.bin);
         if (point) {
-            enactedData.x.push(`${bin.bin}`);
+            enactedData.x.push(`SMD Bin ${bin.bin}`);
             enactedData.y.push(point.value);
 
-            // Update max and min Y values for proper annotation positioning
-            maxY = Math.max(maxY, point.value);
-            minY = Math.min(minY, point.value);
+            maxYSMD = Math.max(maxYSMD, point.value);
+            minYSMD = Math.min(minYSMD, point.value);
         }
     });
 
-    // Push the enactedData trace into the traces array
     traces.push(enactedData);
 
     // Add SMD Districts box plots
-    binsSmd.forEach((bin) => {
-        const boxPlotSmdData = {
+    binsSmd.forEach(bin => {
+        maxYSMD = Math.max(maxYSMD, bin.max);
+        minYSMD = Math.min(minYSMD, bin.min);
+        traces.push({
             type: "box",
-            name: "SMD Districts", // Legend group name for SMD
-            x: [`${bin.bin}`], // Assign the district name as the x-axis value
+            name: "SMD Districts",
+            x: [`SMD Bin ${bin.bin}`],
             q1: [bin.q1],
             median: [bin.median],
             q3: [bin.q3],
             lowerfence: [bin.min],
             upperfence: [bin.max],
-            boxpoints: false, // Hide individual points
-            showlegend: bin.bin === binsSmd[0].bin, // Show legend only for the first bin            , // Include in legend
-            legendgroup: "SMD Districts", // Group traces under a single legend entry
-            fillcolor: "rgba(255, 255, 255, 0.3)", // Semi-transparent white fill
-            line: {
-                color: "black", // Border color for the box
-                width: 1.5 // Width of the border
-            }
-        };
-        traces.push(boxPlotSmdData);
+            boxpoints: false,
+            showlegend: bin.bin === binsSmd[0].bin,
+            legendgroup: "SMD Districts",
+            fillcolor: "rgba(255, 255, 255, 0.3)",
+            line: { color: "black", width: 1.5 },
+        });
     });
 
-    maxY = -Infinity; // Track the maximum Y value for annotation positioning.
-    minY = Infinity; // Track the minimum Y value for annotation positioning.
+    let maxYMMD = -Infinity
+    let minYMMD = Infinity
 
     // Add MMD Districts box plots
-    bins.forEach((binData) => {
+    bins.forEach(binData => {
+        
         Object.entries(binData).forEach(([key, districts]) => {
-            districts.forEach((district) => {
+            districts.forEach(district => {
                 traces.push({
                     type: "box",
-                    name: "MMD Districts", // Legend group name for MMD
-                    x: [district.bin],
+                    name: "MMD Districts",
+                    x: [`MMD Bin ${district.bin}`],
                     q1: [district.q1],
                     median: [district.median],
                     q3: [district.q3],
                     lowerfence: [district.min],
                     upperfence: [district.max],
                     boxpoints: false,
-                    showlegend: true, // Include in legend
-                    legendgroup: "MMD", // Group traces under "MMD Districts"
-                    fillcolor: "rgba(0, 255, 255, 0.3)", // Transparent blue color
-                    line: {
-                        color: "black",
-                        width: 1.5
-                    }
+                    showlegend: districts[0] === district,
+                    legendgroup: "MMD",
+                    fillcolor: "rgba(0, 255, 255, 0.3)",
+                    line: { color: "black", width: 1.5 },
                 });
 
-                maxY = Math.max(maxY, district.max);
-                minY = Math.min(minY, district.min);
+                maxYMMD = Math.max(maxYMMD, district.max);
+                minYMMD = Math.min(minYMMD, district.min);
             });
         });
     });
 
-    bins.forEach((binData) => {
+    bins.forEach(binData => {
         Object.entries(binData).forEach(([key, districts]) => {
-            districts.forEach((district) => {
+            districts.forEach(district => {
                 annotations.push({
-                    x: district.bin,
-                    y: maxY + 0.015, // Position slightly above the highest value.
+                    x: `MMD Bin ${district.bin}`,
+                    y: maxYMMD + 0.015,
                     text: `${key} Reps`,
-                    font: {
-                        size: 12,
-                        color: "black"
-                    },
+                    font: { size: 12, color: "black" },
                     showarrow: false,
                     xref: "x",
-                    yref: "y"
-                });
-
-                // Add a vertical dashed line after each bin.
-                shapes.push({
-                    type: "line",
-                    x0: district.bin + 0.5, // Start of the line (between bins).
-                    x1: district.bin + 0.5, // End of the line (same x-coordinate).
-                    y0: minY, // Start at the bottom of the Y-axis.
-                    y1: maxY + 0.01, // Extend slightly above the max value.
-                    line: {
-                        color: "gray",
-                        width: 1,
-                        dash: "dash"
-                    }
+                    yref: "y",
                 });
             });
         });
     });
 
-    shapes.pop(); // Remove last line
+    // Add dashed line separating SMD and MMD
+    shapes.push({
+        type: "line",
+        x0: smdLabels.length - 0.5, // Boundary between SMD and MMD
+        x1: smdLabels.length - 0.5,
+        y0: (minYSMD < minYMMD ? minYSMD : minYMMD),
+        y1: (maxYSMD > maxYMMD ? maxYSMD : maxYMMD) + 0.01,
+        line: { color: "gray", width: 2, dash: "dash" },
+    });
 
-    return { traces, annotations, shapes };
+    return {
+        traces,
+        annotations,
+        shapes,
+        layout: {
+            xaxis: {
+                type: "category",
+                categoryorder: "array",
+                categoryarray: xLabels,
+            },
+        },
+    };
 };
+
+
 
 
