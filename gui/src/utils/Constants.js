@@ -118,8 +118,7 @@ export const RightAnalysisSearchOptions = {
 
 export const RightAnalysisSummaryOptions = {
   Current: "Current",
-  SMD: "SMD",
-  MMD: "MMD"
+  SMD_MMD: "SMD/MMD"
 }
 
 export const BoxAndWhiskerPlotBOC = {

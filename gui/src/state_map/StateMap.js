@@ -41,6 +41,7 @@ export const StateMap = ({ state }) => {
   const [currentSmdDistrict, setCurrentSmdDistrict] = useState(null);
   const [currentMmdDistrict, setCurrentMmdDistrict] = useState(null);
   const [selectedSmdDistrict, setSelectedSmdDistrict] = useState(false);
+  const [selectedMmdDistrict, setSelectedMmdDistrict] = useState(false);
 
   const geoJsonRefCurrentDistricts = useRef();
   const geoJsonRefSmdDistricts = useRef();
@@ -162,6 +163,20 @@ export const StateMap = ({ state }) => {
       loadSmdDistrictPlans(currentSmdDistrict);
     }
   }, [currentSmdDistrict])
+
+  useEffect(() => {
+    const loadMmdDistrictPlans = async (currentMmdDistrict) => {
+      try {
+        const mmdDistrictPlans = await getMmdDistrictPlan(currentMmdDistrict);
+        setMmdDistricts(mmdDistrictPlans);
+      } catch (error) {
+        console.error("Failed to load mmd plans:", error.message);
+      }
+    }
+    if (currentMmdDistrict) {
+      loadMmdDistrictPlans(currentMmdDistrict);
+    }
+  }, [currentMmdDistrict])
 
   const setStyleForPrecinctSelection = useCallback((feature) => {
     
@@ -449,7 +464,7 @@ export const StateMap = ({ state }) => {
       });
   
       // Add a marker at the centroid
-      markers.push(L.marker([centroid[1] + 0.2, centroid[0] - 0.6], { icon: labelIcon }).addTo(map));
+      markers.push(L.marker([centroid[1] - 0.1, centroid[0] + 0.1], { icon: labelIcon }).addTo(map));
     });
     return markers;
   };
@@ -475,8 +490,11 @@ export const StateMap = ({ state }) => {
       <div className="map-wrapper">
           {!isRightAnalysisPanelExpanded && <LeftDataPanel
           selectedSmdDistrict={selectedSmdDistrict}
+          selectedMmdDistrict={selectedMmdDistrict}
           setSelectedSmdDistrict={setSelectedSmdDistrict}
+          setSelectedMmdDistrict={setSelectedMmdDistrict}
           currentSmdDistrict={currentSmdDistrict}
+          currentMmdDistrict={currentMmdDistrict}
           districtData={congressionalDistricts}
           smdData={smdDistricts}
           mmdData={mmdDistricts}
@@ -556,6 +574,9 @@ export const StateMap = ({ state }) => {
           setIsRightAnalysisPanelExpanded={setIsRightAnalysisPanelExpanded} 
           state={state} 
           currentSmdDistrict={currentSmdDistrict}
+          currentMmdDistrict={currentMmdDistrict}
+          setCurrentMmdDistrict={setCurrentMmdDistrict}
+          setSelectedMmdDistrict={setSelectedMmdDistrict}
           setCurrentSmdDistrict={setCurrentSmdDistrict}
           setSelectedSmdDistrict={setSelectedSmdDistrict}
         />}
