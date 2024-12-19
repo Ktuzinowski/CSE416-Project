@@ -23,7 +23,8 @@ const REQUESTS = {
     SMD_DISTRICT_PLAN_SUMMARY: "smd_district_plans/summary",
     SMD_DISTRICT_PLAN_ELECTIONS: "smd_district_plans/election_data",
     SMD_SEAT_VOTE_CURVE: "smd_district_plans/seat_vote_curve",
-    MMD_DISTRICT_PLAN: "mmd_district_plans"
+    MMD_DISTRICT_PLAN: "mmd_district_plans",
+    MMD_DISTRICT_PLAN_SUMMARIES: "mmd_district_plans/summaries"
 }
 
 const makeRequest = async (requestType, params = {}, config = {}) => {
@@ -185,6 +186,16 @@ export const getMmdDistrictPlan = async (name) => {
         return data;
     } catch (error) {
         console.error(`Failed to fetch smd district plan for name ${name}:`, error.message);
+        throw error;
+    }
+}
+
+export const getMmdDistrictPlansSummaries = async (state) => {
+    try {
+        const data = await makeRequest(REQUESTS.MMD_DISTRICT_PLAN_SUMMARIES, {state: state});
+        return data;
+    } catch (error) {
+        console.error(`Failed to fetch smd district plan summaries for state ${state}`, error.message);
         throw error;
     }
 }

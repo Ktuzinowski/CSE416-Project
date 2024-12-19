@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpandAlt, faCompressAlt } from '@fortawesome/free-solid-svg-icons';
 import Icon from "../utils/Icon";
 import "../App.css";
-import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties } from "../utils/MongoDocumentProperties";
+import { PrecinctsFeatureProperties, CurrentDistrictPlansFeatureProperties, MmdDistrictPlansFeatureProperties } from "../utils/MongoDocumentProperties";
 import { COLORS, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom, BoundaryChoroplethOptions, ViewDataOptions} from "../utils/Constants";
 
 
@@ -14,6 +14,15 @@ export const LeftDataPanel = ({ selectedSmdDistrict, setSelectedSmdDistrict, cur
     const [selectedFeature, setSelectedFeature] = useState(null); // Local state to track the selected feature
     const [displayAnalysisScreen, setDisplayAnalysisScreen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+
+    useEffect(() => {
+        console.log("Selected Data View Option updated:", selectedDataViewOption);
+        if (selectedDataViewOption === ViewDataOptions.MMD) {
+            const keys = ["index", ...Object.keys(MmdDistrictPlansFeatureProperties)];
+            setColumnNames(keys);
+            setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
+        }
+    }, [selectedDataViewOption]);
 
     useEffect(() => {
         if (selectedDataViewOption === ViewDataOptions.Current && districtData !== null) {
@@ -27,7 +36,7 @@ export const LeftDataPanel = ({ selectedSmdDistrict, setSelectedSmdDistrict, cur
             setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
         }
         else if (selectedDataViewOption === ViewDataOptions.MMD && mmdData !== null) {
-            const keys = ["index", ...Object.keys(CurrentDistrictPlansFeatureProperties)];
+            const keys = ["index", ...Object.keys(MmdDistrictPlansFeatureProperties)];
             setColumnNames(keys);
             setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
         }
@@ -36,7 +45,7 @@ export const LeftDataPanel = ({ selectedSmdDistrict, setSelectedSmdDistrict, cur
             setColumnNames(keys);
             setPinnedColumns(keys.reduce((acc, key) => ({ ...acc, [key]: false }), {}));
         }
-    }, [districtData, precinctData, selectedDataViewOption, selectedDataViewOption]);
+    }, [districtData, precinctData, selectedDataViewOption]);
 
     useEffect(() => {
         if (currentSmdDistrict && selectedSmdDistrict) {
@@ -267,6 +276,7 @@ const Legend = ({ selectedColumn }) => {
                                return (
                                 <tr key={index} onMouseEnter={() => handleHoverOverRowOfData(feature)} onMouseLeave={() => handleLeaveHoverOverData(feature)}>
                                     {getVisibleColumns().map((key, idx) => {
+                                        console.log(selectedDataViewOption)
                                         if (!isExpanded && key === "index") {
                                             return (
                                                 <td key={idx} style={{textAlign: "left", display: "flex", justifyContent: "space-between"}}>
@@ -291,6 +301,56 @@ const Legend = ({ selectedColumn }) => {
                                                     {index}
                                                 </td>
                                             )
+                                        }
+                                        else if (key == MmdDistrictPlansFeatureProperties.representatives && selectedDataViewOption === ViewDataOptions.MMD) {
+                                            // handle mmd data
+                                            // doesn't exist
+                                            if (!("election_data" in feature.properties)) {
+                                                // Key "election_data" is not present
+                                                return <td key={idx} style={{ textAlign: "right" }}></td>
+                                            }
+                                            
+                                            const electionWinners = feature.properties["election_data"]["elected"].map((winner) => {
+                                                return winner[0] // get the name of the winner
+                                            })
+                                            var stringForElectionWinners = ""
+                                            for (let i = 0; i < electionWinners.length; i++) {
+                                                if (i == electionWinners.length - 1) {
+                                                stringForElectionWinners += electionWinners[i]
+                                                }
+                                                else {
+                                                stringForElectionWinners += electionWinners[i] + ", "
+                                                }
+                                            }
+                                            return (
+                                                <td key={idx} style={{ textAlign: "right" }}>
+                                                    {stringForElectionWinners}
+                                                </td>
+                                            );
+                                        }
+                                        else if (key == MmdDistrictPlansFeatureProperties.incumbents) {
+                                            // handle mmd data
+                                            if (!("election_data" in feature.properties)) {
+                                                // Key "election_data" is not present
+                                                return <td key={idx} style={{ textAlign: "right" }}></td>
+                                            }
+                                            const incumbentParties = feature.properties["election_data"]["elected"].map((winner) => {
+                                                return winner[1] // get the name of the winner
+                                            })
+                                            var stringForIncumbentParties = ""
+                                            for (let i = 0; i < incumbentParties.length; i++) {
+                                                if (i == incumbentParties.length - 1) {
+                                                    stringForIncumbentParties += incumbentParties[i]
+                                                }
+                                                else {
+                                                    stringForIncumbentParties += incumbentParties[i] + ", "
+                                                }
+                                            }
+                                            return (
+                                                <td key={idx} style={{ textAlign: "right" }}>
+                                                    {stringForIncumbentParties}
+                                                </td>
+                                            );
                                         }
                                         return (
                                             <td key={idx} style={{ textAlign: "right" }}>

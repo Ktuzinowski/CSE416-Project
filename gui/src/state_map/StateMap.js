@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css"
 import { LeftDataPanel } from "./LeftDataPanel";
 import { MAPBOX_ACCESS_TOKEN, COLORS, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom, BoundaryChoroplethOptions, ViewDataOptions} from "../utils/Constants";
 import { CurrentDistrictPlansProperties, CurrentDistrictPlansFeatureProperties, PrecinctsFeatureProperties } from "../utils/MongoDocumentProperties";
-import { getDistrictDataPopupContent, getPrecinctDataPopupContent } from "./PopupStyling";
+import { getDistrictDataPopupContent, getPrecinctDataPopupContent, getMmdDistrictDataPopupContent } from "./PopupStyling";
 import { MapFilter } from "./MapFilter";
 import { RightAnalysisPanel } from "./RightAnalysisPanel"
 import L from "leaflet"
@@ -39,6 +39,7 @@ export const StateMap = ({ state }) => {
   const [selectedDataViewOption, setSelectedDataViewOption] = useState(ViewDataOptions.Current);
 
   const [currentSmdDistrict, setCurrentSmdDistrict] = useState(null);
+  const [currentMmdDistrict, setCurrentMmdDistrict] = useState(null);
   const [selectedSmdDistrict, setSelectedSmdDistrict] = useState(false);
 
   const geoJsonRefCurrentDistricts = useRef();
@@ -107,7 +108,6 @@ export const StateMap = ({ state }) => {
       try {
         const state_mmd = `${state}_mmd_0`
         const mmdDistrictPlans = await getMmdDistrictPlan(state_mmd);
-        console.log(mmdDistrictPlans)
 
         setMmdDistricts(mmdDistrictPlans);
         const colorsForDistricts = {}
@@ -120,7 +120,6 @@ export const StateMap = ({ state }) => {
             fillOpacity: 0.6
           };
         });
-        console.log("Colors for districts", colorsForDistricts)
 
         setMmdDistrictColors(colorsForDistricts);
       } catch (error) {
@@ -272,7 +271,6 @@ export const StateMap = ({ state }) => {
     const district = feature.properties.district;
 
     if (selectedDataColumn === "") {
-      console.log(districtColors[district].fillColor)
       return {
         color: choroplethBoundarySelection === boundary ? districtColors[district].color : districtColors[district].fillColor, // border color for each district
         fillColor: districtColors[district].fillColor, // unique c
@@ -306,6 +304,11 @@ export const StateMap = ({ state }) => {
 
   const showDistrictData = (feature, layer) => {
     const popupContent = getDistrictDataPopupContent(feature);
+    layer.bindPopup(popupContent);
+  }
+
+  const showMmdDistrictData = (feature, layer) => {
+    const popupContent = getMmdDistrictDataPopupContent(feature);
     layer.bindPopup(popupContent);
   }
 
@@ -530,7 +533,7 @@ export const StateMap = ({ state }) => {
               ref={geoJsonRefMmdDistricts} // Set reference to GeoJSON layer
               data={mmdDistricts}
               style={(feature) => styleDistricts(BoundaryChoroplethOptions.MMD, mmdDistrictColors, feature)}
-              onEachFeature={showDistrictData}
+              onEachFeature={showMmdDistrictData}
               />
             )}
 
