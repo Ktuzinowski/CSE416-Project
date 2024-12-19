@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getSmdDistrictPlanElections } from "../../../../axiosClient";
+import { mmdElectionResults } from "../../../../utils/Constants";
+
 
 export const SmdElectionResults = ({ name, nameMmd }) => {
   const [electionData, setElectionData] = useState(null);
@@ -31,28 +33,38 @@ export const SmdElectionResults = ({ name, nameMmd }) => {
   ];
 
   return (
+
+    <>
     <div className="supp">
-      <p style={{fontSize: "15px"}}><b>Category:</b> {electionData.interesting_description}</p>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th style={{ border: "1px solid black", padding: "2px" }}>Category</th>
-            {electionData.features.map((_, index) => (
-              <th key={index} style={{ border: "1px solid black", padding: "2px" }}>District {index + 1}</th>
+    <p style={{fontSize: "15px"}}><b>Category:</b> {electionData.interesting_description}</p>
+    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid black", padding: "2px" }}>Category</th>
+          {electionData.features.map((_, index) => (
+            <th key={index} style={{ border: "1px solid black", padding: "2px" }}>District {index + 1}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {categories.map((category, index) => (
+          <tr key={index}>
+            <td style={{ border: "1px solid black", padding: "2px" }}>{category.label}</td>
+            {electionData.features.map((feature, featureIndex) => (
+              <td key={featureIndex} style={{ border: "1px solid black", padding: "2px" }}>{category.key(feature)}</td>
             ))}
           </tr>
-        </thead>
-        <tbody>
-          {categories.map((category, index) => (
-            <tr key={index}>
-              <td style={{ border: "1px solid black", padding: "2px" }}>{category.label}</td>
-              {electionData.features.map((feature, featureIndex) => (
-                <td key={featureIndex} style={{ border: "1px solid black", padding: "2px" }}>{category.key(feature)}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
+  </div>
+    
+ 
+    </>
+
+    
+
+
+
   );
 };
