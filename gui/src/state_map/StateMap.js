@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { getCurrentDistrictPlans, getPrecincts, getSmdDistrictPlan } from "../axiosClient";
+import { getCurrentDistrictPlans, getPrecincts, getSmdDistrictPlan, getMmdDistrictPlan } from "../axiosClient";
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css"
 import { LeftDataPanel } from "./LeftDataPanel";
@@ -105,8 +105,9 @@ export const StateMap = ({ state }) => {
 
     const loadMmdDistrictPlans = async (lengthOfPreviousDistricts) => {
       try {
-        const state_mmd = `${state}_mmd`
-        const mmdDistrictPlans = await getCurrentDistrictPlans(state_mmd);
+        const state_mmd = `${state}_mmd_0`
+        const mmdDistrictPlans = await getMmdDistrictPlan(state_mmd);
+        console.log(mmdDistrictPlans)
 
         setMmdDistricts(mmdDistrictPlans);
         const colorsForDistricts = {}
@@ -115,10 +116,11 @@ export const StateMap = ({ state }) => {
           const district = feature.properties.district;
           colorsForDistricts[district] = {
             color: "black", // outline
-            fillColor: COLORS[lengthOfPreviousDistricts + index],
+            fillColor: COLORS[COLORS.length - 1 - index],
             fillOpacity: 0.6
           };
         });
+        console.log("Colors for districts", colorsForDistricts)
 
         setMmdDistrictColors(colorsForDistricts);
       } catch (error) {
@@ -270,6 +272,7 @@ export const StateMap = ({ state }) => {
     const district = feature.properties.district;
 
     if (selectedDataColumn === "") {
+      console.log(districtColors[district].fillColor)
       return {
         color: choroplethBoundarySelection === boundary ? districtColors[district].color : districtColors[district].fillColor, // border color for each district
         fillColor: districtColors[district].fillColor, // unique c
@@ -430,6 +433,7 @@ export const StateMap = ({ state }) => {
     const markers = [];
     geojsonData.features.forEach((feature) => {
       const district = feature.properties.district;
+      const number_of_reps = feature.properties.number_of_reps
   
       // Calculate the centroid of the district
       const centroid = turf.centroid(feature.geometry).geometry.coordinates;
@@ -437,7 +441,7 @@ export const StateMap = ({ state }) => {
       // Create a div icon for the label
       const labelIcon = L.divIcon({
         className: "district-label", // Define custom styles in CSS
-        html: `<div>${"4 Representatives"}</div>`,
+        html: `<div>D${district} ${number_of_reps} Reps.</div>`,
         iconSize: null, // Adjust size in CSS
       });
   
