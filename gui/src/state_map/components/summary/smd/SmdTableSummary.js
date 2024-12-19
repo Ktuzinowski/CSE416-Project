@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { getSmdDistrictPlanSummary } from "../../../../axiosClient"
+import { getMmdDistrictPlanSummary } from "../../../../axiosClient"
 
 export const SmdTableSummary = ({ name }) => {
     const [summaryData, setSummaryData] = useState(null);
+    const [mmdSummaryData, setMmdSummaryData] = useState(null);
 
     useEffect(() => {
         const loadSummaryData = async (name) => {
             const data = await getSmdDistrictPlanSummary(name);
+           // const data2 = await getMmdDistrictPlanSummary(name);
             setSummaryData(data);
+            //setMmdSummaryData(data2)
             console.log(data);
+            //console.log(data2);
         } 
         if (name) {
             loadSummaryData(name);
