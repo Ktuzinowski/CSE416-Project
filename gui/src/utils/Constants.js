@@ -205,3 +205,175 @@ export const MmdSummaryAverageReps = {
   average_democratic_representatives: 1,
   average_republican_democratic_split: [3, 1]
 }
+
+export const mmdElectionResults = 
+  [
+    {
+        "num_seats": 3,
+        "1": {
+            "elected": [
+                [
+                    "D0",
+                    "Democratic",
+                    267403
+                ],
+                [
+                    "D1",
+                    "Democratic",
+                    267403
+                ],
+                [
+                    "R0",
+                    "Republican",
+                    432504
+                ]
+            ],
+            "losers": [
+                [
+                    "R1",
+                    "Republican",
+                    259947
+                ],
+                [
+                    "D2",
+                    "Democratic",
+                    193066.81959947312
+                ],
+                [
+                    "R2",
+                    "Republican",
+                    259599
+                ]
+            ],
+            "mmd_geometry": {
+                "type": "Feature",
+                "properties": {
+                    "P0010001": 2307409,
+                    "G20PRERTRU": 519470,
+                    "G20PREDBID": 550138,
+                    "P0010003": 1328817,
+                    "P0010004": 86749,
+                    "P0010006": 57523,
+                    "P0020002": 762452,
+                    "P0010007": 4296,
+                    "P0010005": 196491,
+                    "P0010008": 294523,
+                    "OPPORTUNITY": 1,
+                    "POP_DEV": 3.21
+                }
+            }
+        }
+    },
+    {
+        "num_seats": 3,
+        "2": {
+            "elected": [
+                [
+                    "R1",
+                    "Republican",
+                    283076
+                ],
+                [
+                    "R2",
+                    "Republican",
+                    283076
+                ],
+                [
+                    "D1",
+                    "Democratic",
+                    463019
+                ]
+            ],
+            "losers": [
+                [
+                    "D2",
+                    "Democratic",
+                    277344
+                ],
+                [
+                    "R0",
+                    "Republican",
+                    199097.86280306824
+                ],
+                [
+                    "D0",
+                    "Democratic",
+                    277418
+                ]
+            ],
+            "mmd_geometry": {
+                "type": "Feature",
+                "properties": {
+                    "P0010001": 2502858,
+                    "G20PRERTRU": 576869,
+                    "G20PREDBID": 555432,
+                    "P0010003": 1485074,
+                    "P0010004": 129388,
+                    "P0010006": 86052,
+                    "P0020002": 847245,
+                    "P0010007": 4684,
+                    "P0010005": 58371,
+                    "P0010008": 383285,
+                    "OPPORTUNITY": 1,
+                    "POP_DEV": 4.99
+                }
+            }
+        }
+    },
+    {
+        "num_seats": 3,
+        "0": {
+            "elected": [
+                [
+                    "D0",
+                    "Democratic",
+                    266661
+                ],
+                [
+                    "D2",
+                    "Democratic",
+                    266661
+                ],
+                [
+                    "R1",
+                    "Republican",
+                    423290
+                ]
+            ],
+            "losers": [
+                [
+                    "R2",
+                    "Republican",
+                    253687
+                ],
+                [
+                    "D1",
+                    "Democratic",
+                    202727.55740455203
+                ],
+                [
+                    "R0",
+                    "Republican",
+                    253859
+                ]
+            ],
+            "mmd_geometry": {
+                "type": "Feature",
+                "properties": {
+                    "P0010001": 2348419,
+                    "G20PRERTRU": 507822,
+                    "G20PREDBID": 558819,
+                    "P0010003": 1365771,
+                    "P0010004": 111888,
+                    "P0010006": 83178,
+                    "P0020002": 835291,
+                    "P0010007": 5958,
+                    "P0010005": 81527,
+                    "P0010008": 320260,
+                    "OPPORTUNITY": 1,
+                    "POP_DEV": 1.49
+                }
+            }
+        }
+    }
+]
