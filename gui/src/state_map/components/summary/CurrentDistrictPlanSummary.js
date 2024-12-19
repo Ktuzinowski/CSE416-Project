@@ -22,7 +22,7 @@ export const CurrentDistrictPlanSummary = ({ state }) => {
         }
     }, [state]);
 
-    if (!currentDistrictPlanSummary) {
+    if (!currentDistrictPlanSummary || !currentDistrictPlanSummary) {
         return <p>Loading...</p>;
     }
 

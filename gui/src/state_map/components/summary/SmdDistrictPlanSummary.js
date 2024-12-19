@@ -9,7 +9,7 @@ export const SmdDistrictPlanSummary = ({ name, nameMmd }) => {
     return (
         <>
             <div className="right_data_panel_current_selection" style={{marginBottom: "-5px"}}>
-                <h2 className="right_data_panel_title">{`SMD Summary`}</h2>
+                <h2 className="right_data_panel_title">{`SMD/MMD Summary`}</h2>
                 <select 
                 value={currentVisualization}
                 onChange={(e) => setCurrentVisualization(e.target.value)}

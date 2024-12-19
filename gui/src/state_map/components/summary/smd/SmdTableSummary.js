@@ -25,7 +25,7 @@ export const SmdTableSummary = ({ name, nameMmd }) => {
         }
     }, [name, nameMmd])
 
-    if (!summaryData) {
+    if (!summaryData || !mmdSummaryData) {
         return (
             <h1>Loading...</h1>
         )
