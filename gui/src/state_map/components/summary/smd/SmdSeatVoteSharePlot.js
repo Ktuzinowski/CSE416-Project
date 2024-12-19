@@ -29,7 +29,7 @@ export const SmdSeatVoteSharePlot = ({ name }) => {
     return (
         <div style={{overflow: "hidden"}}>
             <div className="summaryData" style={{display: "flex", flexDirection: "row", gap: "10px", marginTop: "-10px"}}>
-            <p><b>Partison Bias</b>: {voteSeatShareData.partisan_bias.toFixed(2)}</p>
+            <p><b>Partisan Bias</b>: {voteSeatShareData.partisan_bias.toFixed(2)}</p>
             <p><b>Symmetry</b>: {voteSeatShareData.symmetry.toFixed(2)}</p>
             <p><b>Responsiveness</b>: {voteSeatShareData.responsiveness.toFixed(2)}</p>
         </div>
