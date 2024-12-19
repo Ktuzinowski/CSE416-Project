@@ -23,7 +23,6 @@ export const COLORS = [
     'rgb(255, 20, 147)',    // Deep Pink
     'rgb(127, 255, 0)',     // Chartreuse
     'rgb(255, 218, 185)',    // Peach
-    'rgb(135, 206, 250)',   // Light Sky Blue
     'rgb(186, 85, 211)',    // Medium Orchid
     'rgb(255, 140, 0)',     // Dark Orange
     'rgb(255, 0, 255)',     // Magenta
@@ -119,8 +118,7 @@ export const RightAnalysisSearchOptions = {
 
 export const RightAnalysisSummaryOptions = {
   Current: "Current",
-  SMD: "SMD",
-  MMD: "MMD"
+  SMD_MMD: "SMD/MMD"
 }
 
 export const BoxAndWhiskerPlotBOC = {

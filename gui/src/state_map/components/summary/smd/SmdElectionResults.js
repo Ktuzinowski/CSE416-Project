@@ -3,7 +3,7 @@ import { getSmdDistrictPlanElections } from "../../../../axiosClient";
 import { mmdElectionResults } from "../../../../utils/Constants";
 
 
-export const SmdElectionResults = ({ name }) => {
+export const SmdElectionResults = ({ name, nameMmd }) => {
   const [electionData, setElectionData] = useState(null);
 
   useEffect(() => {

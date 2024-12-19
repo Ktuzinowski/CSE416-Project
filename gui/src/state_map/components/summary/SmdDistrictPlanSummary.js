@@ -3,7 +3,7 @@ import { VisualizationSmdSummaryOptions } from "../../../utils/Constants";
 import { SmdTableSummary } from "./smd/SmdTableSummary";
 import { SmdElectionResults } from "./smd/SmdElectionResults";
 import { SmdSeatVoteSharePlot } from "./smd/SmdSeatVoteSharePlot";
-export const SmdDistrictPlanSummary = ({ name }) => {
+export const SmdDistrictPlanSummary = ({ name, nameMmd }) => {
     const [currentVisualization, setCurrentVisualization] = useState(VisualizationSmdSummaryOptions.Summary);
 
     return (
@@ -27,10 +27,10 @@ export const SmdDistrictPlanSummary = ({ name }) => {
 </div>
             {
                 currentVisualization === VisualizationSmdSummaryOptions.Summary ? (
-                    <SmdTableSummary name={name} />
+                    <SmdTableSummary name={name} nameMmd={nameMmd} />
                 ) :
                 currentVisualization === VisualizationSmdSummaryOptions.ElectionResults ? (
-                    <SmdElectionResults name={name} />
+                    <SmdElectionResults name={name} nameMmd={nameMmd} />
                 ) :
                 (
                     <SmdSeatVoteSharePlot name={name} />
