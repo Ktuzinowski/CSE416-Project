@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getCurrentDistrictPlanSummary, getMmdEnsembleSummaryData } from "../../../axiosClient";
+import { mmdAverageArizona } from "../../../utils/Constants";
+
 
 export const CurrentDistrictPlanSummary = ({ state }) => {
     const [currentDistrictPlanSummary, setCurrentDistrictPlanSummary] = useState(null);
@@ -40,7 +42,7 @@ export const CurrentDistrictPlanSummary = ({ state }) => {
                     <tr>
                         <td style={{ border: "1px solid black", padding: "8px" }}>Opportunity Representatives</td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>{currentDistrictPlanSummary.opportunity_districts}</td>
-                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.minority_representatives}</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>1</td>
                     </tr>
                     <tr>
                         <td style={{ border: "1px solid black", padding: "8px" }}>Republican-Democratic Split</td>
@@ -48,7 +50,7 @@ export const CurrentDistrictPlanSummary = ({ state }) => {
                             {`${(currentDistrictPlanSummary.republican_democratic_split * currentDistrictPlanSummary.number_of_districts)} - ${(currentDistrictPlanSummary.number_of_districts - currentDistrictPlanSummary.republican_democratic_split * currentDistrictPlanSummary.number_of_districts)}`}
                         </td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>
-                            {`${mmdsummaryData.average_republican_democratic_split[0]} - ${mmdsummaryData.average_republican_democratic_split[1]}`}
+                            4 - 5
                         </td>
                     </tr>
                     <tr>
@@ -64,12 +66,12 @@ export const CurrentDistrictPlanSummary = ({ state }) => {
                     <tr>
                         <td style={{ border: "1px solid black", padding: "8px" }}>Republican Seat Share</td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>{`${(currentDistrictPlanSummary.republican_democratic_split * 100).toFixed(2)}`}%</td>
-                        <td style={{ border: "1px solid black", padding: "8px" }}>{(mmdsummaryData.republican_seat_share * 100).toFixed(2)}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>44.44%</td>
                     </tr>
                     <tr>
                         <td style={{ border: "1px solid black", padding: "8px" }}>Democratic Seat Share</td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>{`${(100 - currentDistrictPlanSummary.republican_democratic_split * 100).toFixed(2)}`}%</td>
-                        <td style={{ border: "1px solid black", padding: "8px" }}>{(mmdsummaryData.democratic_seat_share * 100).toFixed(2)}%</td>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>55.55%</td>
                     </tr>
                 </tbody>
             </table>
