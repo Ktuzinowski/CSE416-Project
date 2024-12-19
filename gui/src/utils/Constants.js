@@ -18,7 +18,6 @@ export const COLORS = [
     'rgb(255, 165, 0)',     // Bright Orange
     'rgb(75, 0, 130)',      // Indigo
     'rgb(0, 255, 127)',     // Spring Green
-    'rgb(204, 204, 255)',   // Lavender
     'rgb(255, 99, 71)',     // Tomato
     'rgb(34, 139, 34)',     // Forest Green
     'rgb(255, 20, 147)',    // Deep Pink

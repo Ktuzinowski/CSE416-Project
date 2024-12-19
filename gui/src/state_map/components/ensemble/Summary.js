@@ -86,8 +86,10 @@ export const Summary = ({ state }) => {
                     <tr>
                         <td style={{ border: "1px solid black", padding: "8px" }}>MMD Layout</td>
                         <td style={{ border: "1px solid black", padding: "8px" }}>N/A</td>
-                        <td style={{ border: "1px solid black", padding: "8px" }}>{mmdsummaryData.mmd_layout}</td>
-                    </tr>
+                        <td style={{ border: "1px solid black", padding: "8px" }}>
+                        {mmdsummaryData.mmd_layout.join('-')}
+                        </td>                   
+                        </tr>
                 </tbody>
             </table>
         );
