@@ -21,6 +21,22 @@ export const CurrentDistrictPlansProperties = {
     indigenous: "indigenous"
   }
 
+  export const MmdDistrictPlansFeatureProperties = {
+    district: "district",
+    incumbents: "incumbents",
+    representatives: "representatives",
+    population: "population",
+    republican: "republican",
+    democrat: "democrat",
+    white: "white",
+    black: "black",
+    hispanic: "hispanic",
+    asian: "asian",
+    pacific: "pacific",
+    other: "other",
+    indigenous: "indigenous"
+  }
+
   export const PrecinctsProperties = {
     name: "name",
     center: "center",

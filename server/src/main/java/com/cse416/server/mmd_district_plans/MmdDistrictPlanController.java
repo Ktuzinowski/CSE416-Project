@@ -1,5 +1,7 @@
 package com.cse416.server.mmd_district_plans;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,5 +17,10 @@ public class MmdDistrictPlanController {
 	@GetMapping("/mmd_district_plans")
 	public FeatureCollection getMmdDistrictPlan(@RequestParam("name") String name) {
 		return service.getDistrictPlanByName(name);
+	}
+	
+	@GetMapping("/mmd_district_plans/summaries")
+	public List<FeatureCollectionSummary> getSmdDistrictPlanSummaries(@RequestParam("state") String state) {
+		return service.getSummariesByState(state);
 	}
 }

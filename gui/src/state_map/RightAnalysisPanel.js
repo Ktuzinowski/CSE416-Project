@@ -8,10 +8,9 @@ import { Ensemble } from "./components/ensemble/Ensemble";
 import { SearchSMD } from "./components/search/SearchSMD";
 import { SearchMMD } from "./components/search/SearchMMD";
 import { SmdDistrictPlanSummary } from "./components/summary/SmdDistrictPlanSummary";
-import { MmdDistrictPlanSummary } from "./components/summary/MmdDistrictPlanSummary";
 import { CurrentDistrictPlanSummary } from "./components/summary/CurrentDistrictPlanSummary";
 
-export const RightAnalysisPanel = ({ setSelectedSmdDistrict, currentSmdDistrict, setCurrentSmdDistrict, state, setIsRightAnalysisPanelExpanded }) => {
+export const RightAnalysisPanel = ({ setSelectedMmdDistrict, currentMmdDistrict, setCurrentMmdDistrict, setSelectedSmdDistrict, currentSmdDistrict, setCurrentSmdDistrict, state, setIsRightAnalysisPanelExpanded }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [hoverOverEnsemble, setHoverOverEnsemble] = useState(false);
     const [hoverOverSearch, setHoverOverSearch] = useState(false);
@@ -23,7 +22,7 @@ export const RightAnalysisPanel = ({ setSelectedSmdDistrict, currentSmdDistrict,
     // Create state variables to keep track of the currently selected option
     const [ensembleOptionSelected, setEnsembleOptionSelected] = useState(RightAnalysisEnsembleOptions.SMD);
     const [searchOptionSelected, setSearchOptionSelected] = useState(RightAnalysisSearchOptions.SMD);
-    const [summaryOptionSelected, setSummaryOptionSelected] = useState(RightAnalysisSummaryOptions.SMD);
+    const [summaryOptionSelected, setSummaryOptionSelected] = useState(RightAnalysisSummaryOptions.SMD_MMD);
 
     const togglePanel = () => {
         setIsRightAnalysisPanelExpanded(!isExpanded);
@@ -54,7 +53,15 @@ export const RightAnalysisPanel = ({ setSelectedSmdDistrict, currentSmdDistrict,
         setSearchSelected(false);
         setSummarySelected(true);
         setSelectedSmdDistrict(true);
-        setSummaryOptionSelected(RightAnalysisSummaryOptions.SMD);
+        setSummaryOptionSelected(RightAnalysisSummaryOptions.SMD_MMD);
+    }
+
+    const handleNewMmdDistrictSelection = () => {
+        setEnsembleSelected(false);
+        setSearchSelected(false);
+        setSummarySelected(true);
+        setSelectedMmdDistrict(true);
+        setSummaryOptionSelected(RightAnalysisSummaryOptions.SMD_MMD);
     }
     
     return (
@@ -125,7 +132,7 @@ export const RightAnalysisPanel = ({ setSelectedSmdDistrict, currentSmdDistrict,
                                                 setSummaryOptionSelected(summaryOption);
                                                 handleLeavingOptions();
                                                 handleSelectOption(RightAnalysisPanelOptions.Summary);
-                                            }}>{summaryOption}</p>
+                                            }}>{RightAnalysisSummaryOptions[summaryOption]}</p>
                                         )
                                     })}
                                 </div>
@@ -147,22 +154,20 @@ export const RightAnalysisPanel = ({ setSelectedSmdDistrict, currentSmdDistrict,
                         searchOptionSelected === RightAnalysisSearchOptions.SMD ? (
                             <SearchSMD state={state} onMouseEnter={handleLeavingOptions} setCurrentSmdDistrict={setCurrentSmdDistrict} handleNewSmdDistrictSelection={handleNewSmdDistrictSelection} />
                         ) : (
-                            <SearchMMD state={state} onMouseEnter={handleLeavingOptions} />
+                            <SearchMMD state={state} onMouseEnter={handleLeavingOptions} setCurrentMmdDistrict={setCurrentMmdDistrict} handleNewMmdDistrictSelection={handleNewMmdDistrictSelection}/>
                         )
                     )
                 }
                 {
                     summarySelected && (
-                        summaryOptionSelected === RightAnalysisSummaryOptions.SMD ? (
-                            <SmdDistrictPlanSummary name={currentSmdDistrict} onMouseEnter={handleLeavingOptions} />
-                        ) : 
+                        
                         summaryOptionSelected === RightAnalysisSummaryOptions.Current ?
                         (
                             <CurrentDistrictPlanSummary state={state} />
                         ) :
                         (
-                            <MmdDistrictPlanSummary name={currentSmdDistrict} onMouseEnter={handleLeavingOptions} />
-                        )
+                            <SmdDistrictPlanSummary name={currentSmdDistrict} nameMmd={currentMmdDistrict} onMouseEnter={handleLeavingOptions} />
+                        ) 
                     )
                 }
             </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getSmdDistrictPlanElections } from "../../../../axiosClient";
 
-export const SmdElectionResults = ({ name }) => {
+export const SmdElectionResults = ({ name, nameMmd }) => {
   const [electionData, setElectionData] = useState(null);
 
   useEffect(() => {

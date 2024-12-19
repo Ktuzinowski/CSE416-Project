@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css"
 import { LeftDataPanel } from "./LeftDataPanel";
 import { MAPBOX_ACCESS_TOKEN, COLORS, colorScale, colorScaleRed, colorScaleBlue, centerOfTheUS, defaultZoom, defaultMinZoom, BoundaryChoroplethOptions, ViewDataOptions} from "../utils/Constants";
 import { CurrentDistrictPlansProperties, CurrentDistrictPlansFeatureProperties, PrecinctsFeatureProperties } from "../utils/MongoDocumentProperties";
-import { getDistrictDataPopupContent, getPrecinctDataPopupContent } from "./PopupStyling";
+import { getDistrictDataPopupContent, getPrecinctDataPopupContent, getMmdDistrictDataPopupContent } from "./PopupStyling";
 import { MapFilter } from "./MapFilter";
 import { RightAnalysisPanel } from "./RightAnalysisPanel"
 import L from "leaflet"
@@ -39,7 +39,9 @@ export const StateMap = ({ state }) => {
   const [selectedDataViewOption, setSelectedDataViewOption] = useState(ViewDataOptions.Current);
 
   const [currentSmdDistrict, setCurrentSmdDistrict] = useState(null);
+  const [currentMmdDistrict, setCurrentMmdDistrict] = useState(null);
   const [selectedSmdDistrict, setSelectedSmdDistrict] = useState(false);
+  const [selectedMmdDistrict, setSelectedMmdDistrict] = useState(false);
 
   const geoJsonRefCurrentDistricts = useRef();
   const geoJsonRefSmdDistricts = useRef();
@@ -107,7 +109,6 @@ export const StateMap = ({ state }) => {
       try {
         const state_mmd = `${state}_mmd_0`
         const mmdDistrictPlans = await getMmdDistrictPlan(state_mmd);
-        console.log(mmdDistrictPlans)
 
         setMmdDistricts(mmdDistrictPlans);
         const colorsForDistricts = {}
@@ -120,7 +121,6 @@ export const StateMap = ({ state }) => {
             fillOpacity: 0.6
           };
         });
-        console.log("Colors for districts", colorsForDistricts)
 
         setMmdDistrictColors(colorsForDistricts);
       } catch (error) {
@@ -163,6 +163,20 @@ export const StateMap = ({ state }) => {
       loadSmdDistrictPlans(currentSmdDistrict);
     }
   }, [currentSmdDistrict])
+
+  useEffect(() => {
+    const loadMmdDistrictPlans = async (currentMmdDistrict) => {
+      try {
+        const mmdDistrictPlans = await getMmdDistrictPlan(currentMmdDistrict);
+        setMmdDistricts(mmdDistrictPlans);
+      } catch (error) {
+        console.error("Failed to load mmd plans:", error.message);
+      }
+    }
+    if (currentMmdDistrict) {
+      loadMmdDistrictPlans(currentMmdDistrict);
+    }
+  }, [currentMmdDistrict])
 
   const setStyleForPrecinctSelection = useCallback((feature) => {
     
@@ -272,7 +286,6 @@ export const StateMap = ({ state }) => {
     const district = feature.properties.district;
 
     if (selectedDataColumn === "") {
-      console.log(districtColors[district].fillColor)
       return {
         color: choroplethBoundarySelection === boundary ? districtColors[district].color : districtColors[district].fillColor, // border color for each district
         fillColor: districtColors[district].fillColor, // unique c
@@ -306,6 +319,11 @@ export const StateMap = ({ state }) => {
 
   const showDistrictData = (feature, layer) => {
     const popupContent = getDistrictDataPopupContent(feature);
+    layer.bindPopup(popupContent);
+  }
+
+  const showMmdDistrictData = (feature, layer) => {
+    const popupContent = getMmdDistrictDataPopupContent(feature);
     layer.bindPopup(popupContent);
   }
 
@@ -446,7 +464,7 @@ export const StateMap = ({ state }) => {
       });
   
       // Add a marker at the centroid
-      markers.push(L.marker([centroid[1] + 0.2, centroid[0] - 0.6], { icon: labelIcon }).addTo(map));
+      markers.push(L.marker([centroid[1] - 0.1, centroid[0] + 0.1], { icon: labelIcon }).addTo(map));
     });
     return markers;
   };
@@ -472,8 +490,11 @@ export const StateMap = ({ state }) => {
       <div className="map-wrapper">
           {!isRightAnalysisPanelExpanded && <LeftDataPanel
           selectedSmdDistrict={selectedSmdDistrict}
+          selectedMmdDistrict={selectedMmdDistrict}
           setSelectedSmdDistrict={setSelectedSmdDistrict}
+          setSelectedMmdDistrict={setSelectedMmdDistrict}
           currentSmdDistrict={currentSmdDistrict}
+          currentMmdDistrict={currentMmdDistrict}
           districtData={congressionalDistricts}
           smdData={smdDistricts}
           mmdData={mmdDistricts}
@@ -530,7 +551,7 @@ export const StateMap = ({ state }) => {
               ref={geoJsonRefMmdDistricts} // Set reference to GeoJSON layer
               data={mmdDistricts}
               style={(feature) => styleDistricts(BoundaryChoroplethOptions.MMD, mmdDistrictColors, feature)}
-              onEachFeature={showDistrictData}
+              onEachFeature={showMmdDistrictData}
               />
             )}
 
@@ -553,6 +574,9 @@ export const StateMap = ({ state }) => {
           setIsRightAnalysisPanelExpanded={setIsRightAnalysisPanelExpanded} 
           state={state} 
           currentSmdDistrict={currentSmdDistrict}
+          currentMmdDistrict={currentMmdDistrict}
+          setCurrentMmdDistrict={setCurrentMmdDistrict}
+          setSelectedMmdDistrict={setSelectedMmdDistrict}
           setCurrentSmdDistrict={setCurrentSmdDistrict}
           setSelectedSmdDistrict={setSelectedSmdDistrict}
         />}
