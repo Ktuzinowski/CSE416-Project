@@ -123,6 +123,7 @@ export const StateMap = ({ state }) => {
         });
 
         setMmdDistrictColors(colorsForDistricts);
+        setCurrentMmdDistrict(state_mmd);
       } catch (error) {
         console.error("Failed to load current plans:", error.message);
       }

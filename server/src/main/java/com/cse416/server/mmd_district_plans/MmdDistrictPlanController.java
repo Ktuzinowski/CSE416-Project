@@ -20,7 +20,12 @@ public class MmdDistrictPlanController {
 	}
 	
 	@GetMapping("/mmd_district_plans/summaries")
-	public List<FeatureCollectionSummary> getSmdDistrictPlanSummaries(@RequestParam("state") String state) {
+	public List<FeatureCollectionSummary> getMmdDistrictPlanSummaries(@RequestParam("state") String state) {
 		return service.getSummariesByState(state);
+	}
+	
+	@GetMapping("/mmd_district_plans/summary")
+	public FeatureCollectionWithoutGeometry getMmdDistrictPlanSummary(@RequestParam("name") String name) {
+		return service.getSummaryForPlan(name);
 	}
 }
