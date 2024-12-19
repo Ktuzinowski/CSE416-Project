@@ -32,7 +32,8 @@ export const SmdTableSummary = ({ name, nameMmd }) => {
     }
     return (
         <div className="summaryData">
-            <p style={{fontSize: "18px"}}><b>Category</b>: {summaryData.interesting_description}</p>
+            <p style={{fontSize: "16px", marginTop: "-12px"}}><b>SMD Category</b>: {summaryData.interesting_description}</p>
+            <p style={{fontSize: "16px"}}><b>MMD Category</b>: {mmdSummaryData.interesting_description}</p>
             <table style={{ width: "95%", borderCollapse: "collapse" }}>
                 <tbody>
                 <tr>
