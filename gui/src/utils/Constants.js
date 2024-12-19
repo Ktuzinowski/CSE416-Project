@@ -35,16 +35,14 @@ export const COLORS = [
     'rgb(100, 149, 237)',   // Cornflower Blue
     'rgb(240, 230, 140)',    // Khaki
     'rgb(0, 100, 0)',       // Dark Green
-    'rgb(255, 192, 203)',   // Pink
     'rgb(173, 216, 230)',   // Light Blue
     'rgb(189, 183, 107)',   // Dark Khaki
     'rgb(70, 130, 180)',    // Steel Blue
     'rgb(255, 215, 0)',     // Gold
     'rgb(205, 92, 92)',     // Indian Red
     'rgb(255, 99, 0)',      // Bright Red-Orange
+    'rgb(128, 0, 0)',       // Maroon
     'rgb(0, 191, 255)',     // Deep Sky Blue
-    'rgb(139, 69, 19)',     // Saddle Brown
-    'rgb(160, 82, 45)',     // Sienna
   ];
 
 //choropleth color scale
